@@ -32,5 +32,5 @@
 
 <script setup lang="ts">
 import BaseButton from '../components/BaseButton.vue'
-import heroArtwork from '../assets/images/Copia de Untitled_Artwork-3.png'
+import heroArtwork from '../assets/images/Mas Ideas.png'
 </script>
