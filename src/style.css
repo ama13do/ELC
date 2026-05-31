@@ -17,14 +17,41 @@
 }
 
 @theme {
-  --color-accent: #0ce23f;
-  --color-surface: #0a0a0a;
+  /* Mantener existentes */
+  --color-accent: #0BE340;
+  --color-surface: #0A0A0A;
   --color-surface-alt: #111111;
+
+  /* Colores oficiales HXNF */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-beige: #FAF5E1;
+
+  /* Secundarios */
+  --color-yellow: #E0FA49;
+  --color-orange: #FF8636;
+  --color-blue: #2E7DFC;
+  --color-pink: #FD8CBB;
+  --color-pink-dark: #FC3169;
+
+  /* Semánticos */
+  --color-background: var(--color-black);
+  --color-foreground: var(--color-white);
+  --color-card: var(--color-surface);
+  --color-card-hover: #1A1A1A;
+
+  /* Tipografías */
   --font-parkinsans: 'Parkinsans', sans-serif;
   --font-myriad: 'MyriadPro', sans-serif;
+
+  /* Alias opcionales */
+  --font-heading: var(--font-parkinsans);
+  --font-body: var(--font-myriad);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -33,12 +60,38 @@ html {
 }
 
 body {
-  background-color: #0a0a0a;
-  color: white;
   margin: 0;
-  font-family: 'MyriadPro', sans-serif;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-myriad);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 #app {
   width: 100%;
+  min-height: 100vh;
 }

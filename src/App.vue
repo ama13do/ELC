@@ -17,6 +17,7 @@
       <PartnersSection />
     </main>
     <FooterSection />
+    <Pet />
   </div>
 </template>
 
@@ -36,4 +37,5 @@ import ImportantDatesSection from './sections/ImportantDatesSection.vue'
 import SelectionCriteriaSection from './sections/SelectionCriteriaSection.vue'
 import PartnersSection from './sections/PartnersSection.vue'
 import FooterSection from './sections/FooterSection.vue'
+import Pet from './components/Pet.vue'
 </script>
