@@ -1,5 +1,5 @@
 <template>
-  <section class="relative min-h-screen bg-[#0a0a0a] overflow-hidden">
+  <section class="relative min-h-screen bg-surface overflow-hidden">
     <div class="relative z-10 mx-auto max-w-6xl px-6 md:px-12 lg:px-20 flex items-center min-h-screen">
       <div class="w-full md:w-7/12 py-32">
         <h1
@@ -10,7 +10,7 @@
         </h1>
         <p class="text-white/80 text-lg leading-relaxed mb-10 max-w-md">
           ¿Estás listx para
-          <span class="text-[#b5ff4d]">formar parte de un movimiento nacional</span>
+          <span class="text-accent">formar parte de un movimiento nacional</span>
           que desarrolla propuestas concretas para enfrentar la emergencia climática?
         </p>
         <div class="flex gap-4 flex-wrap">
@@ -24,7 +24,7 @@
       <img
         :src="heroArtwork"
         alt=""
-        class="h-full w-full object-contain object-right-bottom"
+        class="h-full w-full object-contain object-bottom-right"
       />
     </div>
   </section>
