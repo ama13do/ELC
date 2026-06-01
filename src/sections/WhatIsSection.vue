@@ -55,24 +55,12 @@ onMounted(() => {
       scrollTrigger: {
         trigger: sectionRef.value,
         start: 'top 78%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     })
     enterTl
-      .from('.block-left',  { x: -70, opacity: 0, duration: 0.75, ease: 'power3.out' }, 0)
-      .from('.block-right', { x: 70,  opacity: 0, duration: 0.75, ease: 'power3.out' }, 0.15)
-
-    // Salida: hacia sus lados, reverse al volver
-    const exitTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'bottom 65%',
-        toggleActions: 'play none none reverse',
-      },
-    })
-    exitTl
-      .to('.block-left',  { x: -70, opacity: 0, duration: 0.65, ease: 'power2.in' }, 0)
-      .to('.block-right', { x: 70,  opacity: 0, duration: 0.65, ease: 'power2.in' }, 0)
+      .from('.block-left',  { x: -70, duration: 0.75, ease: 'power3.out' }, 0)
+      .from('.block-right', { x: 70, duration: 0.75, ease: 'power3.out' }, 0.15)
 
   }, sectionRef.value ?? undefined)
 })

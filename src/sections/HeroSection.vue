@@ -41,24 +41,24 @@ gsap.registerPlugin(ScrollTrigger)
 
 onMounted(() => {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-  tl.from('.hero-title',         { y: 60, opacity: 0, duration: 0.9 })
-    .from('.hero-body',          { y: 40, opacity: 0, duration: 0.7 }, '-=0.5')
-    .from('.hero-buttons > *',   { y: 30, opacity: 0, stagger: 0.15, duration: 0.6 }, '-=0.4')
-    .from('.hero-image-wrapper', { scale: 0.75, opacity: 0, rotation: -18, duration: 1.2, ease: 'back.out(1.7)' }, 0.15)
+  tl.from('.hero-title',         { y: 60, duration: 0.9 })
+    .from('.hero-body',          { y: 40, duration: 0.7 }, '-=0.5')
+    .from('.hero-buttons > *',   { y: 30, stagger: 0.15, duration: 0.6 }, '-=0.4')
+    .from('.hero-image-wrapper', { scale: 0.75, rotation: -18, duration: 1.2, ease: 'back.out(1.7)' }, 0.15)
 
   const mm = gsap.matchMedia()
 
   mm.add('(min-width: 641px)', () => {
     gsap.to('.hero-image-wrapper', {
-      y: -80, opacity: 0, rotation: 10,
+      y: -80, rotation: 10,
       scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 2 },
     })
     gsap.to('.hero-buttons', {
-      y: -20, opacity: 0,
+      y: -20,
       scrollTrigger: { trigger: '.hero-section', start: '25% top', end: '65% top', scrub: 1.2 },
     })
     gsap.to('.hero-content', {
-      y: -50, opacity: 0,
+      y: -50,
       scrollTrigger: { trigger: '.hero-section', start: '40% top', end: 'bottom top', scrub: 1.5 },
     })
   })
@@ -69,7 +69,7 @@ onMounted(() => {
       scrollTrigger: { trigger: '.hero-section', start: '20% top', end: '60% top', scrub: 1 },
     })
     gsap.to('.hero-buttons', {
-      y: -10, opacity: 0,
+      y: -10,
       scrollTrigger: { trigger: '.hero-section', start: '30% top', end: '72% top', scrub: 1 },
     })
   })

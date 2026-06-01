@@ -59,7 +59,6 @@ onMounted(() => {
       start: 'top 82%',
     },
     y: 50,
-    opacity: 0,
     stagger: 0.14,
     duration: 0.65,
     ease: 'power3.out',

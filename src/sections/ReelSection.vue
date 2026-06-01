@@ -104,14 +104,14 @@ const onDrag = (e: MouseEvent) => {
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.reel-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.reel-title', { y: 35, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.reel-subtitle', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none reverse' }
+    gsap.from('.reel-subtitle', { y: 25, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none none' }
     })
-    gsap.from('.photo-wrapper', { y: 30, opacity: 0, duration: 0.55, ease: 'power3.out', stagger: 0.08,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    gsap.from('.photo-wrapper', { y: 30, duration: 0.55, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

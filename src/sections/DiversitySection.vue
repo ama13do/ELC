@@ -13,39 +13,39 @@ onMounted(() => {
   gsap.context(() => {
 
     gsap.from('.esperar-title', {
-      y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+      y: 40, duration: 0.8, ease: 'power3.out',
       scrollTrigger: {
         trigger: '.esperar-hero',
         start: 'top 80%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     })
 
     gsap.from('.esperar-lead', {
-      y: 35, opacity: 0, duration: 0.75, ease: 'power3.out',
+      y: 35, duration: 0.75, ease: 'power3.out',
       scrollTrigger: {
         trigger: '.esperar-bottom',
         start: 'top 82%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     })
 
     gsap.from('.esperar-body', {
-      y: 30, opacity: 0, duration: 0.65, ease: 'power3.out',
+      y: 30, duration: 0.65, ease: 'power3.out',
       stagger: 0.18,
       scrollTrigger: {
         trigger: '.esperar-bottom',
         start: 'top 75%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     })
 
     gsap.from('.esperar-img-wrapper', {
-      x: 40, opacity: 0, duration: 0.85, ease: 'power3.out',
+      x: 40, duration: 0.85, ease: 'power3.out',
       scrollTrigger: {
         trigger: '.esperar-bottom',
         start: 'top 78%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     })
 

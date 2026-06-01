@@ -29,11 +29,11 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.register-text', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.register-text', { y: 35, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.register-buttons', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    gsap.from('.register-buttons', { y: 25, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

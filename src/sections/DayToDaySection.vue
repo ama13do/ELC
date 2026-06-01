@@ -23,11 +23,11 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.elc-title', { y: 40, opacity: 0, duration: 0.85, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.elc-title', { y: 40, duration: 0.85, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.elc-body', { y: 25, opacity: 0, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    gsap.from('.elc-body', { y: 25, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

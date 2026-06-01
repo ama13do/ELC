@@ -40,14 +40,14 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.criteria-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.criteria-title', { y: 35, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.criteria-card', { y: 25, opacity: 0, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none reverse' }
+    gsap.from('.criteria-card', { y: 25, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none none' }
     })
-    gsap.from('.criteria-item', { y: 20, opacity: 0, duration: 0.55, ease: 'power3.out', stagger: 0.1,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    gsap.from('.criteria-item', { y: 20, duration: 0.55, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

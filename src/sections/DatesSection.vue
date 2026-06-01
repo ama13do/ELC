@@ -32,11 +32,11 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.dates-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.dates-title', { y: 35, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.date-row', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out', stagger: 0.08,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    gsap.from('.date-row', { y: 20, duration: 0.5, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

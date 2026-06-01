@@ -89,8 +89,8 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.phase-block', { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.2,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.phase-block', { y: 40, duration: 0.8, ease: 'power3.out', stagger: 0.2,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })

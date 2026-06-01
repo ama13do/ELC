@@ -51,11 +51,11 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.footer-block', { y: 35, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    gsap.from('.footer-block', { y: 35, duration: 0.7, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.logo-img', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out', stagger: 0.06,
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 70%', toggleActions: 'play none none reverse' }
+    gsap.from('.logo-img', { y: 20, duration: 0.5, ease: 'power3.out', stagger: 0.06,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 70%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
 })
