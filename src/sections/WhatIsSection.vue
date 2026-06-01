@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import frackingImg from '../assets/images/fraking.svg'
+import frackingImg from '../assets/images/fracking.svg'
 </script>
 
 <style scoped>

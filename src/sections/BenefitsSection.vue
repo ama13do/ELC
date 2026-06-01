@@ -1,15 +1,18 @@
 <template>
-  <!-- Contenedor general que rompe márgenes para ocupar toda la pantalla -->
   <div class="sessions-wrapper">
     
-    <!-- 1. Banner superior con fondo negro -->
     <div class="sessions-banner">
       <h2 class="sessions-title">ESPACIO LIBRE DE<br />PARTIDOS POLÍTICOS</h2>
     </div>
 
-    <!-- 2. Sección de la imagen (abajo del banner) -->
     <section class="sessions-section">
       <img src="../assets/images/sesiones.svg" alt="" class="sessions-bg" />
+
+      <img 
+        :src="hojasImg" 
+        alt="Hojas al viento" 
+        class="hojas-viento"
+      />
 
       <div class="sessions-content">
         <p class="sessions-body">
@@ -23,6 +26,11 @@
   </div>
 </template>
 
+<script setup lang="ts">
+// Importamos la imagen para que Vite/Webpack la procese correctamente
+import hojasImg from '../assets/images/hojas.png'
+</script>
+
 <style scoped>
 /* ── 1. Contenedor Principal ── */
 .sessions-wrapper {
@@ -34,7 +42,7 @@
 
 /* ── 2. Banner Negro ── */
 .sessions-banner {
-  background-color: var(--color-black); /* Fondo negro */
+  background-color: var(--color-black);
   width: 100%;
   padding: 3rem 1.5rem;
   display: flex;
@@ -42,12 +50,10 @@
   align-items: center;
 }
 
-/* ── Título (Letra más grande y sin posición absoluta) ── */
 .sessions-title {
   font-family: var(--font-parkinsans);
   font-weight: 800;
   color: var(--color-white);
-  /* Aumentamos significativamente el tamaño con clamp */
   font-size: clamp(1.5rem, 3vw, 2.5rem); 
   letter-spacing: 0.1em;
   text-align: center;
@@ -59,10 +65,10 @@
 .sessions-section {
   position: relative;
   width: 100%;
-  min-height: 80vh; /* Puedes ajustar la altura a tu gusto */
+  min-height: 80vh; 
   overflow: hidden;
   display: flex;
-  align-items: flex-end; /* Mantiene el body en la parte inferior */
+  align-items: flex-end; 
 }
 
 .sessions-bg {
@@ -75,6 +81,38 @@
   display: block;
 }
 
+/* ── 🍃 HOJAS Y ANIMACIÓN DE VIENTO 🍃 ── */
+.hojas-viento {
+  position: absolute;
+  /* Porcentaje separado de arriba, como lo pediste */
+  top: 15%; 
+  right: -2%; /* Ligeramente salidas para que se vea natural */
+  width: 200px; /* Tamaño base en móviles */
+  z-index: 15;
+  pointer-events: none; /* Para que no estorben si hay botones abajo */
+  
+  /* El eje de rotación lo ponemos arriba a la derecha para que cuelguen */
+  transform-origin: top right;
+  /* Animación infinita y suave */
+  animation: viento 5s ease-in-out infinite alternate;
+}
+
+@keyframes viento {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-6deg); /* Se mecen hacia un lado */
+  }
+  70% {
+    transform: rotate(3deg); /* Se mecen hacia el otro */
+  }
+  100% {
+    transform: rotate(0deg); /* Vuelven a su lugar */
+  }
+}
+
+/* ── Contenido de Sesiones ── */
 .sessions-content {
   position: relative;
   z-index: 10;
@@ -102,13 +140,21 @@
 }
 
 /* ── Responsive ── */
+@media (min-width: 768px) {
+  /* Hacemos las hojas más grandes en PC y tablet */
+  .hojas-viento {
+    width: 380px;
+    top: 10%;
+    right: 2%;
+  }
+}
+
 @media (max-width: 640px) {
   .sessions-banner {
     padding: 2.5rem 1rem;
   }
   
   .sessions-title {
-    /* Tamaño más grande para móviles comparado con el anterior */
     font-size: 1.25rem; 
   }
 

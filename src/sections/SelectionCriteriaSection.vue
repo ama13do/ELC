@@ -70,10 +70,10 @@ const criteria = [
   position: relative;
   background-color: var(--color-black);
   border-top:    1.5px solid var(--color-blue);
-  border-left:   1.5px solid var(--color-blue);
+  border-right:  1.5px solid var(--color-blue); /* Agregamos el borde derecho */
   border-bottom: 1.5px solid var(--color-blue);
-  border-right:  none;
-  border-radius: 0.9rem 0 0 0.9rem;
+  border-left:   none; /* Quitamos el borde izquierdo para que esté "abierta" */
+  border-radius: 0 0.9rem 0.9rem 0; /* Curvamos solo las esquinas de la derecha */
   padding: 2rem 2rem 2rem 1.8rem;
   margin-top: 0.6rem;
   display: flex;
@@ -81,11 +81,11 @@ const criteria = [
   gap: 1.3rem;
 }
 
-/* Círculo arriba-derecha (donde termina el borde superior) */
+/* Círculo arriba-izquierda */
 .criteria-dot {
   position: absolute;
   top: -0.6rem;
-  right: -0.6rem;
+  left: -0.6rem; /* Cambiamos 'right' por 'left' para moverlo a la izquierda */
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;

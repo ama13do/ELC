@@ -4,7 +4,14 @@
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="who-hero">
       <img src="../assets/images/why.svg" alt="" class="who-hero-bg" />
+      
       <div class="who-hero-text">
+        <img 
+          :src="aguasImg" 
+          alt="Aguas" 
+          class="who-aguas-img"
+        />
+        
         <h2 class="who-title">¿Quién puede<br />participar?</h2>
       </div>
     </div>
@@ -41,7 +48,7 @@
 
 <script setup lang="ts">
 import BaseButton from '../components/BaseButton.vue'
-
+import aguasImg from '../assets/images/aguas.png'
 const requirements = [
   'Jóvenes de entre 18 y 26 años que vivan en México.',
   'Estudiantes universitarixs activos en modalidad presencial, en cualquier carrera y de cualquier universidad mexicana, pública o privada.',
@@ -62,12 +69,16 @@ const requirements = [
 }
 
 /* ── Hero ── */
+/* ── Hero ── */
 .who-hero {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   height: clamp(680px, 50vw, 800px);
   overflow: hidden;
+  /* (Opcional) Si al poner 'contain' quedan bordes negros, 
+     puedes descomentar la línea de abajo y poner el color de fondo de tu foto */
+  /* background-color: #000; */ 
 }
 
 .who-hero-bg {
@@ -75,7 +86,8 @@ const requirements = [
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* CAMBIADO A CONTAIN: Evita el zoom y mantiene el formato original siempre */
+  object-fit: contain; 
   object-position: center top;
   display: block;
 }
@@ -85,6 +97,31 @@ const requirements = [
   bottom: clamp(1.5rem, 5%, 3rem);
   left: clamp(1.5rem, 6vw, 5rem);
   z-index: 10;
+  display: flex; /* Añadido para apilar la imagen y el texto */
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── 💧 ESTILOS PARA LA IMAGEN "AGUAS" 💧 ── */
+.who-aguas-img {
+  width: clamp(220px, 30vw, 280px); /* Tamaño responsivo */
+  margin-bottom: 0.5rem;
+  margin-left: -9rem; /* Separación con el título */
+  transform: rotate(15deg); /* Inclinación a la izquierda */
+  pointer-events: none;
+  
+  /* Animación de respiración */
+  animation: breathe-aguas 4s ease-in-out infinite alternate;
+}
+
+/* ── Animación de respiración específica para mantener la rotación ── */
+@keyframes breathe-aguas {
+  0% {
+    transform: rotate(15deg) scale(1);
+  }
+  100% {
+    transform: rotate(15deg) scale(1.08); /* Crece un poquito suavemente */
+  }
 }
 
 .who-title {

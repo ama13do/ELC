@@ -11,7 +11,7 @@
           compromisos que asumirás y parámetros a los que estarás sujetx, en caso de resultar
           seleccionadx.
         </p>
-        <BaseButton variant="secondary" href="#">Términos y condiciones</BaseButton>
+        <BaseButton variant="secondary" href="https://drive.google.com/file/d/1bJ4sEeZNQkh_s4PplfGhr9GNNxxloTx7/view?usp=sharing">Términos y condiciones</BaseButton>
       </div>
 
       <!-- Organizaciones convocantes -->
@@ -33,7 +33,7 @@
 
       <!-- Aviso de privacidad -->
       <div class="footer-block footer-block--center">
-        <BaseButton variant="outline-blue" href="#">Aviso de privacidad</BaseButton>
+        <BaseButton variant="outline-blue" href="https://drive.google.com/file/d/1bJ4sEeZNQkh_s4PplfGhr9GNNxxloTx7/view?usp=sharing">Aviso de privacidad</BaseButton>
       </div>
 
     </div>
@@ -131,9 +131,9 @@ const orgs = [
 }
 
 .logo-link:hover {
-  opacity: 1;
-  filter: brightness(1.3);
-  transform: scale(1.08);
+  opacity: 2.5;
+  filter: brightness(2);
+  transform: scale(1.5);
 }
 
 .logo-img {

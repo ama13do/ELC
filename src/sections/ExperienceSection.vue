@@ -4,7 +4,20 @@
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="experience-hero">
       <img src="../assets/images/EXPERIENCE.svg" alt="" class="experience-hero-bg" />
+      
+      <img 
+        :src="stickerMasIdeas" 
+        alt="Más Ideas" 
+        class="sticker-top-right" 
+      />
+
       <div class="experience-hero-text">
+        <img 
+          :src="stickerHxnf" 
+          alt="Sticker HXNF" 
+          class="sticker-bottom-left" 
+        />
+        
         <h2 class="experience-title">¿Qué obtengo<br />de esta experiencia?</h2>
       </div>
     </div>
@@ -26,6 +39,8 @@
 </template>
 
 <script setup lang="ts">
+import stickerHxnf from '../assets/images/StickerHXNF.png'
+import stickerMasIdeas from '../assets/images/Mas Ideas.png'
 const benefits = [
   'Conocer a personas jóvenes de tu estado y de todo el país interesadas en acelerar la adopción de energías renovables en el país de forma creativa e interdisciplinaria.',
   'Pláticas con personas líderes de la transición energética justa en México.',
@@ -48,16 +63,17 @@ const benefits = [
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  height: clamp(300px, 52vw, 560px);
+  
   overflow: hidden;
 }
 
 .experience-hero-bg {
-  position: absolute;
+  
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* CAMBIO AQUÍ: 'contain' evita el zoom y mantiene el formato intacto */
+
   object-position: center top;
   display: block;
 }
@@ -67,6 +83,36 @@ const benefits = [
   bottom: clamp(1.5rem, 5%, 3rem);
   left: clamp(1.5rem, 6vw, 5rem);
   z-index: 10;
+  /* Convertimos esto en flex para apilar el sticker y el título */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── 🔵 STICKER HXNF (Inferior Izquierdo) ── */
+.sticker-bottom-left {
+  width: clamp(150px, 22vw, 240px); /* Grande y responsivo */
+  margin-bottom: 0.5rem;
+  /* El margen negativo lo saca un poco hacia la izquierda del marco */
+  margin-left: -2.5rem; 
+  /* Inclinación hacia la derecha */
+  transform: rotate(-12deg); 
+  pointer-events: none;
+  animation: destello-espejo 6s linear infinite;
+}
+
+/* ── 💡 STICKER MÁS IDEAS (Superior Derecho) ── */
+.sticker-top-right {
+  position: absolute;
+  top: 8%;
+  right: 1.5rem; /* Un poco salido del marco hacia la derecha */
+  width: clamp(140px, 20vw, 220px); /* Grande y responsivo */
+  /* Inclinación hacia la derecha */
+  transform: rotate(-10deg); 
+  z-index: 15;
+  pointer-events: none;
+  animation: destello-espejo 6s linear infinite;
+  animation-delay: .5s;
 }
 
 .experience-title {
@@ -77,6 +123,17 @@ const benefits = [
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin: 0;
+}
+
+/* ── Ajustes móviles para los stickers ── */
+@media (max-width: 640px) {
+  .sticker-bottom-left {
+    margin-left: -1rem; /* Que no se salga tanto en celular */
+  }
+  .sticker-top-right {
+    top: 5%;
+    right: -1rem;
+  }
 }
 
 /* ── Body ── */
@@ -150,6 +207,19 @@ const benefits = [
 
   .experience-card {
     padding: 1.6rem 1.2rem 1.6rem 1.2rem;
+  }
+}
+/* ── ✨ ANIMACIÓN DE DESTELLO TIPO ESPEJO ✨ ── */
+@keyframes destello-espejo {
+  0%, 40% {
+    filter: brightness(1) contrast(1) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  }
+  50% {
+    /* El momento exacto donde la luz pega en el espejo */
+    filter: brightness(1.4) contrast(1.15) drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+  }
+  60%, 100% {
+    filter: brightness(1) contrast(1) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
   }
 }
 </style>

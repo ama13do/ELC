@@ -8,8 +8,8 @@
         <!-- Header fase -->
         <div class="phase-header">
           <div class="phase-label">
-            <span class="phase-dot" style="--c: #0BE340" />
-            <span class="phase-num">FASE 1</span>
+        
+            <span class="phase-num" style="color: #0BE340">FASE 1</span>
           </div>
           <span class="phase-subtitle">Identidad, valores y diagnóstico sistémico</span>
         </div>
@@ -41,7 +41,7 @@
 
         <div class="phase-header">
           <div class="phase-label">
-            <span class="phase-dot" style="--c: #E0FA49" />
+          
             <span class="phase-num" style="color: #E0FA49">FASE 2</span>
           </div>
           <span class="phase-subtitle" style="color: #E0FA49">Herramientas técnicas y de incidencia 101</span>
@@ -67,11 +67,12 @@
             </li>
           </ul>
 
-          <p class="phase-note">
-            *El contenido del programa final se dará a conocer a las personas seleccionadas
-            en la reunión de bienvenida del sábado 4 de julio.
-          </p>
+          
         </div>
+        <p class="phase-note">
+          *El contenido del programa final se dará a conocer a las personas seleccionadas
+          en la reunión de bienvenida del sábado 4 de julio.
+        </p>
       </div>
 
     </div>
@@ -139,14 +140,15 @@ const phase2Topics = [
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(2rem, 4vw, 4rem);
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Header de fase ── */
 .phase-block {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0;
+  margin-bottom: 3.5rem;
 }
 
 .phase-header {
@@ -154,6 +156,8 @@ const phase2Topics = [
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  padding-left: 1.6rem; 
+  padding-bottom: 0.3rem;
 }
 
 .phase-label {
@@ -183,7 +187,7 @@ const phase2Topics = [
   font-weight: 600;
   font-size: clamp(0.85rem, 1.2vw, 1rem);
   color: #0BE340;
-  text-decoration: underline;
+  
   text-underline-offset: 4px;
 }
 
@@ -197,10 +201,11 @@ const phase2Topics = [
   border-left:   none;
   border-radius: 0 0.9rem 0.9rem 0;
   padding: 2rem 1.6rem 1.8rem 1.6rem;
-  margin-top: 0.6rem;
+  margin-top: -0.5rem; 
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+  flex-grow: 1;
 }
 
 /* Círculo sobresaliendo arriba-izquierda */
@@ -275,8 +280,11 @@ const phase2Topics = [
   font-size: clamp(0.68rem, 0.8vw, 0.78rem);
   font-style: italic;
   text-align: right;
-  margin: 0;
-  line-height: 1.5;
+  
+  /* EL TRUCO PARA QUE NO DEFORME Y NO DESAPAREZCA */
+  margin-top: 0.3rem;
+  height: 0;
+  overflow: visible;
 }
 
 /* ── Responsive tablet ── */

@@ -10,8 +10,8 @@
       </p>
 
       <div class="register-buttons">
-        <BaseButton variant="primary" href="#registro">REGÍSTRATE AQUÍ</BaseButton>
-        <BaseButton variant="secondary" href="#quienes">CONOCE MÁS</BaseButton>
+        <BaseButton variant="primary" href="https://forms.gle/5Kc73ytz17qZWT1AA">REGÍSTRATE AQUÍ</BaseButton>
+        <BaseButton variant="secondary" href="https://nuestrofuturo.mx/hxnf/">CONOCE MÁS</BaseButton>
       </div>
 
     </div>

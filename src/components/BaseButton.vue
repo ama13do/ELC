@@ -16,7 +16,7 @@ import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
     href?: string
-    variant?: 'primary' | 'secondary' | 'outline'
+    variant?: 'primary' | 'secondary' | 'outline'|'outline-blue'
     /** Color de fondo personalizado (sobreescribe variant) */
     bgColor?: string
     /** Color del texto personalizado */
@@ -121,7 +121,20 @@ const customStyle = computed(() => {
 .btn-custom:hover {
   box-shadow: 6px 6px 0px 0px var(--btn-shadow);
 }
+/* ── Variante Outline Blue ── */
+/* ── Variante Azul Sólido (Aviso de privacidad) ── */
+.btn-outline-blue {
+  background-color: #2E7DFC; /* Fondo de las letras azul (usa var(--color-blue) si la tienes) */
+  color: #FFFFFF; /* Letras blancas */
+  border: none; /* Le quitamos el borde para que sea un bloque sólido */
+  box-shadow: -4px 4px 0px 0px #FFFFFF; /* Sombra/fondo blanco */
+}
 
+.btn-outline-blue:hover {
+  background-color: #2E7DFC;
+  color: #FFFFFF; 
+  box-shadow: 6px 6px 0px 0px #FFFFFF; /* La sombra blanca crece al pasar el mouse */
+}
 /* ── Responsive ── */
 @media (max-width: 480px) {
   .base-btn {
