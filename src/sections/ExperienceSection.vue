@@ -2,6 +2,7 @@
   <section class="experience-section" ref="sectionRef">
 
     <!-- Hero edge-to-edge con título abajo-izquierda -->
+    <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="experience-hero">
       <img src="../assets/images/EXPERIENCE.svg" alt="" class="experience-hero-bg" />
       
@@ -11,14 +12,18 @@
         class="sticker-top-right" 
       />
 
-      <div class="experience-hero-text">
-        <img 
-          :src="stickerHxnf" 
-          alt="Sticker HXNF" 
-          class="sticker-bottom-left" 
-        />
-        
-        <h2 class="experience-title">¿Qué obtengo<br />de esta experiencia?</h2>
+      <!-- NUEVO: Movimos el sticker aquí afuera para que pueda tocar el borde libremente -->
+      <img 
+        :src="stickerHxnf" 
+        alt="Sticker HXNF" 
+        class="sticker-bottom-left" 
+      />
+
+      <!-- Contenedor para alinear el título con el texto de abajo -->
+      <div class="experience-hero-inner">
+        <div class="experience-hero-text">
+          <h2 class="experience-title">¿Qué obtengo<br />de esta experiencia?</h2>
+        </div>
       </div>
     </div>
 
@@ -77,31 +82,36 @@ const benefits = [
 }
 
 /* ── Hero ── */
+/* ── Hero ── */
 .experience-hero {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  
-  overflow: hidden;
+  /* Dejamos que la imagen dicte la altura de la sección para no deformarse */
+  display: block; 
 }
 
 .experience-hero-bg {
-  
-  inset: 0;
   width: 100%;
-  height: 100%;
-  /* CAMBIO AQUÍ: 'contain' evita el zoom y mantiene el formato intacto */
-
-  object-position: center top;
+  height: auto;
   display: block;
+}
+
+/* El contenedor secreto que alinea el título con el body de 820px */
+.experience-hero-inner {
+  position: absolute;
+  inset: 0;
+  max-width: 820px; 
+  margin: 0 auto;
+  width: 100%;
 }
 
 .experience-hero-text {
   position: absolute;
-  bottom: clamp(1.5rem, 5%, 3rem);
+  bottom: clamp(1.5rem, 5vw, 4rem);
+  /* Mismo padding lateral que tiene el body para una alineación vertical impecable */
   left: clamp(1.5rem, 6vw, 5rem);
   z-index: 10;
-  /* Convertimos esto en flex para apilar el sticker y el título */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -109,23 +119,36 @@ const benefits = [
 
 /* ── 🔵 STICKER HXNF (Inferior Izquierdo) ── */
 .sticker-bottom-left {
-  width: clamp(150px, 22vw, 240px); /* Grande y responsivo */
-  margin-bottom: 0.5rem;
-  /* El margen negativo lo saca un poco hacia la izquierda del marco */
-  margin-left: -2.5rem; 
-  /* Inclinación hacia la derecha */
+  position: absolute;
+  /* ¡MAGIA! Esto lo pega directamente al borde izquierdo de la pantalla */
+  left: clamp(-1rem, 1vw, 0rem); 
+  /* Lo posicionamos a una altura donde quede encimita o a un lado del título */
+  bottom: clamp(6rem, 12vw, 12rem); 
+  
+  width: clamp(180px, 28vw, 500px); 
   transform: rotate(-12deg); 
+  z-index: 15;
   pointer-events: none;
   animation: destello-espejo 6s linear infinite;
 }
-
+@media (max-width: 768px) {
+  .sticker-bottom-left {
+    /* En celular lo bajamos un poco para que no quede volando muy alto */
+    bottom: 5.5rem;
+    left: -1.5rem; 
+  }
+  .sticker-top-right {
+    top: 5%;
+    right: -1.5rem;
+  }
+}
 /* ── 💡 STICKER MÁS IDEAS (Superior Derecho) ── */
 .sticker-top-right {
   position: absolute;
   top: 8%;
-  right: 1.5rem; /* Un poco salido del marco hacia la derecha */
-  width: clamp(140px, 20vw, 220px); /* Grande y responsivo */
-  /* Inclinación hacia la derecha */
+  right: clamp(1rem, 5vw, 6rem); 
+  /* MUCHO MÁS GRANDE */
+  width: clamp(160px, 26vw, 480px); 
   transform: rotate(-10deg); 
   z-index: 15;
   pointer-events: none;
@@ -144,13 +167,14 @@ const benefits = [
 }
 
 /* ── Ajustes móviles para los stickers ── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .sticker-bottom-left {
-    margin-left: -1rem; /* Que no se salga tanto en celular */
+    /* Un poco a la izquierda sin sacarlo de la pantalla en celular */
+    margin-left: -1.5rem; 
   }
   .sticker-top-right {
     top: 5%;
-    right: -1rem;
+    right: -1.5rem;
   }
 }
 

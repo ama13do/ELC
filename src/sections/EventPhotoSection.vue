@@ -1,6 +1,6 @@
 <template>
-  <section ref="sectionRef" class="relative w-full bg-surface py-24 px-6 md:px-12 font-parkinsans">
-    <div class="mx-auto max-w-3xl flex flex-col items-center text-center gap-16">
+  <section ref="sectionRef" class="relative w-full bg-surface py-10 md:py-24 px-6 md:px-12 font-parkinsans">
+    <div class="mx-auto max-w-3xl flex flex-col items-center text-center gap-8 md:gap-16">
 
       <div class="relative px-14 py-10 md:px-20 md:py-12 oval-wrapper">
         <img

@@ -70,7 +70,7 @@ onMounted(() => {
 .stats-section {
   width: 100%;
   background-color: var(--color-surface);
-  padding: 5rem 1.5rem 6rem;
+  padding: 5rem 1.5rem 3rem;
 }
 
 .stats-inner {
@@ -134,9 +134,9 @@ onMounted(() => {
 }
 
 /* ── Responsive: mobile ── */
-@media (max-width: 540px) {
+@media (max-width: 640px) {
   .stats-section {
-    padding: 2.5rem 1.2rem 3.5rem;
+    padding: 2.5rem 1.2rem 1rem;
   }
   .stats-grid {
     grid-template-columns: 1fr;

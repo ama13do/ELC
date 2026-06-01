@@ -154,7 +154,7 @@ onMounted(() => {
     flex-direction: column;
     justify-content: space-between;
     padding: 5rem 1.5rem 3.5rem;
-    min-height: 100svh;
+    min-height: auto;
     gap: 2rem;
   }
 

@@ -4,15 +4,16 @@
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="who-hero">
       <img src="../assets/images/why.svg" alt="" class="who-hero-bg" />
-      
-      <div class="who-hero-text">
-        <img 
-          :src="aguasImg" 
-          alt="Aguas" 
-          class="who-aguas-img"
-        />
-        
-        <h2 class="who-title">¿Quién puede<br />participar?</h2>
+
+      <div class="who-hero-inner">
+
+        <div class="who-hero-text">
+
+          <img :src="aguasImg" alt="Aguas" class="who-aguas-img" />
+
+          <h2 class="who-title">¿Quién puede<br />participar?</h2>
+        </div>
+
       </div>
     </div>
 
@@ -37,7 +38,9 @@
           consolidados en los estados son tu espacio. Escríbenos y encuentra tu capítulo
           estatal más cercano
         </p>
-        <BaseButton variant="primary" href="#contacto">CONTACTO</BaseButton>
+        <BaseButton variant="primary" href="https://ig.me/m/hackersxnf" target="_blank">
+          CONTACTO
+        </BaseButton>
       </div>
 
       <h3 class="who-cta">¡Sé parte del Movimiento<br />Hackers por Nuestro Futuro!</h3>
@@ -58,13 +61,16 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.who-title', { y: 35, duration: 0.8, ease: 'power3.out',
+    gsap.from('.who-title', {
+      y: 35, duration: 0.8, ease: 'power3.out',
       scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
     })
-    gsap.from('.who-item', { y: 20, duration: 0.55, ease: 'power3.out', stagger: 0.1,
+    gsap.from('.who-item', {
+      y: 20, duration: 0.55, ease: 'power3.out', stagger: 0.1,
       scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none none' }
     })
-    gsap.from('.who-cta', { y: 25, duration: 0.65, ease: 'power3.out',
+    gsap.from('.who-cta', {
+      y: 25, duration: 0.65, ease: 'power3.out',
       scrollTrigger: { trigger: sectionRef.value, start: 'top 65%', toggleActions: 'play none none none' }
     })
   }, sectionRef.value ?? undefined)
@@ -94,53 +100,68 @@ const requirements = [
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  height: clamp(680px, 50vw, 800px);
-  overflow: hidden;
-  /* (Opcional) Si al poner 'contain' quedan bordes negros, 
-     puedes descomentar la línea de abajo y poner el color de fondo de tu foto */
-  /* background-color: #000; */ 
+  /* CAMBIO CLAVE: Quitamos la altura. Ahora la imagen decide cuánto mide la sección */
+  display: block;
 }
 
 .who-hero-bg {
+  /* CAMBIO CLAVE: Al quitar 'absolute', la imagen empuja el hero hacia abajo respetando sus medidas 100% originales */
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.who-hero-inner {
   position: absolute;
   inset: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
-  height: 100%;
-  /* CAMBIADO A CONTAIN: Evita el zoom y mantiene el formato original siempre */
-  object-fit: contain; 
-  object-position: center top;
-  display: block;
 }
 
 .who-hero-text {
   position: absolute;
-  bottom: clamp(1.5rem, 5%, 3rem);
+  /* Controla qué tan despegado del piso y la izquierda está el bloque de texto+sticker */
+  bottom: clamp(1.5rem, 5vw, 4rem);
   left: clamp(1.5rem, 6vw, 5rem);
   z-index: 10;
-  display: flex; /* Añadido para apilar la imagen y el texto */
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* Alinea el sticker y el título a la izquierda */
 }
 
 /* ── 💧 ESTILOS PARA LA IMAGEN "AGUAS" 💧 ── */
+/* ── 💧 ESTILOS PARA LA IMAGEN "AGUAS" 💧 ── */
 .who-aguas-img {
-  width: clamp(220px, 30vw, 280px); /* Tamaño responsivo */
+  /* CAMBIO: Subimos el tamaño mínimo de 130px a 180px para que en móvil sea bastante más grande */
+  width: clamp(120px, 28vw, 340px);
+
+  /* CAMBIO: Margen negativo para empujarlo hacia abajo y pegarlo al texto */
   margin-bottom: 0.5rem;
-  margin-left: -9rem; /* Separación con el título */
-  transform: rotate(15deg); /* Inclinación a la izquierda */
+
+  margin-left: -3rem;
+  transform: rotate(10deg);
   pointer-events: none;
-  
-  /* Animación de respiración */
   animation: breathe-aguas 4s ease-in-out infinite alternate;
 }
 
-/* ── Animación de respiración específica para mantener la rotación ── */
+@media (min-width: 768px) {
+  .who-aguas-img {
+    /* Aquí sí aplicamos tu margen extremo porque hay espacio de sobra */
+    margin-left: -20rem;
+  }
+}
+
+/* ── Animación de respiración específica ── */
 @keyframes breathe-aguas {
   0% {
-    transform: rotate(15deg) scale(1);
+    transform: rotate(10deg) scale(1);
   }
+
   100% {
-    transform: rotate(15deg) scale(1.08); /* Crece un poquito suavemente */
+    transform: rotate(10deg) scale(1.08);
+    /* Crece manteniendo la rotación */
   }
 }
 
@@ -170,10 +191,10 @@ const requirements = [
   position: relative;
   width: 100%;
   background-color: var(--color-black);
-  border-top:    1.5px solid var(--color-blue);
-  border-right:  1.5px solid var(--color-blue);
+  border-top: 1.5px solid var(--color-blue);
+  border-right: 1.5px solid var(--color-blue);
   border-bottom: 1.5px solid var(--color-blue);
-  border-left:   none;
+  border-left: none;
   border-radius: 0 0.9rem 0.9rem 0;
   padding: 2rem 1.8rem 2rem 1.6rem;
   margin-top: 0.6rem;
@@ -217,7 +238,7 @@ const requirements = [
 .who-text {
   font-family: var(--font-parkinsans);
   font-weight: 400;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255, 255, 255, 0.88);
   font-size: clamp(0.82rem, 1.1vw, 0.95rem);
   line-height: 1.65;
 }
@@ -235,7 +256,7 @@ const requirements = [
 .who-footer-text {
   font-family: var(--font-parkinsans);
   font-weight: 400;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   font-size: clamp(0.9rem, 1.4vw, 1.1rem);
   line-height: 1.7;
   max-width: 560px;

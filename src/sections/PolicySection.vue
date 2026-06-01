@@ -111,16 +111,15 @@ import solecitoImg from '../assets/images/Solecito.png'
 }
 
 /* ── 🔄 STICKER RENOVARÁ (Izquierda) ── */
+/* ── 🔄 STICKER RENOVARÁ (Izquierda) ── */
 .sticker-renovara {
   position: absolute;
-  /* Un poco por encima de la mitad */
-  top: 15%; 
-  /* Separado del margen izquierdo */
+  top: 13%; 
   left: 6%; 
-  width: clamp(140px, 25vw, 280px); /* Algo grande y responsivo */
+  /* CAMBIO: Aumentamos el valor máximo de 280px a 420px para que en web sea mucho más grande */
+  width: clamp(140px, 28vw, 420px); 
   z-index: 15;
   pointer-events: none;
-  /* Animación de crecer/decrecer */
   animation: pulse-renovara 4s ease-in-out infinite alternate;
 }
 
@@ -129,7 +128,8 @@ import solecitoImg from '../assets/images/Solecito.png'
     transform: scale(1);
   }
   100% {
-    transform: scale(1.08); /* Crece suavemente un 8% */
+    /* CAMBIO: Subimos el scale de 1.08 a 1.20 para que crezca un 20% (¡mucho más notorio!) */
+    transform: scale(1.20); 
   }
 }
 
@@ -198,7 +198,7 @@ import solecitoImg from '../assets/images/Solecito.png'
 @media (max-width: 640px) {
   /* Ajustes para los stickers en pantallas pequeñas */
   .sticker-renovara {
-    top: 20%;
+    top: 10%;
     left: 4%;
   }
   

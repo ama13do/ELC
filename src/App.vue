@@ -14,11 +14,11 @@
           w-40 md:w-56 lg:w-72: hace que la imagen crezca progresivamente según la pantalla
         -->
         <img 
-          :src="florAmarilla" 
-          alt="Somos Cambio" 
-          class="absolute top-0 -left-4 md:-left-6 w-80 md:w-100 lg:w-112 animate-breathe"
-          style="transform: translateY(-50%);"
-        />
+  :src="florAmarilla" 
+  alt="Somos Cambio" 
+  class="absolute top-5 -left-4 md:-left-6 w-42 sm:w-80 md:w-100 lg:w-112 animate-breathe"
+  style="transform: translateY(-50%);"
+/>
         
       </div>
       <DayToDaySection />
@@ -40,16 +40,16 @@
       <BenefitsSection />
       <QuoteSection />
       <DiversitySection />
-      <div class="relative w-full h-0 z-50 pointer-events-none">
-        
-        <img 
-          :src="juntosImg" 
-          alt="Juntos" 
-          class="absolute top-25 -right-4 md:-right-8 w-48 md:w-92 lg:w-100 animate-breathe"
-          style="transform: translateY(-50%);"
-        />
-        
-      </div>
+     <div class="relative w-full h-0 z-50 pointer-events-none">
+  
+  <img 
+    :src="juntosImg" 
+    alt="Juntos" 
+    class="absolute top-0 md:top-35 -right-4 md:-right-8 w-48 md:w-92 lg:w-150 animate-breathe"
+    style="transform: translateY(-50%);"
+  />
+  
+</div>
       <ImportantDatesSection />
       <accion/>
       <ExperienceSection />
@@ -112,6 +112,20 @@ import datesSection from './sections/DatesSection.vue'
   transform-origin: center; /* Crece desde el centro */
 }
 
+/* Animación de giro lento para la estrellita / solecito */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+.animate-spin-slow {
+  /* 8s hace que gire despacio, 'linear' mantiene una velocidad constante y 'infinite' hace que nunca se detenga */
+  animation: spin-slow 10s linear infinite; 
+  transform-origin: center;
+}
 
 </style>

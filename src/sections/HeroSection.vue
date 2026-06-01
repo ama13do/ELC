@@ -12,7 +12,7 @@
         <p class="hero-body">
           ¿Estás listx para
           <span class="hero-highlight">formar parte de un movimiento nacional</span>
-          que desarrolla propuestas concretas para enfrentar la emergencia climática?
+          que desarrolla propuestas concretas para enfrentar la crisis climática?
         </p>
 
         <div class="hero-buttons">
@@ -166,7 +166,7 @@ onMounted(() => {
 @media (max-width: 640px) {
   .hero-section {
     align-items: flex-start;
-    min-height: 100svh;
+    min-height: auto;
   }
 
   .hero-inner {

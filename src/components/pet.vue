@@ -75,14 +75,14 @@ const pets = [
 const currentPet = ref(pets[0])
 
 const messages = [
-  '¡Hola! 👋 ¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando!',
-  'La transición energética necesita tu voz. ⚡ ¡Inscríbete hoy mismo!',
-  '¿Listx para hacer historia? Revisa las bases y postúlate. 🚀',
+  '¡Hola! 👋 ¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
+  'La transición energética necesita tu voz. ⚡ ¡Inscríbete hoy mismo! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
+  '¿Listx para hacer historia? Revisa las bases y postúlate. 🚀 <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
   'Cualquier duda con tu registro, escríbenos a <br><a href="mailto:hxnf@practica.lat" class="pet-link">hxnf@practica.lat</a> ✉️',
   'Conoce más de nuestro movimiento en Instagram: <br><a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">@Hackersxnf</a> 📱',
-  '¡No lo dejes para el último día! Completa tu postulación con tiempo. ⏳',
-  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un DM a <a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">nuestro IG</a>!',
-  'Únete a la red de juventudes por el clima. 🌱 ¡Tu participación es clave!'
+  '¡No lo dejes para el último día! Completa tu postulación con tiempo. ⏳ <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
+  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un DM a <a href="https://ig.me/m/hackersxnf" target="_blank" class="pet-link">nuestro IG</a>!',
+  'Únete a la red de juventudes por el clima. 🌱 ¡Tu participación es clave! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>'
 ]
 
 const currentMessage = ref(messages[0])
@@ -274,6 +274,8 @@ const stopDrag = () => {
   align-items: center;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   z-index: 20;
+  /* NUEVO: Limita el ancho para que jamás se salga de la pantalla del celular */
+  max-width: calc(100vw - 40px);
 }
 
 .selector-title {
@@ -282,16 +284,37 @@ const stopDrag = () => {
   font-size: 0.8rem;
   font-weight: 600;
   margin: 0 0 10px 0;
+  /* NUEVO: Evita que el título se encoja si falta espacio */
+  flex-shrink: 0; 
 }
 
 .pet-options {
   display: flex;
   gap: 10px;
+  /* NUEVO: Permite scroll horizontal si los iconos no caben */
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 5px; 
+}
+
+/* NUEVO: Estilos sutiles para la barra de scroll horizontal */
+.pet-options::-webkit-scrollbar {
+  height: 6px;
+}
+.pet-options::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.pet-options::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
 }
 
 .pet-option-img {
   width: 50px;
   height: 50px;
+  /* NUEVO: 'flex-shrink: 0' es CLAVE. Obliga al navegador a hacer scroll en lugar de aplastar las imágenes */
+  flex-shrink: 0; 
   object-fit: contain;
   cursor: pointer;
   border-radius: 50%;
@@ -303,7 +326,6 @@ const stopDrag = () => {
   transform: scale(1.15);
   background-color: rgba(255,255,255,0.15);
 }
-
 .active-pet {
   background-color: rgba(11, 227, 64, 0.2);
   border: 2px solid var(--color-accent);

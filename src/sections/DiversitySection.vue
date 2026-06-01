@@ -69,8 +69,11 @@ onMounted(() => {
         alt="" 
         class="sticker-right"
       />
-      <div class="esperar-hero-text">
-        <h2 class="esperar-title">¿Qué esperar al final<br />de la ELC?</h2>
+      
+      <div class="esperar-hero-inner">
+        <div class="esperar-hero-text">
+          <h2 class="esperar-title">¿Qué esperar al final<br />de la ELC?</h2>
+        </div>
       </div>
     </div>
 
@@ -111,20 +114,21 @@ onMounted(() => {
 <style scoped>
 @keyframes sticker-shine {
   0%, 100% {
-    /* Estado normal con una sombrita base */
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3)) brightness(1);
   }
   50% {
-    /* Aumenta el brillo y crea un resplandor blanco a su alrededor */
     filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.8)) brightness(1.25);
   }
 }
+
+/* ── Stickers corregidos: más grandes y reposicionados ── */
 .sticker-left {
   position: absolute;
-  top: -2rem;
-  left: auto;
-  right: -6rem;
-  width: clamp(160px, 22vw, 220px);
+  /* Más abajo y pegado a la izquierda */
+  top: clamp(2rem, 8vw, 6rem);
+  left: clamp(-1rem, 2vw, 2rem);
+  /* Mucho más grande */
+  width: clamp(145px, 28vw, 300px);
   z-index: 5;
   pointer-events: none;
   animation: sticker-shine 4s ease-in-out infinite;
@@ -132,9 +136,10 @@ onMounted(() => {
 
 .sticker-right {
   position: absolute;
-  top: 35%;
-  right: -5rem;
-  width: clamp(120px, 16vw, 170px);
+  top: 3%;
+  right: -2rem;
+  /* Mucho más grande */
+  width: clamp(150px, 32vw, 350px);
   z-index: 5;
   pointer-events: none;
   transform: rotate(-8deg);
@@ -142,32 +147,18 @@ onMounted(() => {
   animation-delay: 2s;
 }
 
-/* ── Ajustes Responsivos para los Stickers ── */
-@media (max-width: 640px) {
-  .sticker-left {
-    width: clamp(100px, 28vw, 140px);
-    right: -3.5rem;
-    top: -1rem;
-  }
-
-  .sticker-right {
-    width: clamp(80px, 20vw, 110px);
-    right: -2.5rem;
-    top: 40%;
-  }
-}
 .esperar-section {
   width: 100%;
   background-color: var(--color-surface);
   overflow: hidden;
 }
 
-/* ── Hero: edge-to-edge, título abajo-izquierda ── */
+/* ── Hero: edge-to-edge ── */
 .esperar-hero {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  height: clamp(320px, 55vw, 600px);
+  height: clamp(320px, 55vw, 750px);
   overflow: hidden;
 }
 
@@ -179,6 +170,14 @@ onMounted(() => {
   object-fit: cover;
   object-position: center top;
   display: block;
+}
+
+.esperar-hero-inner {
+  position: absolute;
+  inset: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .esperar-hero-text {
@@ -198,15 +197,15 @@ onMounted(() => {
   margin: 0;
 }
 
-/* ── Bloque inferior ── */
+/* ── Bloque inferior corregido ── */
 .esperar-bottom {
   display: flex;
-  align-items: flex-end; /* Alinea los elementos pegados hasta abajo */
-  justify-content: space-between; /* Manda la imagen hasta la derecha */
+  /* CLAVE: Obliga a la columna de la foto a medir exactamente lo mismo que el texto */
+  align-items: stretch; 
+  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  /* Padding: quitamos el de abajo y el de la derecha para que la imagen toque los bordes */
-  padding: clamp(2.5rem, 5vh, 4rem) 0 0 clamp(1.5rem, 6vw, 5rem);
+  padding: 1.5rem 0 0 clamp(1.5rem, 6vw, 5rem);
 }
 
 /* ── Copy ── */
@@ -214,18 +213,17 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
-  flex: 1; /* Ocupa el espacio restante izquierdo */
+  flex: 1;
   max-width: 620px;
-  /* Le devolvemos el padding de abajo solo al texto para que no quede pegado al piso */
-  padding-bottom: clamp(3rem, 6vh, 5rem);
-  padding-right: 2rem; /* Separación con la imagen */
+  padding-bottom: clamp(2rem, 5vh, 4rem);
+  padding-right: 2rem;
 }
 
 .esperar-lead {
   font-family: var(--font-parkinsans);
   font-weight: 400;
   color: var(--color-white);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-size: clamp(1rem, 2.2vw, 3rem);
   line-height: 1.65;
   margin: 0;
 }
@@ -239,7 +237,7 @@ onMounted(() => {
   font-family: var(--font-parkinsans);
   font-weight: 400;
   color: rgba(255,255,255,0.8);
-  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-size: clamp(0.85rem, 1.5vw, 2rem);
   line-height: 1.75;
   margin: 0;
 }
@@ -249,36 +247,45 @@ onMounted(() => {
   font-weight: 700;
 }
 
-/* ── Imagen derecha ── */
+/* ── Imagen derecha corregida ── */
 .esperar-img-wrapper {
-  /* "Algo grandecita y responsiva" */
-  width: clamp(260px, 42vw, 500px);
+  /* Le damos buen ancho para que al hacer 'cover' no recorte tanto los lados */
+  width: clamp(280px, 40vw, 550px);
   flex-shrink: 0;
-  /* Sin bordes redondeados */
-  border-radius: 0;
-  
-  /* Para que sea un poco más alta que el div de a lado, la estiramos desde arriba */
-  margin-top: -3rem; 
-  
-  /* Truco para que pegue completamente a la derecha de la pantalla en PC grandes */
   margin-right: calc(50% - 50vw); 
-  
-  display: flex;
+  display: block;
 }
 
 .esperar-img {
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  object-position: bottom left; /* La anclamos abajo para que no flote */
+  /* CLAVE: Toma el 100% de la altura de la sección */
+  height: 100%; 
+  /* CLAVE: Llena todo sin dejar huecos negros */
+  object-fit: cover; 
+  /* CLAVE: Protege a las personas anclando la foto abajo a la izquierda */
+  object-position: left bottom; 
   display: block;
 }
 
 /* ── Responsive ── */
+/* ── Responsive ── */
 @media (max-width: 768px) {
+
+  /* NUEVO: Ajuste de stickers solo para móvil */
+  .sticker-left {
+    /* Lo empujamos más a la izquierda */
+    left: -3.5rem; 
+  }
+
+  .sticker-right {
+    /* Lo subimos bastante (antes estaba en 35%) */
+    top: 10%; 
+    right: -1rem;
+  }
   .esperar-bottom {
     flex-direction: row;
-    align-items: center;
+    /* CLAVE en móvil: Ambas columnas se estiran a la misma altura */
+    align-items: stretch; 
     padding-right: 0;
     padding-bottom: 0;
     gap: 0;
@@ -289,7 +296,7 @@ onMounted(() => {
     min-width: 0;
     padding-left: 1.2rem;
     padding-bottom: 1.5rem;
-    padding-right: 0.75rem;
+    padding-right: 0.5rem;
   }
 
   .esperar-lead {
@@ -300,22 +307,21 @@ onMounted(() => {
     font-size: 0.75rem;
   }
 
-  .esperar-bottom {
-    align-items: stretch;
-  }
-
   .esperar-img-wrapper {
     margin-top: 0;
-    width: clamp(80px, 26vw, 130px);
+    /* Le damos casi la mitad de la pantalla (45vw) para que no sea un hilo delgado */
+    width: 45vw; 
     flex-shrink: 0;
     margin-right: -0.5rem;
-    align-self: stretch;
   }
 
   .esperar-img-wrapper .esperar-img {
-    height: 100%;
+    width: 100%;
+    /* Altura total obligatoria */
+    height: 100%; 
+    /* Cubre el espacio y salva a la gente de ser recortada */
     object-fit: cover;
-    object-position: center;
+    object-position: left bottom;
   }
 }
 </style>

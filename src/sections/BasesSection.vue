@@ -3,8 +3,7 @@
 
     <!-- Stickers esquina superior derecha encimados -->
     <div class="stickers-wrapper">
-      <img src="../assets/images/Rayo.png" alt="" class="sticker sticker-rayo" />
-      <img src="../assets/images/Creatividad.png" alt="" class="sticker sticker-creatividad" />
+      <img src="../assets/images/rayoverde.png" alt="" class="sticker sticker-rayoverde" />
     </div>
 
     <!-- Imagen lateral izquierda -->
@@ -102,10 +101,14 @@ const reasons: Reason[] = [
 /* ── Stickers: esquina superior derecha, encimados ── */
 .stickers-wrapper {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: clamp(130px, 18vw, 220px);
-  height: clamp(130px, 18vw, 220px);
+  /* Separación desde arriba: 0px en móvil, creciendo hasta 120px en web */
+  top: clamp(0px, 8vw, 10px);
+  /* Separación derecha (opcional, para que no pegue tanto si crece mucho) */
+  right: clamp(0px, 4vw, 0px);
+  
+  /* Aumentamos el tamaño máximo de 220px a 350px (puedes subirlo más si lo necesitas) */
+  width: clamp(130px, 25vw, 350px);
+  height: clamp(130px, 25vw, 350px);
   z-index: 20;
   pointer-events: none;
 }
@@ -117,14 +120,24 @@ const reasons: Reason[] = [
   object-fit: contain;
 }
 
-.sticker-rayo {
-  top: -10%;
-  right: -5%;
+/* ── Nuevo sticker: Rayo Verde animado ── */
+.sticker-rayoverde {
+  top: 10%;
+  right: -25%;
+  /* Aquí aplicamos la animación que dura 3 segundos y se repite infinito */
+  animation: pulseRayo 3s ease-in-out infinite;
 }
 
-.sticker-creatividad {
-  top: 15%;
-  right: 10%;
+/* Animación para escalar y mantener la inclinación a la derecha */
+@keyframes pulseRayo {
+  0%, 100% {
+    /* Tamaño normal con inclinación a la derecha (15 grados) */
+    transform: scale(1) rotate(15deg);
+  }
+  50% {
+    /* Se hace un 15% más grande conservando la inclinación */
+    transform: scale(1.15) rotate(15deg);
+  }
 }
 
 /* ── Imagen lateral izquierda ── */
