@@ -1,41 +1,160 @@
 <template>
-  <section class="bg-surface py-20 px-6">
-    <div class="mx-auto max-w-4xl flex flex-col items-center gap-16">
-      
+  <section class="footer-section">
+    <div class="footer-inner">
+
       <!-- Términos y condiciones -->
-      <div class="text-center flex flex-col items-center gap-6">
-        <h3 class="text-white font-heading font-bold text-xl">Términos y condiciones</h3>
-        <p class="text-white/80 font-body max-w-2xl leading-relaxed">
-          En el siguiente enlace de descarga podrás consultar los términos y condiciones de tu participación en la Escuela de Liderazgo Climático 2026. Revisa con cuidado los compromisos que asumirás y parámetros a los que estarás sujetx, en caso de resultar seleccionadx.
+      <div class="footer-block">
+        <h3 class="footer-heading">Términos y condiciones</h3>
+        <p class="footer-text">
+          En el siguiente enlace de descarga podrás consultar los términos y condiciones de
+          tu participación en la Escuela de Liderazgo Climático 2026. Revisa con cuidado los
+          compromisos que asumirás y parámetros a los que estarás sujetx, en caso de resultar
+          seleccionadx.
         </p>
-        <button class="bg-accent text-black font-heading font-bold py-3 px-8 rounded-full hover:bg-accent/90 transition-colors">
-          Términos y condiciones
-        </button>
+        <BaseButton variant="secondary" href="#">Términos y condiciones</BaseButton>
       </div>
 
       <!-- Organizaciones convocantes -->
-      <div class="w-full flex flex-col items-center gap-10">
-        <h3 class="text-white font-heading font-bold text-xl">Organizaciones convocantes</h3>
-        
-        <!-- Grid de logos -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-12 items-center justify-items-center opacity-80">
-          <img src="../assets/logos/Recurso 19.svg" alt="Logo 1" class="h-12 w-auto" />
-          <img src="../assets/logos/Recurso 18.svg" alt="Logo 2" class="h-12 w-auto" />
-          <img src="../assets/logos/Recurso 17.svg" alt="Logo 3" class="h-12 w-auto" />
-          <img src="../assets/logos/Recurso 15.svg" alt="Logo 4" class="h-12 w-auto" />
-          <img src="../assets/logos/pvby71.tif.svg" alt="Logo 5" class="h-12 w-auto" />
+      <div class="footer-block">
+        <h3 class="footer-heading">Organizaciones convocantes</h3>
+        <div class="logos-grid">
+          <a
+            v-for="org in orgs"
+            :key="org.name"
+            :href="org.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="logo-link"
+          >
+            <img :src="org.logo" :alt="org.name" class="logo-img" />
+          </a>
         </div>
       </div>
 
       <!-- Aviso de privacidad -->
-      <button class="bg-blue text-white font-heading font-bold py-3 px-8 rounded-full hover:bg-blue/90 transition-colors">
-        Aviso de privacidad
-      </button>
+      <div class="footer-block footer-block--center">
+        <BaseButton variant="outline-blue" href="#">Aviso de privacidad</BaseButton>
+      </div>
 
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-// Sección de Términos, Condiciones y Logos de Organizaciones
+import BaseButton from '../components/BaseButton.vue'
+
+import logoHXNF from '../assets/logos/HXNF.png'
+import logoNF from '../assets/logos/NF.svg'
+import logoPractica from '../assets/logos/PRACTICA.png'
+import logoICM from '../assets/logos/ICM.svg'
+import logoIDEA from '../assets/logos/IDEA.svg'
+import logoFUND from '../assets/logos/FUND.svg'
+
+// 2. USA LAS VARIABLES IMPORTADAS EN TU ARREGLO (sin comillas)
+const orgs = [
+  { name: 'HXNF',     logo: logoHXNF,     url: 'https://www.instagram.com/hackersxnf/' },
+  { name: 'NF',       logo: logoNF,       url: 'https://www.instagram.com/nuestrofuturoac/' },
+  { name: 'Practica', logo: logoPractica, url: 'https://www.instagram.com/practica_lab/' },
+  { name: 'ICM',      logo: logoICM,      url: 'https://www.instagram.com/iniciativaclima/' },
+  { name: 'IDEA',     logo: logoIDEA,     url: 'https://www.instagram.com/ideathinktankmx/' },
+  { name: 'FUND',     logo: logoFUND,     url: 'https://umifund.org/' },
+]
 </script>
+
+<style scoped>
+.footer-section {
+  width: 100%;
+  background-color: var(--color-surface);
+  padding: clamp(3rem, 7vh, 5.5rem) clamp(1.5rem, 6vw, 4rem);
+}
+
+.footer-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(3rem, 6vh, 5rem);
+}
+
+/* ── Bloques ── */
+.footer-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.footer-block--center {
+  align-items: center;
+}
+
+/* ── Heading ── */
+.footer-heading {
+  font-family: var(--font-parkinsans);
+  font-weight: 700;
+  color: var(--color-white);
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  margin: 0;
+}
+
+/* ── Texto ── */
+.footer-text {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.78);
+  font-size: clamp(0.85rem, 1.2vw, 0.98rem);
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0;
+}
+
+/* ── Grid de logos ── */
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 3rem;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+}
+
+/* ── Logo link ── */
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+}
+
+.logo-link:hover {
+  opacity: 1;
+  filter: brightness(1.3);
+  transform: scale(1.08);
+}
+
+.logo-img {
+  height: clamp(28px, 4vw, 44px);
+  width: auto;
+  object-fit: contain;
+  display: block;
+  /* logos en blanco/color según el fondo oscuro */
+  filter: brightness(0) invert(1);
+  transition: filter 0.2s ease;
+}
+
+.logo-link:hover .logo-img {
+  filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(11,227,64,0.5));
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 2rem;
+  }
+}
+</style>

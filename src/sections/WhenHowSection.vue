@@ -1,75 +1,134 @@
 <template>
-  <section class="bg-surface py-20 px-6 md:px-12 lg:px-20">
-    <div class="mx-auto max-w-4xl flex flex-col items-center gap-12">
+  <section class="compare-section">
 
-      <!-- Intro -->
-      <p class="text-white text-center text-lg md:text-xl leading-relaxed max-w-2xl">
-        Más que un programa académico o un curso de verano, la Escuela de Liderazgo
-        Climático es la puerta de entrada al movimiento HxNF.
-      </p>
+    <p class="compare-intro">
+      Más que un programa académico o un curso de verano, la Escuela de
+      Liderazgo Climático es la puerta de entrada al movimiento HxNF.
+    </p>
 
-      <!-- Tarjetas comparativas -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <div class="compare-grid">
 
-        <!-- Izquierda: otros programas -->
-        <div class="rounded-2xl border border-white/20 bg-white/5 p-8 flex flex-col gap-6">
-          <h3
-            class="font-bold text-white text-xl leading-snug"
-            style="font-family: 'Parkinsans', sans-serif;"
-          >
-            Lo que ofrecen<br />otros programas
-          </h3>
-          <div v-for="item in others" :key="item.lead" class="flex flex-col gap-1">
-            <p class="text-white font-semibold text-sm">{{ item.lead }}</p>
-            <p class="text-white/65 text-sm leading-relaxed">{{ item.body }}</p>
-          </div>
+      <!-- Card izquierda: azul -->
+      <div class="compare-card card-blue">
+        <h3 class="card-title title-blue">Lo que ofrecen<br />otros programas</h3>
+        <div class="card-item">
+          <strong>Conocimiento sin poder:</strong>
+          Talleres que explican el sistema pero no organizan para cambiarlo.
         </div>
-
-        <!-- Derecha: ELC -->
-        <div class="rounded-2xl border-2 border-accent bg-white/5 p-8 flex flex-col gap-6">
-          <h3
-            class="font-bold text-accent text-xl leading-snug"
-            style="font-family: 'Parkinsans', sans-serif;"
-          >
-            Lo que ofrece<br />la ELC 2026
-          </h3>
-          <div v-for="item in elc" :key="item.lead" class="flex flex-col gap-1">
-            <p class="text-white font-semibold text-sm">{{ item.lead }}</p>
-            <p class="text-white/65 text-sm leading-relaxed">{{ item.body }}</p>
-          </div>
+        <div class="card-item">
+          <strong>Comunidad sin raíz:</strong>
+          Colectivos que se arman con energía y se deshacen en seis meses.
         </div>
-
       </div>
 
-      <!-- Pie -->
-      <p class="text-white/40 text-xs tracking-widest uppercase text-center">
-        Espacio libre de partidos políticos
-      </p>
+      <!-- Card derecha: amarilla -->
+      <div class="compare-card card-yellow">
+        <h3 class="card-title title-yellow">Lo que ofrece la<br />ELC 2026</h3>
+        <div class="card-item">
+          <strong>Conocimiento + organización:</strong>
+          Entiendes el sistema y te organizas con metodología para cambiarlo.
+        </div>
+        <div class="card-item">
+          <strong>Liderazgo que dura:</strong>
+          Estructura basada en la metodología probada de organización comunitaria
+          para que el poder colectivo no dependa de una sola persona.
+        </div>
+      </div>
 
     </div>
+
   </section>
 </template>
 
-<script setup lang="ts">
-const others = [
-  {
-    lead: 'Conocimiento sin poder:',
-    body: 'Talleres que explican el sistema pero no organizan para cambiarlo.',
-  },
-  {
-    lead: 'Comunidad sin raíz:',
-    body: 'Colectivos que se arman con energía y se deshacen en seis meses.',
-  },
-]
+<style scoped>
+.compare-section {
+  width: 100%;
+  background-color: var(--color-black);
+  padding: clamp(3rem, 7vh, 6rem) clamp(1.5rem, 6vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2.5rem, 5vh, 4rem);
+}
 
-const elc = [
-  {
-    lead: 'Conocimiento + organización:',
-    body: 'Entiendes el sistema y te organizas con metodología para cambiarlo.',
-  },
-  {
-    lead: 'Liderazgo que dura:',
-    body: 'Estructura basada en la metodología probada de organización comunitaria para que el poder colectivo no dependa de una sola persona.',
-  },
-]
-</script>
+/* ── Intro ── */
+.compare-intro {
+  font-family: var(--font-parkinsans);
+  font-weight: 500;
+  color: var(--color-white);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  line-height: 1.65;
+  text-align: center;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* ── Grid ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 780px;
+  align-items: stretch;
+}
+
+/* ── Card base ── */
+.compare-card {
+  border-radius: 1.2rem;
+  padding: clamp(1.8rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  background-color: var(--color-black);
+}
+
+.card-blue {
+  border: 1.5px solid var(--color-blue);
+}
+
+.card-yellow {
+  border: 1.5px solid var(--color-yellow);
+}
+
+/* ── Títulos ── */
+.card-title {
+  font-family: var(--font-parkinsans);
+  font-weight: 500;
+  text-align: center;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.title-blue {
+  color: var(--color-blue);
+}
+
+.title-yellow {
+  color: var(--color-yellow);
+}
+
+/* ── Items ── */
+.card-item {
+  font-family: var(--font-parkinsans);
+  font-weight: 300;
+  text-align: center;
+  color: var(--color-white);
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  line-height: 1.7;
+}
+
+.card-item strong {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 580px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

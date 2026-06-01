@@ -1,33 +1,122 @@
 <template>
-  <section class="bg-surface py-20 px-6">
-    <!-- Header con imagen y stickers -->
-    <div class="relative w-full h-[500px] mb-16 overflow-hidden rounded-3xl">
-      <img src="../assets/images/Hackaton-70.jpg" alt="Política de diversidad" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50" />
-      
-      <!-- Stickers -->
-      <img src="../assets/images/stickerhxnf.png" class="absolute top-24 left-40 w-24 z-20" />
-      <img src="../assets/images/solecito.png" class="absolute bottom-10 right-4 w-28 z-20" />
-      
-      <h2 class="absolute bottom-10 left-10 text-white text-4xl md:text-6xl font-heading font-bold z-10">
-        Política de diversidad <br />e inclusión
-      </h2>
+  <section class="policy-section">
+
+    <!-- Hero edge-to-edge con título abajo-izquierda -->
+    <div class="policy-hero">
+      <img src="../assets/images/POLICY.svg" alt="" class="policy-hero-bg" />
+      <div class="policy-hero-text">
+        <h2 class="policy-title">Política de<br />diversidad e inclusión</h2>
+      </div>
     </div>
 
-    <!-- Texto de inclusión -->
-    <div class="max-w-3xl mx-auto text-center space-y-8">
-      <p class="text-white/90 font-body text-lg leading-relaxed">
-        Invitamos particularmente a mujeres, personas de comunidades indígenas y afrodescendientes, personas de la comunidad LGBTIQ+, personas con discapacidad o pertenecientes a otro grupo históricamente excluidos a postular a esta convocatoria en ánimos de conformar un grupo que represente la diversidad del país e incluir todas las perspectivas posibles, en el marco de respeto de derechos humanos, dentro del Movimiento.
+    <!-- Texto -->
+    <div class="policy-body">
+      <p class="policy-text">
+        Invitamos particularmente a mujeres, personas de comunidades indígenas y
+        afrodescendientes, personas de la comunidad LGBTIQ+, personas con discapacidad
+        o pertenecientes a otro grupo históricamente excluidos a postular a esta
+        convocatoria en ánimos de conformar un grupo que represente la diversidad del
+        país e incluir todas las perspectivas posibles, en el marco de respeto de
+        derechos humanos, dentro del Movimiento.
       </p>
-      
-      <p class="text-white/70 font-body text-base italic border-t border-white/10 pt-8">
-        Comunícate con nosotrxs o pídele a una persona de confianza que lo haga por ti si consideras la necesidad de algún ajuste de accesibilidad para tu postulación. Escríbenos a 
-        <a href="mailto:hxnf@practica.lat" class="text-accent underline font-bold">hxnf@practica.lat</a> antes del 22 de junio.
+
+      <p class="policy-note">
+        Comunícate con nosotrxs o pídele a una persona de confianza que lo haga por ti
+        si consideras la necesidad de algún ajuste de accesibilidad para tu postulación.
+        Escríbenos a
+        <a href="mailto:hxnf@practica.lat" class="policy-email">hxnf@practica.lat</a>
+        antes del 22 de junio.
       </p>
     </div>
+
   </section>
 </template>
 
-<script setup lang="ts">
-// Sección de Política de Diversidad e Inclusión
-</script>
+<style scoped>
+.policy-section {
+  width: 100%;
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+/* ── Hero ── */
+.policy-hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: clamp(300px, 52vw, 560px);
+  overflow: hidden;
+}
+
+.policy-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.policy-hero-text {
+  position: absolute;
+  bottom: clamp(1.5rem, 5%, 3rem);
+  left: clamp(1.5rem, 6vw, 5rem);
+  z-index: 10;
+}
+
+.policy-title {
+  font-family: var(--font-parkinsans);
+  font-weight: 800;
+  color: var(--color-white);
+  font-size: clamp(2rem, 5.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* ── Texto ── */
+.policy-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vh, 4.5rem) clamp(1.5rem, 6vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+}
+
+.policy-text {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.9);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.policy-note {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  line-height: 1.75;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.policy-email {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .policy-body {
+    padding: 2rem 1.2rem;
+    text-align: left;
+  }
+}
+</style>

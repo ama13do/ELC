@@ -1,67 +1,77 @@
 <template>
-  <section class="bg-surface py-20 px-6 md:px-12 lg:px-20 text-foreground">
-    <div class="mx-auto max-w-3xl flex flex-col gap-16">
+  <section class="phases-section">
+    <div class="phases-inner">
 
-      <div class="flex flex-col gap-8">
-        <div class="flex items-center gap-4 flex-wrap">
-          <span class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-accent flex-shrink-0" />
-            <span class="font-bold text-xl tracking-wide font-heading">FASE 1</span>
-          </span>
-          <span class="text-accent text-xl font-semibold underline underline-offset-4 font-heading">
-            Identidad, valores y diagnóstico sistémico
-          </span>
+      <!-- FASE 1 -->
+      <div class="phase-block">
+
+        <!-- Header fase -->
+        <div class="phase-header">
+          <div class="phase-label">
+            <span class="phase-dot" style="--c: #0BE340" />
+            <span class="phase-num">FASE 1</span>
+          </div>
+          <span class="phase-subtitle">Identidad, valores y diagnóstico sistémico</span>
         </div>
 
-        <p class="text-white/85 text-base leading-relaxed font-body">
-          La primera fase busca que lxs integrantes comprendan a fondo la misión del movimiento,
-          compartan un lenguaje común y exploren el origen del problema público y estructural
-          que queremos resolver.
-        </p>
+        <!-- Card -->
+        <div class="phase-card" style="--c: #0BE340">
+          <span class="card-dot" style="--c: #0BE340" />
 
-        <ul class="flex flex-col gap-6">
-          <li v-for="topic in phase1Topics" :key="topic.title" class="flex items-start gap-4">
-            <span class="mt-1.5 w-3 h-3 rounded-full bg-accent flex-shrink-0" />
-            <div>
-              <p class="text-white font-bold text-sm mb-1 font-heading">{{ topic.title }}</p>
-              <p class="text-white/70 text-sm leading-relaxed font-body">{{ topic.body }}</p>
-            </div>
-          </li>
-        </ul>
+          <p class="phase-intro">
+            La primera fase busca que lxs integrantes comprendan a fondo la misión del
+            movimiento, compartan un lenguaje común y exploren el origen del problema
+            público y estructural que queremos resolver.
+          </p>
+
+          <ul class="topic-list">
+            <li v-for="topic in phase1Topics" :key="topic.title" class="topic-item">
+              <span class="topic-dot" style="--c: #0BE340" />
+              <div>
+                <p class="topic-title">{{ topic.title }}</p>
+                <p class="topic-body">{{ topic.body }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div class="h-px w-full bg-white/10" />
+      <!-- FASE 2 -->
+      <div class="phase-block">
 
-      <div class="flex flex-col gap-8">
-        <div class="flex items-center gap-4 flex-wrap">
-          <span class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-accent flex-shrink-0" />
-            <span class="font-bold text-xl tracking-wide font-heading">FASE 2</span>
-          </span>
-          <span class="text-accent text-xl font-semibold underline underline-offset-4 font-heading">
-            Herramientas técnicas y de incidencia 101
-          </span>
+        <div class="phase-header">
+          <div class="phase-label">
+            <span class="phase-dot" style="--c: #E0FA49" />
+            <span class="phase-num" style="color: #E0FA49">FASE 2</span>
+          </div>
+          <span class="phase-subtitle" style="color: #E0FA49">Herramientas técnicas y de incidencia 101</span>
         </div>
 
-        <p class="text-white/85 text-base leading-relaxed font-body">
-          Con el diagnóstico y la identidad ya asimilados, esta fase entrega las herramientas técnicas 
-          y organizativas para que lxs participantes se vuelvan juventudes “inengañables” e “indesilusionables": 
-          capaces de disputar el modelo energético de tú a tú con quienes toman las decisiones.
-        </p>
+        <div class="phase-card" style="--c: #E0FA49">
+          <span class="card-dot" style="--c: #E0FA49" />
 
-        <ul class="flex flex-col gap-6">
-          <li v-for="topic in phase2Topics" :key="topic.title" class="flex items-start gap-4">
-            <span class="mt-1.5 w-3 h-3 rounded-full bg-accent flex-shrink-0" />
-            <div>
-              <p class="text-white font-bold text-sm mb-1 font-heading">{{ topic.title }}</p>
-              <p class="text-white/70 text-sm leading-relaxed font-body">{{ topic.body }}</p>
-            </div>
-          </li>
-        </ul>
+          <p class="phase-intro">
+            Con el diagnóstico y la identidad ya asimilados, esta fase entrega las herramientas
+            técnicas y organizativas para que lxs participantes se vuelvan juventudes
+            "inengañables" e "indesilusionables": capaces de disputar el modelo energético
+            de tú a tú con quienes toman las decisiones.
+          </p>
 
-        <p class="text-white/50 text-xs italic mt-2 font-body">
-          *El contenido del programa final se dará a conocer a las personas seleccionadas en la reunión de bienvenida del sábado 4 de julio.
-        </p>
+          <ul class="topic-list">
+            <li v-for="topic in phase2Topics" :key="topic.title" class="topic-item">
+              <span class="topic-dot" style="--c: #E0FA49" />
+              <div>
+                <p class="topic-title">{{ topic.title }}</p>
+                <p class="topic-body">{{ topic.body }}</p>
+              </div>
+            </li>
+          </ul>
+
+          <p class="phase-note">
+            *El contenido del programa final se dará a conocer a las personas seleccionadas
+            en la reunión de bienvenida del sábado 4 de julio.
+          </p>
+        </div>
       </div>
 
     </div>
@@ -99,7 +109,7 @@ const phase2Topics = [
   },
   {
     title: 'Políticas públicas y proyectos comunitarios.',
-    body: 'Principios básicos de las políticas públicas con enfoque de derechos humanos y herramientas prácticas para formular, evaluar y gestionar proyectos comunitarios de transición energética desde lo local.',
+    body: 'Principios básicos de políticas públicas con enfoque de derechos humanos y herramientas prácticas para formular, evaluar y gestionar proyectos comunitarios de transición energética desde lo local.',
   },
   {
     title: 'Comunicación, narrativas y artivismo.',
@@ -115,3 +125,180 @@ const phase2Topics = [
   },
 ]
 </script>
+
+<style scoped>
+.phases-section {
+  width: 100%;
+  background-color: var(--color-surface);
+  padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 6vw, 5rem);
+}
+
+.phases-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+
+/* ── Header de fase ── */
+.phase-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.phase-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.phase-dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--c);
+  flex-shrink: 0;
+}
+
+.phase-num {
+  font-family: var(--font-parkinsans);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  color: var(--color-white);
+  letter-spacing: 0.06em;
+}
+
+.phase-subtitle {
+  font-family: var(--font-parkinsans);
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: #0BE340;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── Card: borde derecho + arriba + abajo, sin izquierdo ── */
+.phase-card {
+  position: relative;
+  background-color: var(--color-black);
+  border-top:    1.5px solid var(--c);
+  border-right:  1.5px solid var(--c);
+  border-bottom: 1.5px solid var(--c);
+  border-left:   none;
+  border-radius: 0 0.9rem 0.9rem 0;
+  padding: 2rem 1.6rem 1.8rem 1.6rem;
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* Círculo sobresaliendo arriba-izquierda */
+.card-dot {
+  position: absolute;
+  top: -0.6rem;
+  left: -0.6rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background-color: var(--c);
+}
+
+/* ── Intro ── */
+.phase-intro {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.85);
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Lista de temas ── */
+.topic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.topic-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.topic-dot {
+  flex-shrink: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background-color: var(--c);
+  margin-top: 0.3rem;
+}
+
+.topic-title {
+  font-family: var(--font-parkinsans);
+  font-weight: 700;
+  color: var(--color-white);
+  font-size: clamp(0.8rem, 0.95vw, 0.92rem);
+  margin: 0 0 0.2rem;
+  line-height: 1.4;
+}
+
+.topic-body {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Nota al pie ── */
+.phase-note {
+  font-family: var(--font-parkinsans);
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  font-size: clamp(0.68rem, 0.8vw, 0.78rem);
+  font-style: italic;
+  text-align: right;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Responsive tablet ── */
+@media (max-width: 860px) {
+  .phases-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* ── Responsive mobile ── */
+@media (max-width: 480px) {
+  .phases-section {
+    padding: 2.5rem 1.2rem;
+  }
+
+  .phase-card {
+    padding: 1.6rem 1.2rem 1.5rem;
+  }
+
+  .phase-note {
+    text-align: left;
+  }
+}
+</style>

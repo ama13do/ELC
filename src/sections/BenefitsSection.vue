@@ -1,39 +1,120 @@
 <template>
-  <section class="relative w-full overflow-hidden min-h-[55vh] flex items-end">
-    <!-- Foto de evento de fondo -->
-    <div class="absolute inset-0 z-0">
-      <img :src="bgPhoto" alt="" class="w-full h-full object-cover object-center" />
-      <div class="absolute inset-0 bg-black/60" />
+  <!-- Contenedor general que rompe márgenes para ocupar toda la pantalla -->
+  <div class="sessions-wrapper">
+    
+    <!-- 1. Banner superior con fondo negro -->
+    <div class="sessions-banner">
+      <h2 class="sessions-title">ESPACIO LIBRE DE<br />PARTIDOS POLÍTICOS</h2>
     </div>
 
-    <!-- Sticker SOLUCIONES COLECTIVAS (top-right) -->
-    <img
-      :src="solucionesImg"
-      alt="Soluciones colectivas impacto real"
-      class="absolute top-6 right-6 z-20 w-28 h-28 object-contain pointer-events-none select-none"
-    />
+    <!-- 2. Sección de la imagen (abajo del banner) -->
+    <section class="sessions-section">
+      <img src="../assets/images/sesiones.svg" alt="" class="sessions-bg" />
 
-    <!-- Sticker Leaf (right, centro) -->
-    <img
-      :src="leafImg"
-      alt=""
-      class="absolute right-10 top-1/2 -translate-y-1/2 z-20 w-16 h-16 object-contain pointer-events-none select-none"
-    />
-
-    <!-- Texto (bottom-left) -->
-    <div class="relative z-10 mx-auto max-w-6xl w-full px-6 md:px-12 lg:px-20 py-16">
-      <p class="text-white text-base md:text-lg leading-relaxed max-w-xl">
-        Las sesiones de la ELC se realizarán de manera virtual del
-        <span class="font-semibold">6 al 31 de julio</span>,
-        de 7:00 a 9:00 pm (hora CDMX) entre las cuales se revisarán
-        los siguientes temas en 2 fases.
-      </p>
-    </div>
-  </section>
+      <div class="sessions-content">
+        <p class="sessions-body">
+          Las sesiones de la ELC se realizarán de manera virtual del
+          <strong>6 al 31 de julio</strong>, de 7:00 a 9:00 pm (hora CDMX) entre
+          las cuales se revisarán los siguientes temas en 2 fases.
+        </p>
+      </div>
+    </section>
+    
+  </div>
 </template>
 
-<script setup lang="ts">
-import bgPhoto from '../assets/images/foto-2.jpg'
-import solucionesImg from '../assets/images/Soluciones.png'
-import leafImg from '../assets/images/Leaf.png'
-</script>
+<style scoped>
+/* ── 1. Contenedor Principal ── */
+.sessions-wrapper {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 2. Banner Negro ── */
+.sessions-banner {
+  background-color: var(--color-black); /* Fondo negro */
+  width: 100%;
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Título (Letra más grande y sin posición absoluta) ── */
+.sessions-title {
+  font-family: var(--font-parkinsans);
+  font-weight: 800;
+  color: var(--color-white);
+  /* Aumentamos significativamente el tamaño con clamp */
+  font-size: clamp(1.5rem, 3vw, 2.5rem); 
+  letter-spacing: 0.1em;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── 3. Sección de la Imagen ── */
+.sessions-section {
+  position: relative;
+  width: 100%;
+  min-height: 80vh; /* Puedes ajustar la altura a tu gusto */
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end; /* Mantiene el body en la parte inferior */
+}
+
+.sessions-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.sessions-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 6vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.sessions-body {
+  font-family: var(--font-parkinsans);
+  font-weight: 300;
+  color: var(--color-white);
+  font-size: clamp(1.5rem, 1.6vw, 1.1rem);
+  line-height: 1.75;
+  margin: 0;
+  max-width: 480px;
+}
+
+.sessions-body strong {
+  font-weight: 700;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .sessions-banner {
+    padding: 2.5rem 1rem;
+  }
+  
+  .sessions-title {
+    /* Tamaño más grande para móviles comparado con el anterior */
+    font-size: 1.25rem; 
+  }
+
+  .sessions-body {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+}
+</style>

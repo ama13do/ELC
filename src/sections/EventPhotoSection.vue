@@ -1,8 +1,7 @@
 <template>
-  <section class="relative w-full bg-surface py-24 px-6 md:px-12">
+  <section class="relative w-full bg-surface py-24 px-6 md:px-12 font-parkinsans">
     <div class="mx-auto max-w-3xl flex flex-col items-center text-center gap-16">
 
-      <!-- Cita con oval dibujado a mano -->
       <div class="relative px-14 py-10 md:px-20 md:py-12">
         <img
           :src="ovalImg"
@@ -17,11 +16,7 @@
         </p>
       </div>
 
-      <!-- Heading debajo -->
-      <h2
-        class="font-bold text-white text-2xl md:text-3xl leading-snug"
-        style="font-family: 'Parkinsans', sans-serif;"
-      >
+      <h2 class="font-bold text-white text-2xl md:text-3xl leading-snug">
         ¡En Hackers por Nuestro Futuro queremos cambiar esto!
       </h2>
 
