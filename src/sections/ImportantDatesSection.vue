@@ -1,5 +1,5 @@
 <template>
-  <section class="who-section">
+  <section class="who-section" ref="sectionRef">
 
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="who-hero">
@@ -47,8 +47,28 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import aguasImg from '../assets/images/aguas.png'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.who-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.who-item', { y: 20, opacity: 0, duration: 0.55, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.who-cta', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 65%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
 const requirements = [
   'Jóvenes de entre 18 y 26 años que vivan en México.',
   'Estudiantes universitarixs activos en modalidad presencial, en cualquier carrera y de cualquier universidad mexicana, pública o privada.',

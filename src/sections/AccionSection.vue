@@ -1,5 +1,5 @@
 <template>
-  <section class="register-section">
+  <section class="register-section" ref="sectionRef">
     <div class="register-inner">
 
       <p class="register-text">
@@ -19,7 +19,24 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.register-text', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.register-buttons', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <section class="experience-section">
+  <section class="experience-section" ref="sectionRef">
 
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="experience-hero">
@@ -39,6 +39,24 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.experience-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.experience-item', { y: 25, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+
 import stickerHxnf from '../assets/images/StickerHXNF.png'
 import stickerMasIdeas from '../assets/images/Mas Ideas.png'
 const benefits = [

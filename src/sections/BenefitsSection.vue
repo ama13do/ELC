@@ -1,5 +1,5 @@
 <template>
-  <div class="sessions-wrapper">
+  <div class="sessions-wrapper" ref="sectionRef">
     
     <div class="sessions-banner">
       <h2 class="sessions-title">ESPACIO LIBRE DE<br />PARTIDOS POLÍTICOS</h2>
@@ -27,8 +27,24 @@
 </template>
 
 <script setup lang="ts">
-// Importamos la imagen para que Vite/Webpack la procese correctamente
+import { onMounted, ref } from 'vue'
 import hojasImg from '../assets/images/hojas.png'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.sessions-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.sessions-body', { y: 25, opacity: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
 </script>
 
 <style scoped>

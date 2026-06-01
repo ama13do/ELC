@@ -1,5 +1,5 @@
 <template>
-  <section class="elc-section">
+  <section class="elc-section" ref="sectionRef">
     <img src="../assets/images/ELC.svg" alt="" class="elc-bg" />
 
     <div class="elc-content">
@@ -12,6 +12,26 @@
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.elc-title', { y: 40, opacity: 0, duration: 0.85, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.elc-body', { y: 25, opacity: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+</script>
 
 <style scoped>
 .elc-section {

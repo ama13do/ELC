@@ -1,5 +1,5 @@
 <template>
-  <section class="criteria-section">
+  <section class="criteria-section" ref="sectionRef">
     <div class="criteria-inner">
 
       <h2 class="criteria-title">Criterios de selección</h2>
@@ -31,6 +31,27 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.criteria-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.criteria-card', { y: 25, opacity: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.criteria-item', { y: 20, opacity: 0, duration: 0.55, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+
 const criteria = [
   'Maximizar la representatividad geográfica y socioeconómica.',
   'Maximizar la diversidad de grupos históricamente excluidos.',

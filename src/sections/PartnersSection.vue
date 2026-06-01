@@ -1,5 +1,5 @@
 <template>
-  <section class="footer-section">
+  <section class="footer-section" ref="sectionRef">
     <div class="footer-inner">
 
       <!-- Términos y condiciones -->
@@ -41,7 +41,24 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.footer-block', { y: 35, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.logo-img', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out', stagger: 0.06,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 70%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
 
 import logoHXNF from '../assets/logos/HXNF.png'
 import logoNF from '../assets/logos/NF.svg'

@@ -1,5 +1,5 @@
 <template>
-  <section class="policy-section">
+  <section class="policy-section" ref="sectionRef">
 
     <!-- Hero edge-to-edge -->
     <div class="policy-hero">
@@ -48,7 +48,24 @@
 </template>
 
 <script setup lang="ts">
-// Importamos las nuevas imágenes para que funcionen correctamente
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.policy-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.policy-body, .policy-text, .policy-note', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+
 import renovaraImg from '../assets/images/renovara.png'
 import solecitoImg from '../assets/images/Solecito.png'
 </script>

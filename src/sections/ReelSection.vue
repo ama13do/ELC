@@ -1,5 +1,5 @@
 <template>
-  <section class="reel-section">
+  <section class="reel-section" ref="sectionRef">
     
     <div class="reel-header">
       <h2 class="reel-title">
@@ -36,7 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
 
 // ── 📸 IMPORTACIÓN EXACTA DE TUS 12 FOTOS ──
 // Basado en el listado de archivos provisto (Hackaton y foto x)
@@ -96,6 +101,20 @@ const onDrag = (e: MouseEvent) => {
   // Aplicamos el scroll
   carouselRef.value.scrollLeft = scrollLeft - walk
 }
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.reel-title', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.reel-subtitle', { y: 25, opacity: 0, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 78%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.photo-wrapper', { y: 30, opacity: 0, duration: 0.55, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 72%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
 </script>
 
 <style scoped>

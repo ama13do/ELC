@@ -1,5 +1,5 @@
 <template>
-  <section class="phases-section">
+  <section class="phases-section" ref="sectionRef">
     <div class="phases-inner">
 
       <!-- FASE 1 -->
@@ -80,6 +80,21 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.phase-block', { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.2,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+
 const phase1Topics = [
   {
     title: 'Fundamentos del movimiento y teoría del cambio.',

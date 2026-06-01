@@ -1,5 +1,5 @@
 <template>
-  <section class="compare-section">
+  <section class="compare-section" ref="sectionRef">
 
     <p class="compare-intro">
       Más que un programa académico o un curso de verano, la Escuela de
@@ -39,6 +39,26 @@
 
   </section>
 </template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+    gsap.from('.compare-intro', { y: 35, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none reverse' }
+    })
+    gsap.from('.compare-card', { y: 30, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.15,
+      scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none reverse' }
+    })
+  }, sectionRef.value ?? undefined)
+})
+</script>
 
 <style scoped>
 .compare-section {

@@ -1,11 +1,60 @@
 <script setup lang="ts">
-// Importa las imágenes de los stickers aquí arriba
+import { onMounted, ref } from 'vue'
 import stickerTrans from '../assets/images/trans.png'
 import stickerHxnf from '../assets/images/StickerHXNF.png'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+
+    gsap.from('.esperar-title', {
+      y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.esperar-hero',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+
+    gsap.from('.esperar-lead', {
+      y: 35, opacity: 0, duration: 0.75, ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.esperar-bottom',
+        start: 'top 82%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+
+    gsap.from('.esperar-body', {
+      y: 30, opacity: 0, duration: 0.65, ease: 'power3.out',
+      stagger: 0.18,
+      scrollTrigger: {
+        trigger: '.esperar-bottom',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+
+    gsap.from('.esperar-img-wrapper', {
+      x: 40, opacity: 0, duration: 0.85, ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.esperar-bottom',
+        start: 'top 78%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+
+  }, sectionRef.value ?? undefined)
+})
 </script>
 
 <template>
-  <section class="esperar-section">
+  <section class="esperar-section" ref="sectionRef">
 
     <!-- Bloque superior: imagen hero edge-to-edge con título abajo-izquierda -->
     <div class="esperar-hero">
@@ -72,29 +121,23 @@ import stickerHxnf from '../assets/images/StickerHXNF.png'
 }
 .sticker-left {
   position: absolute;
-  /* "Un poquito abajo de la esquina superior" */
-  top: 20%; 
-  /* "Salida del marco izquierdo" (valor negativo) */
-  left: -5rem; 
-  /* "Algo grande" y responsiva */
-  width: clamp(200px, 30vw, 290px);
-  z-index: 15;
+  top: -2rem;
+  left: auto;
+  right: -6rem;
+  width: clamp(160px, 22vw, 220px);
+  z-index: 5;
   pointer-events: none;
   animation: sticker-shine 4s ease-in-out infinite;
 }
 
-/* ── 🔵 STICKER DERECHO (StickerHXNF.png) ── */
 .sticker-right {
   position: absolute;
-  /* "Un poco separada del top" */
-  top: 20%; 
-  /* "Esquina superior derecha" (ligeramente salida) */
-  right: 1rem; 
-  width: clamp(140px, 20vw, 200px);
-  z-index: 15;
+  top: 35%;
+  right: -5rem;
+  width: clamp(120px, 16vw, 170px);
+  z-index: 5;
   pointer-events: none;
-  /* "Con inclinación hacia la izquierda" */
-  transform: rotate(-1deg);
+  transform: rotate(-8deg);
   animation: sticker-shine 4s ease-in-out infinite;
   animation-delay: 2s;
 }
@@ -102,14 +145,15 @@ import stickerHxnf from '../assets/images/StickerHXNF.png'
 /* ── Ajustes Responsivos para los Stickers ── */
 @media (max-width: 640px) {
   .sticker-left {
-    left: -1rem;
-    top: 1%; /* Lo subimos un poco en móviles para que no tape las caras */
+    width: clamp(100px, 28vw, 140px);
+    right: -3.5rem;
+    top: -1rem;
   }
-  
+
   .sticker-right {
-    right: -1rem;
-    top: 2%;
-    transform: rotate(-8deg); /* Menos inclinación en móvil para ahorrar espacio */
+    width: clamp(80px, 20vw, 110px);
+    right: -2.5rem;
+    top: 40%;
   }
 }
 .esperar-section {
@@ -233,22 +277,45 @@ import stickerHxnf from '../assets/images/StickerHXNF.png'
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .esperar-bottom {
-    flex-direction: column;
-    align-items: flex-end; /* En móvil, también se pega a la derecha */
+    flex-direction: row;
+    align-items: center;
     padding-right: 0;
     padding-bottom: 0;
+    gap: 0;
   }
 
   .esperar-copy {
-    padding-left: 0;
-    padding-bottom: 2rem;
-    padding-right: clamp(1.5rem, 6vw, 5rem); /* Devolvemos el padding derecho al texto */
+    flex: 1;
+    min-width: 0;
+    padding-left: 1.2rem;
+    padding-bottom: 1.5rem;
+    padding-right: 0.75rem;
+  }
+
+  .esperar-lead {
+    font-size: 0.82rem;
+  }
+
+  .esperar-body {
+    font-size: 0.75rem;
+  }
+
+  .esperar-bottom {
+    align-items: stretch;
   }
 
   .esperar-img-wrapper {
     margin-top: 0;
-    width: 85%; /* Ocupa buena parte en móvil pero no todo, pegada a la derecha */
-    margin-right: 0;
+    width: clamp(80px, 26vw, 130px);
+    flex-shrink: 0;
+    margin-right: -0.5rem;
+    align-self: stretch;
+  }
+
+  .esperar-img-wrapper .esperar-img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 }
 </style>
