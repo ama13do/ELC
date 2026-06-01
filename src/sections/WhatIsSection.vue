@@ -1,20 +1,16 @@
 <template>
-  <section class="fracking-section">
+  <section class="fracking-section" ref="sectionRef">
 
-    <!-- Imagen de fondo: ocupa todo, sin bordes, sin márgenes -->
     <img
       :src="frackingImg"
       alt=""
       class="fracking-bg"
     />
 
-    <!-- Overlay oscuro para legibilidad -->
     <div class="fracking-overlay" />
 
-    <!-- Texto sobre la imagen -->
     <div class="fracking-content">
 
-      <!-- Bloque izquierdo: arriba-izquierda -->
       <div class="fracking-block block-left">
         <h2 class="fracking-title">
           El gobierno quiere apostar por el fracking
@@ -26,7 +22,6 @@
         </p>
       </div>
 
-      <!-- Bloque derecho: abajo-derecha -->
       <div class="fracking-block block-right">
         <h2 class="fracking-title">
           El sistema energético de México se está rediseñando en este momento
@@ -43,22 +38,57 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import frackingImg from '../assets/images/fracking.svg'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.context(() => {
+
+    // Entrada: desde sus lados, reverse al subir
+    const enterTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: 'top 78%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+    enterTl
+      .from('.block-left',  { x: -70, opacity: 0, duration: 0.75, ease: 'power3.out' }, 0)
+      .from('.block-right', { x: 70,  opacity: 0, duration: 0.75, ease: 'power3.out' }, 0.15)
+
+    // Salida: hacia sus lados, reverse al volver
+    const exitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: 'bottom 65%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+    exitTl
+      .to('.block-left',  { x: -70, opacity: 0, duration: 0.65, ease: 'power2.in' }, 0)
+      .to('.block-right', { x: 70,  opacity: 0, duration: 0.65, ease: 'power2.in' }, 0)
+
+  }, sectionRef.value ?? undefined)
+})
 </script>
 
 <style scoped>
-/* ── Sección: ocupa 100vw sin importar el padre ── */
 .fracking-section {
   position: relative;
   width: 100vw;
-  margin-left: calc(-50vw + 50%); /* rompe cualquier max-width del padre */
+  margin-left: calc(-50vw + 50%);
   min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: stretch;
 }
 
-/* ── Imagen de fondo: edge-to-edge, sin bordes blancos ── */
 .fracking-bg {
   position: absolute;
   inset: 0;
@@ -69,7 +99,6 @@ import frackingImg from '../assets/images/fracking.svg'
   display: block;
 }
 
-/* ── Overlay: oscurece para leer el texto ── */
 .fracking-overlay {
   position: absolute;
   inset: 0;
@@ -82,7 +111,6 @@ import frackingImg from '../assets/images/fracking.svg'
     );
 }
 
-/* ── Contenedor de texto ── */
 .fracking-content {
   position: relative;
   z-index: 10;
@@ -98,7 +126,6 @@ import frackingImg from '../assets/images/fracking.svg'
   min-height: 100vh;
 }
 
-/* Izquierda: pegada al centro-izquierda verticalmente */
 .block-left {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -106,7 +133,6 @@ import frackingImg from '../assets/images/fracking.svg'
   padding-right: 2rem;
 }
 
-/* Derecha: pegada abajo */
 .block-right {
   grid-column: 2;
   grid-row: 2;
@@ -114,7 +140,6 @@ import frackingImg from '../assets/images/fracking.svg'
   padding-bottom: 2rem;
 }
 
-/* ── Títulos ── */
 .fracking-title {
   font-family: var(--font-parkinsans);
   font-weight: 700;
@@ -125,7 +150,6 @@ import frackingImg from '../assets/images/fracking.svg'
   letter-spacing: -0.01em;
 }
 
-/* ── Cuerpo ── */
 .fracking-body {
   font-family: var(--font-parkinsans);
   color: rgba(255, 255, 255, 0.72);
@@ -135,28 +159,30 @@ import frackingImg from '../assets/images/fracking.svg'
   max-width: 38ch;
 }
 
-/* ── Responsive: tablet ── */
+/* ── Responsive: tablet/mobile ── */
 @media (max-width: 768px) {
   .fracking-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    align-items: start;
-    padding-top: 4rem;
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5rem 1.5rem 3.5rem;
+    min-height: 100svh;
+    gap: 2rem;
   }
 
   .block-left {
-    grid-column: 1;
-    grid-row: 1;
     padding-right: 0;
-    align-self: start;
+    max-width: 78%;
+    align-self: flex-start;
+    margin-top: 7rem;
   }
 
   .block-right {
-    grid-column: 1;
-    grid-row: 2;
-    padding-bottom: 3rem;
-    align-self: end;
+    margin-left: auto;
+    max-width: 78%;
+    text-align: right;
+    padding-bottom: 0;
+    align-self: flex-end;
   }
 
   .fracking-body {

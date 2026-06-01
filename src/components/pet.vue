@@ -1,34 +1,34 @@
 <template>
   <div>
-    <button 
-      v-if="!isVisible" 
-      class="summon-pet-btn" 
+    <button
+      v-if="!isVisible"
+      class="summon-pet-btn"
       @click="resetPet"
       aria-label="Llamar asistente"
     >
       👋 Llamar mascota
     </button>
 
-    <div 
-      v-show="isVisible" 
+    <div
+      v-show="isVisible"
+      ref="petWrapperRef"
       class="pet-draggable-wrapper"
       :style="{ transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)` }"
     >
       <div class="pet-float-wrapper">
-        
-        <div class="speech-bubble">
-          <button class="close-btn" @click="isVisible = false" aria-label="Cerrar">✕</button>
-          
+
+        <div ref="speechBubbleRef" class="speech-bubble">
+          <button class="close-btn" @click="closePet" aria-label="Cerrar">✕</button>
           <span class="bubble-text" v-html="currentMessage"></span>
         </div>
 
         <div v-if="showSelector" class="pet-selector">
           <p class="selector-title">Elige a tu compañerx:</p>
           <div class="pet-options">
-            <img 
-              v-for="pet in pets" 
-              :key="pet.id" 
-              :src="pet.src" 
+            <img
+              v-for="pet in pets"
+              :key="pet.id"
+              :src="pet.src"
               :alt="pet.name"
               class="pet-option-img"
               :class="{ 'active-pet': currentPet.id === pet.id }"
@@ -44,30 +44,32 @@
           @mousedown.prevent="startDrag"
           @touchstart.prevent="startDrag"
         />
-        
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import gsap from 'gsap'
 
-// ── IMPORTACIÓN DE LAS 4 MASCOTAS ──
 import panelinImg from '../assets/pets/Panelin.png'
 import nubecinImg from '../assets/pets/Nubecin.png'
 import hidraulinImg from '../assets/pets/Hidraulin.png'
 import abaniquinImg from '../assets/pets/Abaniquin.png'
 
-// ── ESTADO Y DATOS ──
 const isVisible = ref(true)
 const showSelector = ref(false)
 
+const petWrapperRef = ref<HTMLElement | null>(null)
+const speechBubbleRef = ref<HTMLElement | null>(null)
+
 const pets = [
-  { id: 'panelin', src: panelinImg, name: 'Panelín' },
-  { id: 'nubecin', src: nubecinImg, name: 'Nubecín' },
+  { id: 'panelin',   src: panelinImg,   name: 'Panelín' },
+  { id: 'nubecin',   src: nubecinImg,   name: 'Nubecín' },
   { id: 'hidraulin', src: hidraulinImg, name: 'Hidraulín' },
-  { id: 'abaniquin', src: abaniquinImg, name: 'Abaniquín' }
+  { id: 'abaniquin', src: abaniquinImg, name: 'Abaniquín' },
 ]
 
 const currentPet = ref(pets[0])
@@ -86,34 +88,91 @@ const messages = [
 const currentMessage = ref(messages[0])
 let messageInterval: number | null = null
 
-// Cambiar mensaje cada 5 segundos
+// ── Entrada animada ──
+function playEntrance() {
+  nextTick(() => {
+    gsap.fromTo(
+      petWrapperRef.value,
+      { y: 140, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)' }
+    )
+    gsap.fromTo(
+      speechBubbleRef.value,
+      { y: 16, opacity: 0, scale: 0.85 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 1.1 }
+    )
+  })
+}
+
+// ── Salida animada ──
+const closePet = () => {
+  gsap.to(speechBubbleRef.value, {
+    y: -8, opacity: 0, scale: 0.9, duration: 0.2, ease: 'power2.in',
+  })
+  gsap.to(petWrapperRef.value, {
+    y: 130,
+    opacity: 0,
+    duration: 0.45,
+    ease: 'power2.in',
+    delay: 0.1,
+    onComplete: () => { isVisible.value = false },
+  })
+}
+
+// Re-entrada al llamar a la mascota
+watch(isVisible, (val) => {
+  if (val) playEntrance()
+})
+
 onMounted(() => {
+  // Cambio de mensaje con fade
   messageInterval = window.setInterval(() => {
-    const randomIndex = Math.floor(Math.random() * messages.length)
-    currentMessage.value = messages[randomIndex]
+    if (!speechBubbleRef.value) return
+    gsap.to(speechBubbleRef.value, {
+      opacity: 0, duration: 0.25, ease: 'power2.in',
+      onComplete: () => {
+        currentMessage.value = messages[Math.floor(Math.random() * messages.length)]
+        gsap.to(speechBubbleRef.value, { opacity: 1, duration: 0.35, ease: 'power2.out' })
+      },
+    })
   }, 7000)
+
+  // Entrada inicial con delay para no solapar con la carga de la página
+  nextTick(() => {
+    gsap.fromTo(
+      petWrapperRef.value,
+      { y: 140, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)', delay: 0.9 }
+    )
+    gsap.fromTo(
+      speechBubbleRef.value,
+      { y: 16, opacity: 0, scale: 0.85 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 2.1 }
+    )
+  })
 })
 
 onBeforeUnmount(() => {
   if (messageInterval) clearInterval(messageInterval)
 })
 
-// ── LÓGICA DE SELECCIÓN ──
-const selectPet = (pet: any) => {
+// ── Selección de mascota ──
+const selectPet = (pet: typeof pets[0]) => {
   currentPet.value = pet
   showSelector.value = false
 }
 
 const resetPet = () => {
   isVisible.value = true
-  dragOffset.value = { x: 0, y: 0 } // La regresa a su esquina original
+  dragOffset.value = { x: 0, y: 0 }
   showSelector.value = false
+  // watch(isVisible) dispara playEntrance automáticamente
 }
 
-// ── LÓGICA DE ARRASTRE (DRAG & DROP) Y CLIC ──
+// ── Drag & Drop ──
 const dragOffset = ref({ x: 0, y: 0 })
 let isDragging = false
-let isMoved = false // Para diferenciar entre un "Clic" y un "Arrastre"
+let isMoved = false
 let dragStartX = 0
 let dragStartY = 0
 let initialOffsetX = 0
@@ -122,7 +181,7 @@ let initialOffsetY = 0
 const startDrag = (e: MouseEvent | TouchEvent) => {
   isDragging = true
   isMoved = false
-  showSelector.value = false // Oculta el menú si empiezas a moverla
+  showSelector.value = false
 
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
@@ -140,15 +199,12 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
 
 const onDrag = (e: MouseEvent | TouchEvent) => {
   if (!isDragging) return
-  
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
 
-  // Si se mueve más de 5 píxeles, ya lo consideramos un arrastre y no un clic
   if (Math.abs(clientX - dragStartX) > 5 || Math.abs(clientY - dragStartY) > 5) {
     isMoved = true
-    // Evita el scroll en móviles mientras la arrastras
-    if ('touches' in e && e.cancelable) e.preventDefault() 
+    if ('touches' in e && e.cancelable) e.preventDefault()
   }
 
   dragOffset.value.x = initialOffsetX + (clientX - dragStartX)
@@ -157,11 +213,7 @@ const onDrag = (e: MouseEvent | TouchEvent) => {
 
 const stopDrag = () => {
   isDragging = false
-  
-  // Si se soltó pero casi no se movió, ¡fue un clic! Abrimos el selector.
-  if (!isMoved) {
-    showSelector.value = true
-  }
+  if (!isMoved) showSelector.value = true
 
   window.removeEventListener('mousemove', onDrag)
   window.removeEventListener('mouseup', stopDrag)
@@ -171,7 +223,6 @@ const stopDrag = () => {
 </script>
 
 <style scoped>
-/* ── Botón de Invocar (Aparece cuando la mascota se cierra) ── */
 .summon-pet-btn {
   position: fixed;
   bottom: 25px;
@@ -193,29 +244,26 @@ const stopDrag = () => {
   transform: scale(1.05) translateY(-3px);
 }
 
-/* ── Contenedor Arrastrable ── */
 .pet-draggable-wrapper {
   position: fixed;
-  /* Posición inicial por defecto */
   bottom: 25px;
   right: 25px;
   z-index: 9999;
-  touch-action: none; /* CRÍTICO: Permite arrastrar en móviles sin scrollear la página */
+  touch-action: none;
+  opacity: 0; /* GSAP revela en onMounted */
 }
 
-/* ── Animación Flotante ── */
 .pet-float-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: float 4s ease-in-out infinite; /* Un poco más lenta para verse más natural */
+  animation: float 4s ease-in-out infinite;
   position: relative;
 }
 
-/* ── Selector de Mascotas (Menú emergente) ── */
 .pet-selector {
   position: absolute;
-  bottom: 100%; /* Aparece justo arriba de la mascota */
+  bottom: 100%;
   margin-bottom: 10px;
   background-color: var(--color-black);
   border: 2px solid var(--color-accent);
@@ -257,14 +305,13 @@ const stopDrag = () => {
 }
 
 .active-pet {
-  background-color: rgba(11, 227, 64, 0.2); /* Verde de tu paleta */
+  background-color: rgba(11, 227, 64, 0.2);
   border: 2px solid var(--color-accent);
 }
 
-/* ── Burbuja de diálogo ── */
 .speech-bubble {
   position: relative;
-  background-color: var(--color-beige); 
+  background-color: var(--color-beige);
   color: var(--color-black);
   border-radius: 16px;
   margin-bottom: 15px;
@@ -273,12 +320,11 @@ const stopDrag = () => {
   align-items: center;
   justify-content: center;
   text-align: center;
-  
-  /* TAMAÑOS PC: ¡Más grandes según lo pedido! */
   width: clamp(200px, 20vw, 280px);
   min-height: 85px;
   padding: 12px 20px;
-  pointer-events: auto; /* Para que si arrastras desde el texto, no interfiera */
+  pointer-events: auto;
+  opacity: 0; /* GSAP revela después del pet */
 }
 
 .bubble-text {
@@ -298,8 +344,9 @@ const stopDrag = () => {
   border-style: solid;
   border-color: var(--color-beige) transparent transparent transparent;
 }
+
 :deep(.pet-link) {
-  color: var(--color-blue); /* Usa tu azul o cámbialo a verde si prefieres (#0BE340) */
+  color: var(--color-blue);
   font-weight: 800;
   text-decoration: none;
   border-bottom: 2px solid var(--color-blue);
@@ -314,12 +361,11 @@ const stopDrag = () => {
   padding: 2px 4px;
 }
 
-/* ── Botón de Cerrar (X) ── */
 .close-btn {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: var(--color-black); 
+  background-color: var(--color-black);
   color: var(--color-white);
   border: none;
   border-radius: 50%;
@@ -334,24 +380,19 @@ const stopDrag = () => {
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
   transition: transform 0.2s;
   z-index: 10;
-  pointer-events: auto; /* Reactivamos los clicks para el botón */
+  pointer-events: auto;
 }
 
 .close-btn:hover {
   transform: scale(1.15) rotate(90deg);
 }
 
-/* ── Mascota ── */
 .pet-image {
-  /* TAMAÑO PC: Crece según la pantalla y es más grande que antes */
   width: clamp(140px, 18vw, 240px);
   height: auto;
-  /* El cursor cambia a la manita que agarra */
   cursor: grab;
-  /* CRÍTICO: Previene el efecto fantasma azul al arrastrar imágenes */
   -webkit-user-drag: none;
   user-select: none;
-  /* Suaviza un poco la imagen */
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
 }
 
@@ -359,20 +400,18 @@ const stopDrag = () => {
   cursor: grabbing;
 }
 
-/* ── Animación Flotante ── */
 @keyframes float {
   0%   { transform: translateY(0px); }
   50%  { transform: translateY(-12px); }
   100% { transform: translateY(0px); }
 }
 
-/* ── RESPONSIVE: MÓVILES ── */
 @media (max-width: 768px) {
   .pet-draggable-wrapper {
     bottom: 15px;
     right: 15px;
   }
-  
+
   .speech-bubble {
     width: 170px;
     min-height: 70px;
@@ -380,7 +419,7 @@ const stopDrag = () => {
   }
 
   .pet-image {
-    width: 120px; /* Sigue siendo responsiva, pero cómoda en el teléfono */
+    width: 120px;
   }
 
   .pet-option-img {

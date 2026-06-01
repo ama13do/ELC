@@ -1,5 +1,5 @@
 <template>
-  <section class="stats-section" ref="sectionRef">
+  <section class="stats-section">
     <div class="stats-inner">
       <div class="stats-grid">
         <div
@@ -17,7 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface Stat {
   id: number
@@ -48,21 +52,18 @@ const stats: Stat[] = [
   },
 ]
 
-const sectionRef = ref<HTMLElement | null>(null)
-
 onMounted(() => {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        sectionRef.value?.querySelectorAll<HTMLElement>('.stat-card').forEach((card, i) => {
-          setTimeout(() => card.classList.add('visible'), i * 130)
-        })
-        observer.disconnect()
-      }
+  gsap.from('.stat-card', {
+    scrollTrigger: {
+      trigger: '.stats-grid',
+      start: 'top 82%',
     },
-    { threshold: 0.12 }
-  )
-  if (sectionRef.value) observer.observe(sectionRef.value)
+    y: 50,
+    opacity: 0,
+    stagger: 0.14,
+    duration: 0.65,
+    ease: 'power3.out',
+  })
 })
 </script>
 
@@ -99,15 +100,6 @@ onMounted(() => {
   border-bottom: 1.5px solid var(--c);
   border-left:   none;
   border-radius: 0 0.9rem 0.9rem 0;
-
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-
-.stat-card.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .stat-dot {

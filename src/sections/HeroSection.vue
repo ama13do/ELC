@@ -33,7 +33,85 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+onMounted(() => {
+  // Entrance animation on load
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  tl.from('.hero-title',         { y: 60, opacity: 0, duration: 0.9 })
+    .from('.hero-body',          { y: 40, opacity: 0, duration: 0.7 }, '-=0.5')
+    .from('.hero-buttons > *',   { y: 30, opacity: 0, stagger: 0.15, duration: 0.6 }, '-=0.4')
+    .from('.hero-image-wrapper', { scale: 0.75, opacity: 0, rotation: -18, duration: 1.2, ease: 'back.out(1.7)' }, 0.15)
+
+  // Parallax only on desktop
+  const mm = gsap.matchMedia()
+
+  mm.add('(min-width: 641px)', () => {
+    // Sticker: parallax + fade + rotación al salir
+    gsap.to('.hero-image-wrapper', {
+      y: -80,
+      opacity: 0,
+      rotation: 10,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 2,
+      },
+    })
+
+    // Botones: salen antes que el resto del contenido
+    gsap.to('.hero-buttons', {
+      y: -20,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: '25% top',
+        end: '65% top',
+        scrub: 1.2,
+      },
+    })
+
+    // Contenido: fade completo
+    gsap.to('.hero-content', {
+      y: -50,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: '40% top',
+        end: 'bottom top',
+        scrub: 1.5,
+      },
+    })
+  })
+
+  mm.add('(max-width: 640px)', () => {
+    gsap.to('.hero-image-wrapper', {
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: '20% top',
+        end: '60% top',
+        scrub: 1,
+      },
+    })
+    gsap.to('.hero-buttons', {
+      y: -10,
+      opacity: 0,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: '30% top',
+        end: '72% top',
+        scrub: 1,
+      },
+    })
+  })
+})
 </script>
 
 <style scoped>
