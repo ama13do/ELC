@@ -1,5 +1,5 @@
 <template>
-  <section class="stats-section">
+  <section class="stats-section" ref="sectionRef">
     <div class="stats-inner">
       <div class="stats-grid">
         <div
@@ -8,7 +8,6 @@
           class="stat-card"
           :style="{ '--c': stat.color }"
         >
-          <!-- Círculo en la esquina superior-izquierda, donde nace el borde -->
           <span class="stat-dot" />
           <p class="stat-text" v-html="stat.text" />
         </div>
@@ -18,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
 interface Stat {
   id: number
   color: string
@@ -46,6 +47,23 @@ const stats: Stat[] = [
     text: '<strong>Dependemos de Estados Unidos para el 75% del gas</strong> que se quema para generar electricidad y para consumo doméstico.',
   },
 ]
+
+const sectionRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        sectionRef.value?.querySelectorAll<HTMLElement>('.stat-card').forEach((card, i) => {
+          setTimeout(() => card.classList.add('visible'), i * 130)
+        })
+        observer.disconnect()
+      }
+    },
+    { threshold: 0.12 }
+  )
+  if (sectionRef.value) observer.observe(sectionRef.value)
+})
 </script>
 
 <style scoped>
@@ -64,15 +82,9 @@ const stats: Stat[] = [
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  align-items: strech;
+  align-items: stretch;
 }
 
-/* ── Card ──
-   Borde: derecho + abajo + superior (desde el círculo hacia la derecha)
-   Sin borde izquierdo. El truco: usamos outline/box-shadow NO,
-   usamos border-right + border-bottom + border-top, con border-left: none
-   y border-radius solo en esquinas derecha
-*/
 .stat-card {
   position: relative;
   background-color: var(--color-black);
@@ -80,30 +92,34 @@ const stats: Stat[] = [
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
-  margin-top: 0.6rem; /* espacio para el círculo que sobresale arriba */
+  margin-top: 0.6rem;
 
   border-top:    1.5px solid var(--c);
   border-right:  1.5px solid var(--c);
   border-bottom: 1.5px solid var(--c);
   border-left:   none;
-
-  /* Curva solo en las esquinas que tienen borde */
   border-radius: 0 0.9rem 0.9rem 0;
+
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
 }
 
-/* ── Círculo en la esquina superior-izquierda ──
-   Está donde el borde superior "empieza" */
+.stat-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .stat-dot {
   position: absolute;
-  top: -0.65rem;   /* sobresale por encima del borde superior */
-  left: -0.65rem;  /* cuelga hacia la izquierda, donde no hay borde */
+  top: -0.65rem;
+  left: -0.65rem;
   width: 1.3rem;
   height: 1.3rem;
   border-radius: 50%;
   background-color: var(--c);
 }
 
-/* ── Texto ── */
 .stat-text {
   font-family: var(--font-myriad);
   font-size: clamp(1em, 1vw, 1.15rem);
@@ -129,7 +145,7 @@ const stats: Stat[] = [
 /* ── Responsive: mobile ── */
 @media (max-width: 540px) {
   .stats-section {
-    padding: 3rem 1.2rem 4rem;
+    padding: 2.5rem 1.2rem 3.5rem;
   }
   .stats-grid {
     grid-template-columns: 1fr;

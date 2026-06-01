@@ -1,18 +1,19 @@
 <template>
   <section class="hero-section">
 
-    <!-- Imagen pg1 con los stickers ya incluidos, posicionada a la derecha -->
-    <div class="hero-image-wrapper" aria-hidden="true">
-      <img src="../assets/images/pg1.png" alt="" class="hero-image" />
-    </div>
-
     <!-- Contenido principal -->
     <div class="hero-inner">
       <div class="hero-content">
 
-        <h1 class="hero-title">
-          Escuela de<br />Liderazgo Climático
-        </h1>
+        <!-- Título + sticker en fila (mobile: flex row, desktop: sticker absolute) -->
+        <div class="hero-title-row">
+          <h1 class="hero-title">
+            Escuela de<br />Liderazgo Climático
+          </h1>
+          <div class="hero-image-wrapper" aria-hidden="true">
+            <img src="../assets/images/PG1.png" alt="" class="hero-image" />
+          </div>
+        </div>
 
         <p class="hero-body">
           ¿Estás listx para
@@ -45,7 +46,12 @@ import BaseButton from '../components/BaseButton.vue'
   align-items: center;
 }
 
-/* ── Imagen derecha (pg1.png ya trae los stickers) ── */
+/* ── Fila título (desktop: solo flujo normal, sticker sale del flujo con absolute) ── */
+.hero-title-row {
+  position: static;
+}
+
+/* ── Imagen derecha ── */
 .hero-image-wrapper {
   position: absolute;
   right: clamp(2rem, 8vw, 7rem);
@@ -127,30 +133,50 @@ import BaseButton from '../components/BaseButton.vue'
 
 /* ── Responsive: mobile ── */
 @media (max-width: 640px) {
+
+  .hero-section {
+    align-items: flex-start;
+    min-height: 100svh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .hero-inner {
-    padding: 6rem 1.5rem 12rem; /* espacio abajo para la imagen */
+    padding: 5.5rem 1.5rem 2.5rem;
+  }
+
+  /* En mobile el sticker entra en el flujo junto al h1 */
+  .hero-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .hero-title {
+    flex: 1;
+    font-size: clamp(2.2rem, 10.5vw, 3rem);
+    margin: 0 0 1.5rem;
+    min-width: 0;
   }
 
   .hero-image-wrapper {
-    top: auto;
-    bottom: 2rem;
-    right: 1rem;
+    position: static;
     transform: none;
-    width: clamp(110px, 35vw, 160px);
+    width: clamp(90px, 25vw, 120px);
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 0.25rem;
     animation: stickerFloatMobile 5s ease-in-out infinite;
   }
 
   @keyframes stickerFloatMobile {
     0%, 100% { transform: rotate(-2deg); }
-    50%       { transform: translateY(-10px) rotate(1.5deg); }
-  }
-
-  .hero-title {
-    font-size: clamp(2.4rem, 11vw, 3.2rem);
+    50%       { transform: translateY(-8px) rotate(1.5deg); }
   }
 
   .hero-body {
     font-size: 0.95rem;
+    margin: 0 0 2rem;
   }
 
   .hero-buttons {
