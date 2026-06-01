@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import bgPhoto from '../assets/images/foto 2.jpg'
+import bgPhoto from '../assets/images/foto-2.jpg'
 import solucionesImg from '../assets/images/Soluciones.png'
 import leafImg from '../assets/images/Leaf.png'
 </script>

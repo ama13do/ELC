@@ -3,10 +3,12 @@
     :is="href ? 'a' : 'button'"
     :href="href"
     :class="[
-      'inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200',
+      'inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200 px-8 py-3 text-sm tracking-wide',
       variant === 'primary'
-        ? 'bg-[#0ce23f] text-black hover:brightness-110 px-8 py-3'
-        : 'border border-[#0ce23f] text-[#0ce23f] hover:bg-[#0ce23f] hover:text-black px-8 py-3',
+        ? 'bg-yellow text-black hover:brightness-110'
+        : variant === 'secondary'
+          ? 'bg-accent text-black hover:brightness-110'
+          : 'border border-accent text-accent hover:bg-accent hover:text-black',
       className,
     ]"
   >
@@ -18,7 +20,7 @@
 withDefaults(
   defineProps<{
     href?: string
-    variant?: 'primary' | 'outline'
+    variant?: 'primary' | 'secondary' | 'outline'
     className?: string
   }>(),
   { variant: 'primary' }

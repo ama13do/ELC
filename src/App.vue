@@ -12,7 +12,13 @@
       <BenefitsSection />
       <QuoteSection />
       <DiversitySection />
+      
       <ImportantDatesSection />
+      <accion/>
+      <ExperienceSection />
+      <ReelSection />
+      <policySection />
+      <datesSection />
       <SelectionCriteriaSection />
       <PartnersSection />
     </main>
@@ -35,7 +41,14 @@ import QuoteSection from './sections/QuoteSection.vue'
 import DiversitySection from './sections/DiversitySection.vue'
 import ImportantDatesSection from './sections/ImportantDatesSection.vue'
 import SelectionCriteriaSection from './sections/SelectionCriteriaSection.vue'
+import accion from './sections/AccionSection.vue'
 import PartnersSection from './sections/PartnersSection.vue'
 import FooterSection from './sections/FooterSection.vue'
 import Pet from './components/Pet.vue'
+import ExperienceSection from './sections/ExperienceSection.vue'
+import ReelSection from './sections/ReelSection.vue'
+import policySection from './sections/PolicySection.vue'
+import datesSection from './sections/DatesSection.vue'
+
+
 </script>
