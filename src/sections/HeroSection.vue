@@ -23,7 +23,7 @@
 
       <!-- Columna derecha: sticker -->
       <div class="hero-image-wrapper" aria-hidden="true">
-        <img src="../assets/images/PG1.png" alt="" class="hero-image" />
+        <img src="../assets/images/PG1.webp" alt="" class="hero-image" />
       </div>
 
     </div>

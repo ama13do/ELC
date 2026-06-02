@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import juntosImg from './assets/images/juntos.png'
 import solecito from './assets/images/Solecito.png'
-import florAmarilla from './assets/images/floramarilla.png'
+import florAmarilla from './assets/images/floramarilla.webp'
 import NavBar from './sections/NavBar.vue'
 import HeroSection from './sections/HeroSection.vue'
 import WhyParticipateSection from './sections/WhyParticipateSection.vue'

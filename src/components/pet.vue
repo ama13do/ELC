@@ -54,10 +54,10 @@
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
 
-import panelinImg from '../assets/pets/Panelin.png'
-import nubecinImg from '../assets/pets/Nubecin.png'
-import hidraulinImg from '../assets/pets/Hidraulin.png'
-import abaniquinImg from '../assets/pets/Abaniquin.png'
+import panelinImg from '../assets/pets/Panelin.webp'
+import nubecinImg from '../assets/pets/Nubecin.webp'
+import hidraulinImg from '../assets/pets/Hidraulin.webp'
+import abaniquinImg from '../assets/pets/Abaniquin.webp'
 
 const isVisible = ref(true)
 const showSelector = ref(false)

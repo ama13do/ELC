@@ -3,6 +3,11 @@
     
     <div class="sessions-banner">
       <h2 class="sessions-title">ESPACIO LIBRE DE<br />PARTIDOS POLÍTICOS</h2>
+      <img 
+        :src="partidosIcon" 
+        alt="" 
+        class="sessions-partidos-icon" 
+      />
     </div>
 
     <section class="sessions-section">
@@ -29,6 +34,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import hojasImg from '../assets/images/hojas.png'
+// 1. Importamos el nuevo icono
+import partidosIcon from '../assets/images/partidos.webp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -37,9 +44,20 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   gsap.context(() => {
-    gsap.from('.sessions-title', { y: 35, duration: 0.8, ease: 'power3.out',
-      scrollTrigger: { trigger: sectionRef.value, start: 'top 80%', toggleActions: 'play none none none' }
+    
+    // 2. Actualizamos la animación para que afecte a todos los hijos del banner con stagger
+    gsap.from('.sessions-banner > *', { 
+      y: 35, 
+      duration: 0.8, 
+      ease: 'power3.out',
+      stagger: 0.15, // Pequeño retraso entre el título y el icono
+      scrollTrigger: { 
+        trigger: sectionRef.value, 
+        start: 'top 80%', 
+        toggleActions: 'play none none none' 
+      }
     })
+
     gsap.from('.sessions-body', { y: 25, duration: 0.7, ease: 'power3.out',
       scrollTrigger: { trigger: sectionRef.value, start: 'top 75%', toggleActions: 'play none none none' }
     })
@@ -56,14 +74,17 @@ onMounted(() => {
   flex-direction: column;
 }
 
-/* ── 2. Banner Negro ── */
+/* ── 2. Banner Negro Actualizado ── */
 .sessions-banner {
   background-color: var(--color-black);
   width: 100%;
-  padding: 3rem 1.5rem;
+  /* Aumentamos un poco el padding vertical para acomodar el icono */
+  padding: clamp(2.5rem, 6vh, 4rem) 1.5rem;
   display: flex;
+  flex-direction: column; /* Apilamos elementos verticalmente */
   justify-content: center;
   align-items: center;
+  gap: 1.5rem; /* Espaciado entre el texto y el icono */
 }
 
 .sessions-title {
@@ -75,6 +96,15 @@ onMounted(() => {
   text-align: center;
   line-height: 1.4;
   margin: 0;
+}
+
+/* ── Estilos para el nuevo Icono de Partidos ── */
+.sessions-partidos-icon {
+  height: clamp(80px, 15vw, 160px); /* Tamaño responsivo */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
 }
 
 /* ── 3. Sección de la Imagen ── */
@@ -100,32 +130,20 @@ onMounted(() => {
 /* ── 🍃 HOJAS Y ANIMACIÓN DE VIENTO 🍃 ── */
 .hojas-viento {
   position: absolute;
-  /* Porcentaje separado de arriba, como lo pediste */
   top: 15%; 
-  right: -2%; /* Ligeramente salidas para que se vea natural */
-  width: 200px; /* Tamaño base en móviles */
+  right: -2%; 
+  width: 200px; 
   z-index: 15;
-  pointer-events: none; /* Para que no estorben si hay botones abajo */
-  
-  /* El eje de rotación lo ponemos arriba a la derecha para que cuelguen */
+  pointer-events: none; 
   transform-origin: top right;
-  /* Animación infinita y suave */
   animation: viento 5s ease-in-out infinite alternate;
 }
 
 @keyframes viento {
-  0% {
-    transform: rotate(0deg);
-  }
-  30% {
-    transform: rotate(-6deg); /* Se mecen hacia un lado */
-  }
-  70% {
-    transform: rotate(3deg); /* Se mecen hacia el otro */
-  }
-  100% {
-    transform: rotate(0deg); /* Vuelven a su lugar */
-  }
+  0% { transform: rotate(0deg); }
+  30% { transform: rotate(-6deg); }
+  70% { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
 }
 
 /* ── Contenido de Sesiones ── */
@@ -157,7 +175,6 @@ onMounted(() => {
 
 /* ── Responsive ── */
 @media (min-width: 768px) {
-  /* Hacemos las hojas más grandes en PC y tablet */
   .hojas-viento {
     width: 380px;
     top: 10%;
@@ -168,6 +185,7 @@ onMounted(() => {
 @media (max-width: 640px) {
   .sessions-banner {
     padding: 2.5rem 1rem;
+    gap: 1rem; /* Reducimos el espacio en móvil */
   }
   
   .sessions-title {
