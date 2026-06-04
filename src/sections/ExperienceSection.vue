@@ -4,7 +4,7 @@
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="experience-hero">
-      <img src="../assets/images/EXPERIENCE.svg" alt="" class="experience-hero-bg" />
+      <img src="../assets/images/EXPERIENCE.webp" alt="" class="experience-hero-bg" />
       
       <img 
         :src="stickerMasIdeas" 
@@ -62,8 +62,8 @@ onMounted(() => {
   }, sectionRef.value ?? undefined)
 })
 
-import stickerHxnf from '../assets/images/StickerHXNF.png'
-import stickerMasIdeas from '../assets/images/Mas Ideas.png'
+import stickerHxnf from '../assets/images/StickerHXNF.webp'
+import stickerMasIdeas from '../assets/images/Mas Ideas.webp'
 const benefits = [
   'Conocer a personas jóvenes de tu estado y de todo el país interesadas en acelerar la adopción de energías renovables en el país de forma creativa e interdisciplinaria.',
   'Pláticas con personas líderes de la transición energética justa en México.',

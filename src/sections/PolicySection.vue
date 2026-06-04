@@ -3,7 +3,7 @@
 
     <!-- Hero edge-to-edge -->
     <div class="policy-hero">
-      <img src="../assets/images/POLICY.svg" alt="" class="policy-hero-bg" />
+      <img src="../assets/images/POLICY.webp" alt="" class="policy-hero-bg" />
       
       <!-- 🔄 STICKER IZQUIERDO (Renovará) 🔄 -->
       <img 
@@ -66,8 +66,8 @@ onMounted(() => {
   }, sectionRef.value ?? undefined)
 })
 
-import renovaraImg from '../assets/images/renovara.png'
-import solecitoImg from '../assets/images/Solecito.png'
+import renovaraImg from '../assets/images/renovara.webp'
+import solecitoImg from '../assets/images/Solecito.webp'
 </script>
 
 <style scoped>

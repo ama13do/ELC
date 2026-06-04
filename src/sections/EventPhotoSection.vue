@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import ovalImg from '../assets/images/Untitled_Artwork.png'
+import ovalImg from '../assets/images/Untitled_Artwork.webp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 

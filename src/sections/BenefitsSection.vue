@@ -11,7 +11,7 @@
     </div>
 
     <section class="sessions-section">
-      <img src="../assets/images/sesiones.svg" alt="" class="sessions-bg" />
+      <img src="../assets/images/sesiones.webp" alt="" class="sessions-bg" />
 
       <img 
         :src="hojasImg" 
@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import hojasImg from '../assets/images/hojas.png'
+import hojasImg from '../assets/images/hojas.webp'
 // 1. Importamos el nuevo icono
 import partidosIcon from '../assets/images/partidos.webp'
 import gsap from 'gsap'

@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import frackingImg from '../assets/images/fracking.svg'
+import frackingImg from '../assets/images/fracking.webp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 

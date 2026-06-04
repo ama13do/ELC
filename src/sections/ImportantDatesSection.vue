@@ -3,7 +3,7 @@
 
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="who-hero">
-      <img src="../assets/images/why.svg" alt="" class="who-hero-bg" />
+      <img src="../assets/images/why.webp" alt="" class="who-hero-bg" />
 
       <div class="who-hero-inner">
 
@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
-import aguasImg from '../assets/images/aguas.png'
+import aguasImg from '../assets/images/aguas.webp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 

@@ -45,18 +45,18 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 // ── 📸 IMPORTACIÓN EXACTA DE TUS 12 FOTOS ──
 // Basado en el listado de archivos provisto (Hackaton y foto x)
-import img1 from '../assets/reel/foto 1.jpg'
-import img2 from '../assets/reel/foto 2.jpg'
-import img3 from '../assets/reel/foto 4.jpg'
-import img4 from '../assets/reel/FOTO 6.jpg'
-import img5 from '../assets/reel/FOTO 7.jpg'
-import img6 from '../assets/reel/Hackaton-19.jpg'
-import img7 from '../assets/reel/Hackaton-29.jpg'
-import img8 from '../assets/reel/Hackaton-58.jpg'
-import img9 from '../assets/reel/Hackaton-60.jpg'
-import img10 from '../assets/reel/Hackaton-70.jpg'
-import img11 from '../assets/reel/Hackaton-73.jpg'
-import img12 from '../assets/reel/Hackaton-75.jpg'
+import img1 from '../assets/reel/foto 1.webp'
+import img2 from '../assets/reel/foto 2.webp'
+import img3 from '../assets/reel/foto 4.webp'
+import img4 from '../assets/reel/FOTO 6.webp'
+import img5 from '../assets/reel/FOTO 7.webp'
+import img6 from '../assets/reel/Hackaton-19.webp'
+import img7 from '../assets/reel/Hackaton-29.webp'
+import img8 from '../assets/reel/Hackaton-58.webp'
+import img9 from '../assets/reel/Hackaton-60.webp'
+import img10 from '../assets/reel/Hackaton-70.webp'
+import img11 from '../assets/reel/Hackaton-73.webp'
+import img12 from '../assets/reel/Hackaton-75.webp'
 
 // Arreglo con todas las imágenes listas para iterar
 const photoGallery = [

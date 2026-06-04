@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import stickerTrans from '../assets/images/trans.png'
-import stickerHxnf from '../assets/images/StickerHXNF.png'
+import stickerTrans from '../assets/images/trans.webp'
+import stickerHxnf from '../assets/images/StickerHXNF.webp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -58,7 +58,7 @@ onMounted(() => {
 
     <!-- Bloque superior: imagen hero edge-to-edge con título abajo-izquierda -->
     <div class="esperar-hero">
-      <img src="../assets/images/esperar.svg" alt="" class="esperar-hero-bg" />
+      <img src="../assets/images/esperar.webp" alt="" class="esperar-hero-bg" />
       <img 
         :src="stickerTrans" 
         alt="" 
@@ -103,7 +103,7 @@ onMounted(() => {
 
       
       <div class="esperar-img-wrapper">
-        <img src="../assets/images/resultado.png" alt="" class="esperar-img" />
+        <img src="../assets/images/resultado.webp" alt="" class="esperar-img" />
       </div>
 
     </div>

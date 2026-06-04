@@ -65,8 +65,8 @@
 </template>
 
 <script setup lang="ts">
-import juntosImg from './assets/images/juntos.png'
-import solecito from './assets/images/Solecito.png'
+import juntosImg from './assets/images/juntos.webp'
+import solecito from './assets/images/Solecito.webp'
 import florAmarilla from './assets/images/floramarilla.webp'
 import NavBar from './sections/NavBar.vue'
 import HeroSection from './sections/HeroSection.vue'

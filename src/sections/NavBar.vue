@@ -39,15 +39,15 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 // Importamos el logo principal
-import mainLogo from '../assets/images/hxnf.png'
+import mainLogo from '../assets/images/hxnf.webp'
 
 // Importamos los logos de las orgs
-import logoHXNF from '../assets/logos/HXNF.png'
-import logoNF from '../assets/logos/NF.svg'
-import logoPractica from '../assets/logos/PRACTICA.png'
-import logoICM from '../assets/logos/ICM.svg'
-import logoIDEA from '../assets/logos/IDEA.svg'
-import logoFUND from '../assets/logos/FUND.svg'
+import logoHXNF from '../assets/logos/HXNF.webp'
+import logoNF from '../assets/logos/NF.webp'
+import logoPractica from '../assets/logos/PRACTICA.webp'
+import logoICM from '../assets/logos/ICM.webp'
+import logoIDEA from '../assets/logos/IDEA.webp'
+import logoFUND from '../assets/logos/FUND.webp'
 
 // Arreglo de organizaciones
 const orgs = [

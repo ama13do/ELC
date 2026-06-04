@@ -60,12 +60,12 @@ onMounted(() => {
   }, sectionRef.value ?? undefined)
 })
 
-import logoHXNF from '../assets/logos/HXNF.png'
-import logoNF from '../assets/logos/NF.svg'
-import logoPractica from '../assets/logos/PRACTICA.png'
-import logoICM from '../assets/logos/ICM.svg'
-import logoIDEA from '../assets/logos/IDEA.svg'
-import logoFUND from '../assets/logos/FUND.svg'
+import logoHXNF from '../assets/logos/HXNF.webp'
+import logoNF from '../assets/logos/NF.webp'
+import logoPractica from '../assets/logos/PRACTICA.webp'
+import logoICM from '../assets/logos/ICM.webp'
+import logoIDEA from '../assets/logos/IDEA.webp'
+import logoFUND from '../assets/logos/FUND.webp'
 
 // 2. USA LAS VARIABLES IMPORTADAS EN TU ARREGLO (sin comillas)
 const orgs = [
