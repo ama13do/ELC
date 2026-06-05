@@ -6,7 +6,7 @@
       @click="resetPet"
       aria-label="Llamar asistente"
     >
-      👋 Llamar mascota
+      Llamar mascota
     </button>
 
     <div
@@ -17,12 +17,24 @@
     >
       <div class="pet-float-wrapper">
 
-        <div ref="speechBubbleRef" class="speech-bubble">
-          <button class="close-btn" @click="closePet" aria-label="Cerrar">✕</button>
-          <span class="bubble-text" v-html="currentMessage"></span>
+        <!-- Burbuja de mensaje -->
+        <div ref="speechBubbleRef" class="speech-bubble" @click.stop="openChatbot">
+          <button class="close-btn" @click.stop="closePet" aria-label="Cerrar">✕</button>
+          <div class="bubble-content">
+            <span class="bubble-text" v-html="currentMessage"></span>
+            <div class="bubble-actions">
+              <button class="action-btn" @click.stop="openChatbot">
+                Chatear
+              </button>
+              <button class="action-btn action-btn--secondary" @click.stop="toggleAppearance">
+                Cambiar mascota
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div v-if="showSelector" class="pet-selector">
+        <!-- Selector de apariencia -->
+        <div v-if="showAppearanceSelector" class="pet-selector appearance-selector">
           <p class="selector-title">Elige a tu compañerx:</p>
           <div class="pet-options">
             <img
@@ -37,30 +49,40 @@
           </div>
         </div>
 
+        <!-- Imagen de mascota — clic abre el chatbot -->
         <img
           :src="currentPet.src"
           :alt="currentPet.name"
           class="pet-image"
           @mousedown.prevent="startDrag"
           @touchstart.prevent="startDrag"
+          @click="handlePetClick"
         />
-
       </div>
     </div>
+
+    <!-- Modal del chatbot -->
+    <ChatbotModal
+      :is-open="isChatbotOpen"
+      :initial-character-id="currentPet.id"
+      @close="closeChatbot"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
+import ChatbotModal from './ChatbotModal.vue'
 
-import panelinImg from '../assets/pets/Panelin.webp'
-import nubecinImg from '../assets/pets/Nubecin.webp'
+import panelinImg   from '../assets/pets/Panelin.webp'
+import nubecinImg   from '../assets/pets/Nubecin.webp'
 import hidraulinImg from '../assets/pets/Hidraulin.webp'
 import abaniquinImg from '../assets/pets/Abaniquin.webp'
 
 const isVisible = ref(true)
-const showSelector = ref(false)
+const showAppearanceSelector = ref(false)
+const isChatbotOpen = ref(false)
 
 const petWrapperRef = ref<HTMLElement | null>(null)
 const speechBubbleRef = ref<HTMLElement | null>(null)
@@ -75,101 +97,20 @@ const pets = [
 const currentPet = ref(pets[0])
 
 const messages = [
-  '¡Hola! 👋 ¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
-  'La transición energética necesita tu voz. ⚡ ¡Inscríbete hoy mismo! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
-  '¿Listx para hacer historia? Revisa las bases y postúlate. 🚀 <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
-  'Cualquier duda con tu registro, escríbenos a <br><a href="mailto:hxnf@practica.lat" class="pet-link">hxnf@practica.lat</a> ✉️',
-  'Conoce más de nuestro movimiento en Instagram: <br><a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">@Hackersxnf</a> 📱',
-  '¡No lo dejes para el último día! Completa tu postulación con tiempo. ⏳ <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>',
-  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un DM a <a href="https://ig.me/m/hackersxnf" target="_blank" class="pet-link">nuestro IG</a>!',
-  'Únete a la red de juventudes por el clima. 🌱 ¡Tu participación es clave! <br><a href="https://forms.gle/5Kc73ytz17qZWT1AA" target="_blank" class="pet-link">Regístrate aquí</a>'
+  '¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando!',
+  'La transición energética necesita tu voz. ¡Inscríbete hoy mismo!',
+  '¿Listx para hacer historia? Revisa las bases y postúlate.',
+  'Cualquier duda con tu registro, escríbenos a <br><a href="mailto:hxnf@practica.lat" class="pet-link">hxnf@practica.lat</a>',
+  'Conoce más de nuestro movimiento en Instagram: <br><a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">@Hackersxnf</a>',
+  '¡No lo dejes para el último día! Completa tu postulación con tiempo.',
+  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un DM!',
+  'Únete a la red de juventudes por el clima. ¡Tu participación es clave!'
 ]
 
 const currentMessage = ref(messages[0])
 let messageInterval: number | null = null
 
-// ── Entrada animada ──
-function playEntrance() {
-  nextTick(() => {
-    gsap.fromTo(
-      petWrapperRef.value,
-      { y: 140, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)' }
-    )
-    gsap.fromTo(
-      speechBubbleRef.value,
-      { y: 16, opacity: 0, scale: 0.85 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 1.1 }
-    )
-  })
-}
-
-// ── Salida animada ──
-const closePet = () => {
-  gsap.to(speechBubbleRef.value, {
-    y: -8, opacity: 0, scale: 0.9, duration: 0.2, ease: 'power2.in',
-  })
-  gsap.to(petWrapperRef.value, {
-    y: 130,
-    opacity: 0,
-    duration: 0.45,
-    ease: 'power2.in',
-    delay: 0.1,
-    onComplete: () => { isVisible.value = false },
-  })
-}
-
-// Re-entrada al llamar a la mascota
-watch(isVisible, (val) => {
-  if (val) playEntrance()
-})
-
-onMounted(() => {
-  // Cambio de mensaje con fade
-  messageInterval = window.setInterval(() => {
-    if (!speechBubbleRef.value) return
-    gsap.to(speechBubbleRef.value, {
-      opacity: 0, duration: 0.25, ease: 'power2.in',
-      onComplete: () => {
-        currentMessage.value = messages[Math.floor(Math.random() * messages.length)]
-        gsap.to(speechBubbleRef.value, { opacity: 1, duration: 0.35, ease: 'power2.out' })
-      },
-    })
-  }, 7000)
-
-  // Entrada inicial con delay para no solapar con la carga de la página
-  nextTick(() => {
-    gsap.fromTo(
-      petWrapperRef.value,
-      { y: 140, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)', delay: 0.9 }
-    )
-    gsap.fromTo(
-      speechBubbleRef.value,
-      { y: 16, opacity: 0, scale: 0.85 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 2.1 }
-    )
-  })
-})
-
-onBeforeUnmount(() => {
-  if (messageInterval) clearInterval(messageInterval)
-})
-
-// ── Selección de mascota ──
-const selectPet = (pet: typeof pets[0]) => {
-  currentPet.value = pet
-  showSelector.value = false
-}
-
-const resetPet = () => {
-  isVisible.value = true
-  dragOffset.value = { x: 0, y: 0 }
-  showSelector.value = false
-  // watch(isVisible) dispara playEntrance automáticamente
-}
-
-// ── Drag & Drop ──
+// ── Drag ────────────────────────────────────────────────────
 const dragOffset = ref({ x: 0, y: 0 })
 let isDragging = false
 let isMoved = false
@@ -181,7 +122,7 @@ let initialOffsetY = 0
 const startDrag = (e: MouseEvent | TouchEvent) => {
   isDragging = true
   isMoved = false
-  showSelector.value = false
+  showAppearanceSelector.value = false
 
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
@@ -213,12 +154,100 @@ const onDrag = (e: MouseEvent | TouchEvent) => {
 
 const stopDrag = () => {
   isDragging = false
-  if (!isMoved) showSelector.value = true
-
   window.removeEventListener('mousemove', onDrag)
   window.removeEventListener('mouseup', stopDrag)
   window.removeEventListener('touchmove', onDrag)
   window.removeEventListener('touchend', stopDrag)
+}
+
+// Clic en la mascota: si no se arrastró, abrir chatbot
+const handlePetClick = () => {
+  if (!isMoved) {
+    openChatbot()
+  }
+}
+
+// ── Animaciones ──────────────────────────────────────────────
+function playEntrance() {
+  nextTick(() => {
+    gsap.fromTo(
+      petWrapperRef.value,
+      { y: 140, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)' }
+    )
+    gsap.fromTo(
+      speechBubbleRef.value,
+      { y: 16, opacity: 0, scale: 0.85 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 1.1 }
+    )
+  })
+}
+
+const closePet = () => {
+  gsap.to(speechBubbleRef.value, {
+    y: -8, opacity: 0, scale: 0.9, duration: 0.2, ease: 'power2.in',
+  })
+  gsap.to(petWrapperRef.value, {
+    y: 130, opacity: 0, duration: 0.45, ease: 'power2.in', delay: 0.1,
+    onComplete: () => { isVisible.value = false },
+  })
+}
+
+// ── Ciclo de mensajes ────────────────────────────────────────
+onMounted(() => {
+  messageInterval = window.setInterval(() => {
+    if (!speechBubbleRef.value) return
+    gsap.to(speechBubbleRef.value, {
+      opacity: 0, duration: 0.25, ease: 'power2.in',
+      onComplete: () => {
+        currentMessage.value = messages[Math.floor(Math.random() * messages.length)]
+        gsap.to(speechBubbleRef.value, { opacity: 1, duration: 0.35, ease: 'power2.out' })
+      },
+    })
+  }, 7000)
+
+  nextTick(() => {
+    gsap.fromTo(
+      petWrapperRef.value,
+      { y: 140, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.6)', delay: 0.9 }
+    )
+    gsap.fromTo(
+      speechBubbleRef.value,
+      { y: 16, opacity: 0, scale: 0.85 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', delay: 2.1 }
+    )
+  })
+})
+
+onBeforeUnmount(() => {
+  if (messageInterval) clearInterval(messageInterval)
+})
+
+// ── Acciones ────────────────────────────────────────────────
+const selectPet = (pet: typeof pets[0]) => {
+  currentPet.value = pet
+  showAppearanceSelector.value = false
+}
+
+const resetPet = () => {
+  isVisible.value = true
+  dragOffset.value = { x: 0, y: 0 }
+  showAppearanceSelector.value = false
+  playEntrance()
+}
+
+const toggleAppearance = () => {
+  showAppearanceSelector.value = !showAppearanceSelector.value
+}
+
+const openChatbot = () => {
+  showAppearanceSelector.value = false
+  isChatbotOpen.value = true
+}
+
+const closeChatbot = () => {
+  isChatbotOpen.value = false
 }
 </script>
 
@@ -232,11 +261,12 @@ const stopDrag = () => {
   color: var(--color-white);
   font-family: var(--font-parkinsans);
   font-weight: 700;
-  padding: 0.8rem 1.5rem;
+  font-size: 14px;
+  padding: 0.75rem 1.4rem;
   border-radius: 999px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s, background-color 0.2s;
 }
 
@@ -250,7 +280,7 @@ const stopDrag = () => {
   right: 25px;
   z-index: 9999;
   touch-action: none;
-  opacity: 0; /* GSAP revela en onMounted */
+  opacity: 0;
 }
 
 .pet-float-wrapper {
@@ -261,99 +291,140 @@ const stopDrag = () => {
   position: relative;
 }
 
+/* ── Selector de mascota ── */
 .pet-selector {
   position: absolute;
   bottom: 100%;
   margin-bottom: 10px;
   background-color: var(--color-black);
   border: 2px solid var(--color-accent);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   z-index: 20;
-  /* NUEVO: Limita el ancho para que jamás se salga de la pantalla del celular */
-  max-width: calc(100vw - 40px);
+}
+
+.appearance-selector {
+  border-color: var(--color-orange);
 }
 
 .selector-title {
   color: var(--color-white);
   font-family: var(--font-parkinsans);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   margin: 0 0 10px 0;
-  /* NUEVO: Evita que el título se encoja si falta espacio */
-  flex-shrink: 0; 
 }
 
 .pet-options {
   display: flex;
   gap: 10px;
-  /* NUEVO: Permite scroll horizontal si los iconos no caben */
-  overflow-x: auto;
-  width: 100%;
-  padding-bottom: 5px; 
-}
-
-/* NUEVO: Estilos sutiles para la barra de scroll horizontal */
-.pet-options::-webkit-scrollbar {
-  height: 6px;
-}
-.pet-options::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-.pet-options::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
-  border-radius: 4px;
 }
 
 .pet-option-img {
-  width: 50px;
-  height: 50px;
-  /* NUEVO: 'flex-shrink: 0' es CLAVE. Obliga al navegador a hacer scroll en lugar de aplastar las imágenes */
-  flex-shrink: 0; 
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   cursor: pointer;
   border-radius: 50%;
-  background-color: rgba(255,255,255,0.05);
+  background-color: rgba(255, 255, 255, 0.05);
   transition: transform 0.2s, background-color 0.2s;
+  border: 2px solid transparent;
 }
 
 .pet-option-img:hover {
   transform: scale(1.15);
-  background-color: rgba(255,255,255,0.15);
-}
-.active-pet {
-  background-color: rgba(11, 227, 64, 0.2);
-  border: 2px solid var(--color-accent);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
+.active-pet {
+  background-color: rgba(11, 227, 64, 0.15);
+  border-color: var(--color-accent);
+}
+
+/* ── Burbuja de mensaje ── */
 .speech-bubble {
   position: relative;
   background-color: var(--color-beige);
   color: var(--color-black);
   border-radius: 16px;
   margin-bottom: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: clamp(200px, 20vw, 280px);
+  width: clamp(200px, 20vw, 300px);
   min-height: 85px;
-  padding: 12px 20px;
+  padding: 14px 16px;
   pointer-events: auto;
-  opacity: 0; /* GSAP revela después del pet */
+  opacity: 0;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.speech-bubble:hover {
+  transform: translateY(-2px);
+}
+
+.bubble-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .bubble-text {
   font-family: var(--font-parkinsans);
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.45;
+}
+
+.bubble-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-btn {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  font-family: var(--font-parkinsans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  background-color: #222;
+  transform: scale(1.04);
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}
+
+.action-btn--secondary {
+  background-color: transparent;
+  color: var(--color-black);
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+}
+
+.action-btn--secondary:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  transform: scale(1.04);
 }
 
 .speech-bubble::after {
@@ -391,15 +462,15 @@ const stopDrag = () => {
   color: var(--color-white);
   border: none;
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s;
   z-index: 10;
   pointer-events: auto;
@@ -409,13 +480,19 @@ const stopDrag = () => {
   transform: scale(1.15) rotate(90deg);
 }
 
+/* ── Imagen de mascota ── */
 .pet-image {
-  width: clamp(140px, 18vw, 240px);
+  width: clamp(130px, 16vw, 220px);
   height: auto;
-  cursor: grab;
+  cursor: pointer;
   -webkit-user-drag: none;
   user-select: none;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.22));
+  transition: transform 0.2s;
+}
+
+.pet-image:hover {
+  transform: scale(1.05);
 }
 
 .pet-image:active {
@@ -435,13 +512,18 @@ const stopDrag = () => {
   }
 
   .speech-bubble {
-    width: 170px;
-    min-height: 70px;
-    padding: 10px 15px;
+    width: 175px;
+    min-height: 72px;
+    padding: 10px 12px;
+  }
+
+  .action-btn {
+    font-size: 10px;
+    padding: 4px 9px;
   }
 
   .pet-image {
-    width: 120px;
+    width: 110px;
   }
 
   .pet-option-img {
