@@ -6,7 +6,7 @@
       @click="resetPet"
       aria-label="Llamar asistente"
     >
-      Llamar mascota
+      Llamar compañerx
     </button>
 
     <div
@@ -23,7 +23,7 @@
           <div class="bubble-content">
             <span class="bubble-text" v-html="currentMessage"></span>
             <div class="bubble-actions">
-              <button class="action-btn" @click.stop="openChatbot">
+              <button class="action-btn action-btn--primary" @click.stop="openChatbot">
                 Chatear
               </button>
               <button class="action-btn action-btn--secondary" @click.stop="toggleAppearance">
@@ -37,35 +37,44 @@
         <div v-if="showAppearanceSelector" class="pet-selector appearance-selector">
           <p class="selector-title">Elige a tu compañerx:</p>
           <div class="pet-options">
-            <img
+            <button
               v-for="pet in pets"
               :key="pet.id"
-              :src="pet.src"
-              :alt="pet.name"
-              class="pet-option-img"
+              class="pet-option-btn"
               :class="{ 'active-pet': currentPet.id === pet.id }"
+              :style="{ '--pet-color': pet.color }"
               @click.stop="selectPet(pet)"
-            />
+            >
+              <img
+                :src="pet.src"
+                :alt="pet.name"
+                class="pet-option-img"
+              />
+              <span class="pet-option-name">{{ pet.shortName }}</span>
+            </button>
           </div>
         </div>
 
         <!-- Imagen de mascota — clic abre el chatbot -->
-        <img
-          :src="currentPet.src"
-          :alt="currentPet.name"
-          class="pet-image"
-          @mousedown.prevent="startDrag"
-          @touchstart.prevent="startDrag"
-          @click="handlePetClick"
-        />
+        <div class="pet-image-container">
+          <img
+            :src="currentPet.src"
+            :alt="currentPet.name"
+            class="pet-image"
+            @mousedown.prevent="startDrag"
+            @touchstart.prevent="startDrag"
+            @click="handlePetClick"
+          />
+        </div>
       </div>
     </div>
 
     <!-- Modal del chatbot -->
     <ChatbotModal
       :is-open="isChatbotOpen"
-      :initial-character-id="currentPet.id"
+      :current-character-id="currentPet.id"
       @close="closeChatbot"
+      @character-change="onCharacterChange"
     />
   </div>
 </template>
@@ -74,11 +83,7 @@
 import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
 import ChatbotModal from './ChatbotModal.vue'
-
-import panelinImg   from '../assets/pets/Panelin.webp'
-import nubecinImg   from '../assets/pets/Nubecin.webp'
-import hidraulinImg from '../assets/pets/Hidraulin.webp'
-import abaniquinImg from '../assets/pets/Abaniquin.webp'
+import { characters } from '../utils/characters'
 
 const isVisible = ref(true)
 const showAppearanceSelector = ref(false)
@@ -87,30 +92,34 @@ const isChatbotOpen = ref(false)
 const petWrapperRef = ref<HTMLElement | null>(null)
 const speechBubbleRef = ref<HTMLElement | null>(null)
 
-const pets = [
-  { id: 'panelin',   src: panelinImg,   name: 'Panelín' },
-  { id: 'nubecin',   src: nubecinImg,   name: 'Nubecín' },
-  { id: 'hidraulin', src: hidraulinImg, name: 'Hidraulín' },
-  { id: 'abaniquin', src: abaniquinImg, name: 'Abaniquín' },
-]
+// Construimos la lista de mascotas desde el objeto characters para no duplicar datos
+const pets = Object.values(characters).map((c) => ({
+  id: c.id,
+  src: c.src,
+  name: c.name,
+  shortName: c.shortName,
+  color: c.bubbleColor,
+}))
 
+// ── Estado global de mascota ─────────────────────────────────
+// currentPet es la fuente de verdad para toda la app.
+// Al cambiarla aquí O desde el modal, ambos componentes se sincronizan.
 const currentPet = ref(pets[0])
 
 const messages = [
-  '¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando!',
-  'La transición energética necesita tu voz. ¡Inscríbete hoy mismo!',
-  '¿Listx para hacer historia? Revisa las bases y postúlate.',
+  '¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>!',
+  'La transición energética necesita tu voz. ¡Inscríbete hoy mismo <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>!',
+  '¿Listx para hacer historia? Revisa las bases y postúlate aquí: <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>',
   'Cualquier duda con tu registro, escríbenos a <br><a href="mailto:hxnf@practica.lat" class="pet-link">hxnf@practica.lat</a>',
   'Conoce más de nuestro movimiento en Instagram: <br><a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">@Hackersxnf</a>',
-  '¡No lo dejes para el último día! Completa tu postulación con tiempo.',
-  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un DM!',
-  'Únete a la red de juventudes por el clima. ¡Tu participación es clave!'
+  '¡No lo dejes para el último día! Completa tu postulación con tiempo <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>.',
+  '¿Tienes dudas sobre la convocatoria? ¡Mándanos un <br><a href="https://ig.me/m/hackersxnf" target="_blank" class="pet-link">DM en Instagram</a>!',
 ]
 
 const currentMessage = ref(messages[0])
 let messageInterval: number | null = null
 
-// ── Drag ────────────────────────────────────────────────────
+// ── Drag ─────────────────────────────────────────────────────
 const dragOffset = ref({ x: 0, y: 0 })
 let isDragging = false
 let isMoved = false
@@ -160,11 +169,8 @@ const stopDrag = () => {
   window.removeEventListener('touchend', stopDrag)
 }
 
-// Clic en la mascota: si no se arrastró, abrir chatbot
 const handlePetClick = () => {
-  if (!isMoved) {
-    openChatbot()
-  }
+  if (!isMoved) openChatbot()
 }
 
 // ── Animaciones ──────────────────────────────────────────────
@@ -224,10 +230,16 @@ onBeforeUnmount(() => {
   if (messageInterval) clearInterval(messageInterval)
 })
 
-// ── Acciones ────────────────────────────────────────────────
+// ── Acciones ─────────────────────────────────────────────────
 const selectPet = (pet: typeof pets[0]) => {
   currentPet.value = pet
   showAppearanceSelector.value = false
+}
+
+// Cuando el modal cambia de personaje, actualizamos currentPet aquí también
+const onCharacterChange = (id: string) => {
+  const found = pets.find((p) => p.id === id)
+  if (found) currentPet.value = found
 }
 
 const resetPet = () => {
@@ -252,11 +264,15 @@ const closeChatbot = () => {
 </script>
 
 <style scoped>
+/* ─────────────────────────────────────────────────────────────
+   z-index alto para flotar sobre iframes y otros elementos
+   de la página (videos embebidos, mapas, etc.)
+───────────────────────────────────────────────────────────── */
 .summon-pet-btn {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  z-index: 9998;
+  z-index: 2147483640; /* máximo posible, encima de iframes */
   background-color: var(--color-blue);
   color: var(--color-white);
   font-family: var(--font-parkinsans);
@@ -278,7 +294,7 @@ const closeChatbot = () => {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  z-index: 9999;
+  z-index: 2147483640; /* encima de iframes */
   touch-action: none;
   opacity: 0;
 }
@@ -291,7 +307,7 @@ const closeChatbot = () => {
   position: relative;
 }
 
-/* ── Selector de mascota ── */
+/* ── Selector de apariencia ── */
 .pet-selector {
   position: absolute;
   bottom: 100%;
@@ -304,7 +320,7 @@ const closeChatbot = () => {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  z-index: 20;
+  z-index: 2147483641;
 }
 
 .appearance-selector {
@@ -321,28 +337,49 @@ const closeChatbot = () => {
 
 .pet-options {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
-.pet-option-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+.pet-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 6px 8px;
   cursor: pointer;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.05);
-  transition: transform 0.2s, background-color 0.2s;
-  border: 2px solid transparent;
+  transition: all 0.18s;
 }
 
-.pet-option-img:hover {
-  transform: scale(1.15);
-  background-color: rgba(255, 255, 255, 0.12);
+.pet-option-btn:hover {
+  border-color: var(--pet-color, #E0FA49);
+  background-color: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
 }
 
 .active-pet {
-  background-color: rgba(11, 227, 64, 0.15);
-  border-color: var(--color-accent);
+  border-color: var(--pet-color, #E0FA49) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.pet-option-img {
+  /* Tamaño estandarizado — todas las mascotas igual */
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.pet-option-name {
+  font-family: var(--font-parkinsans);
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--color-white);
+  text-align: center;
+  white-space: nowrap;
 }
 
 /* ── Burbuja de mensaje ── */
@@ -406,7 +443,11 @@ const closeChatbot = () => {
   transition: all 0.2s;
   white-space: nowrap;
 }
-
+.action-btn--primary {
+  background-color: var(--color-black);
+  height: 30px;
+  width: 80px;
+}
 .action-btn:hover {
   background-color: #222;
   transform: scale(1.04);
@@ -427,6 +468,7 @@ const closeChatbot = () => {
   transform: scale(1.04);
 }
 
+/* Pico de la burbuja */
 .speech-bubble::after {
   content: '';
   position: absolute;
@@ -472,7 +514,7 @@ const closeChatbot = () => {
   justify-content: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s;
-  z-index: 10;
+  z-index: 2147483642;
   pointer-events: auto;
 }
 
@@ -480,10 +522,24 @@ const closeChatbot = () => {
   transform: scale(1.15) rotate(90deg);
 }
 
-/* ── Imagen de mascota ── */
+/* ── Imagen de mascota ──────────────────────────────────────
+   Contenedor con tamaño fijo para que todas las mascotas
+   ocupen el mismo espacio visual independientemente de sus
+   proporciones originales.
+───────────────────────────────────────────────────────────── */
+.pet-image-container {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .pet-image {
-  width: clamp(130px, 16vw, 220px);
-  height: auto;
+  /* object-fit: contain garantiza que ninguna se recorte */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   cursor: pointer;
   -webkit-user-drag: none;
   user-select: none;
@@ -505,10 +561,19 @@ const closeChatbot = () => {
   100% { transform: translateY(0px); }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Móvil — mascota más pequeña y perfectamente estandarizada
+───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .pet-draggable-wrapper {
     bottom: 15px;
     right: 15px;
+  }
+
+  /* Todas las mascotas: mismo cuadro fijo en móvil */
+  .pet-image-container {
+    width: 88px;
+    height: 88px;
   }
 
   .speech-bubble {
@@ -522,13 +587,9 @@ const closeChatbot = () => {
     padding: 4px 9px;
   }
 
-  .pet-image {
-    width: 110px;
-  }
-
   .pet-option-img {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 }
 </style>

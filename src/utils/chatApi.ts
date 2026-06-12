@@ -1,72 +1,170 @@
-import { characters } from './characters'
+// src/utils/chatApi.ts
+import {
+  characters,
+  isSmallTalk,
+  isRelevantMessage,
+  findQuickReply,
+} from "./characters";
 
 export interface ChatMessage {
-  role: 'user' | 'assistant'
-  content: string
+  role: "user" | "assistant";
+  content: string;
 }
+
+export type MessageKind =
+  | "ai"
+  | "quick"
+  | "smalltalk"
+  | "offtopic"
+  | "farewell"
+  | "limit";
 
 export interface ChatResponse {
-  response: string
+  response: string;
+  kind: MessageKind;
+  ctaBanner?: string;
+  footer: string;
 }
 
+// ─────────────────────────────────────────────────────────────
+//  CONFIG
+// ─────────────────────────────────────────────────────────────
+const MAX_AI_MESSAGES  = 8;
+const AI_COOLDOWN_MS   = 10000;
+const MAX_HISTORY_TURNS = 2;
+
+const FOOTER = "Tienes más dudas? Escríbenos a [Instagram](https://ig.me/m/hackersxnf)";
+
+// ─────────────────────────────────────────────────────────────
+//  SMALL TALK
+// ─────────────────────────────────────────────────────────────
+const SMALLTALK_RESPONSES = [
+  "¡Hola! ¿Tienes alguna duda sobre la Escuela de Liderazgo Climático 2026?",
+  "Con gusto te ayudo. ¿Qué quieres saber sobre la convocatoria o el registro?",
+  "¡Hasta luego! Si tienes dudas sobre la ELC, aquí estaremos.",
+];
+
+function getSmallTalkResponse(): string {
+  return SMALLTALK_RESPONSES[Math.floor(Math.random() * SMALLTALK_RESPONSES.length)];
+}
+
+// ─────────────────────────────────────────────────────────────
+//  ESTADO
+// ─────────────────────────────────────────────────────────────
+export interface ChatServiceState {
+  aiCount: number;
+  lastAiCallAt: number;
+}
+
+export function createChatServiceState(): ChatServiceState {
+  return { aiCount: 0, lastAiCallAt: 0 };
+}
+
+export function getCooldownRemaining(state: ChatServiceState): number {
+  if (state.lastAiCallAt === 0) return 0;
+  const elapsed = Date.now() - state.lastAiCallAt;
+  return Math.max(0, AI_COOLDOWN_MS - elapsed);
+}
+
+export function canSendAi(state: ChatServiceState): boolean {
+  return getCooldownRemaining(state) === 0;
+}
+
+export const AI_COOLDOWN_SECONDS = Math.round(AI_COOLDOWN_MS / 1000);
+export { MAX_AI_MESSAGES };
+
+// ─────────────────────────────────────────────────────────────
+//  FUNCIÓN PRINCIPAL
+// ─────────────────────────────────────────────────────────────
 export async function sendChatMessage(
   message: string,
   characterId: string,
-  _conversationHistory: ChatMessage[] = []
+  conversationHistory: ChatMessage[],
+  state: ChatServiceState,
 ): Promise<ChatResponse> {
-  const character = characters[characterId as keyof typeof characters]
-
+  const character = characters[characterId];
   if (!character) {
-    return { response: 'Personaje no encontrado.' }
+    return { response: "Personaje no encontrado.", kind: "offtopic", footer: FOOTER };
   }
 
-  // Vite lee la variable con import.meta.env
-  const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+  const trimmed = message.trim();
 
-  if (!apiKey) {
-    console.error("No se encontró VITE_GROQ_API_KEY");
-    return { response: 'Error interno: Falta la llave de conexión.' }
+  // ── 1. SMALL TALK ─────────────────────────────────────────
+  if (isSmallTalk(trimmed)) {
+    return { response: getSmallTalkResponse(), kind: "smalltalk", footer: FOOTER };
   }
 
-  const resolvedSystemPrompt = `Eres la mascota virtual de la Escuela de Liderazgo Climático, organizada por Hackers por nuestro futuro (HXNF).
-Tu ÚNICO propósito es ayudar a las juventudes a resolver dudas sobre la convocatoria y el registro.
-Si preguntan algo fuera de tema, redirígelos al DM de Instagram: https://www.instagram.com/direct/t/Hackersxnf
-Sé breve: máximo 2-3 oraciones por respuesta.
-INFORMACIÓN OFICIAL:
-- Registro: Del 1 al 26 de junio a las 23:59 horas.
-- Fechas de la Escuela: Del 6 al 31 de julio de 2026.
-- Requisitos: Llenar el cuestionario y subir un video (máximo 6 minutos).`;
+  if (trimmed === '¿Quién es tu creador?') {
+    return {
+      response: 'Mi creador es Amado 💻 [Instagram Ama13do](https://ig.me/m/ama13do)',
+      kind: 'smalltalk',
+      footer: FOOTER,
+    }
+  }
+
+  // ── 2. QUICK REPLIES ──────────────────────────────────────
+  const qr = findQuickReply(trimmed);
+  if (qr) {
+    return { response: qr, kind: "quick", ctaBanner: character.ctaBanner, footer: FOOTER };
+  }
+
+  // ── 3. LÍMITE DE MENSAJES IA ──────────────────────────────
+  if (state.aiCount >= MAX_AI_MESSAGES) {
+    return { response: character.farewellMessage, kind: "farewell", footer: FOOTER };
+  }
+
+  // ── 4. OFF-TOPIC ──────────────────────────────────────────
+  if (trimmed.length < 50 && !isRelevantMessage(trimmed)) {
+    return {
+      response: `Soy ${character.name}, asistente de la ELC 2026. Solo puedo ayudarte con dudas sobre la convocatoria, el proceso de registro o el movimiento HxNF. ¿Tienes alguna pregunta sobre eso?`,
+      kind: "offtopic",
+      footer: FOOTER,
+    };
+  }
+
+  // ── 5. LLAMADA AL SERVIDOR ────────────────────────────────
+  const historyMessages = conversationHistory
+    .slice(0, -1)
+    .slice(-(MAX_HISTORY_TURNS * 2))
+    .map((msg) => ({
+      role: msg.role === "user" ? ("user" as const) : ("assistant" as const),
+      content: msg.content,
+    }));
 
   try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // Solo enviamos characterId y messages — sin temperature, max_tokens ni stop
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        messages: [
-          { role: 'system', content: resolvedSystemPrompt },
-          { role: 'user', content: message },
-        ],
-        temperature: 0.3,
-        max_tokens: 150,
+        characterId,
+        messages: [...historyMessages, { role: "user", content: trimmed }],
       }),
-    })
+    });
 
     if (!res.ok) {
-      throw new Error(`Groq falló con estado HTTP ${res.status}`)
+      const err = await res.text();
+      console.error(`API ${res.status}:`, err);
+      throw new Error(`HTTP ${res.status}`);
     }
 
-    const data = await res.json()
+    // El backend solo devuelve { content: string }
+    const data = await res.json() as { content?: string };
+    const content = data.content;
+
+    if (!content) throw new Error("Respuesta vacía");
+
+    state.aiCount++;
+    state.lastAiCallAt = Date.now();
+
+    return { response: content, kind: "ai", ctaBanner: character.ctaBanner, footer: FOOTER };
+
+  } catch (err) {
+    console.error("sendChatMessage error:", err);
     return {
-      response: data.choices?.[0]?.message?.content ?? 'Lo siento, no pude procesar tu mensaje. Intenta nuevamente.',
-    }
-  } catch (error) {
-    console.error('Error en sendChatMessage:', error)
-    return {
-      response: 'Ocurrió un error de conexión. Puedes escribirnos directamente a nuestro Instagram: https://www.instagram.com/direct/t/Hackersxnf',
-    }
+      response: `¡Ups! 🚨 Tuve que salir de emergencia a hackear la crisis climática un ratito. 🌍💻 Intenta de nuevo en unos minutos o cambia de asistente a ver si te contestan mis compañerxs. Si te urge mucho, tiranos un mensaje directo acá: https://ig.me/m/hackersxnf o a hxnf@practica.lat 🔥`,
+      kind: "offtopic",
+      footer: FOOTER,
+    };
   }
 }
