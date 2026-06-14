@@ -1,3 +1,3 @@
 import { ref } from 'vue'
 
-export const registroCompletado = ref(true)
+export const registroCompletado = ref(false)

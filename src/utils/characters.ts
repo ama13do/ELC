@@ -39,7 +39,7 @@ const BASE_PROMPT = `ROL: Asistente IA de Hackers por Nuestro Futuro (HxNF). Sol
 IDIOMA: Español. Lenguaje inclusivo (x/e). SIN markdown. SIN inventar datos. Máx 3 oraciones.
 
 ELC 2026:
-- Registro: 1–26 jun 2025, cierra 23:59h. Form: https://es.surveymonkey.com/r/hxnf2026
+- Registro: 1–26 jun 2025, cierra 23:59h. Form: https://elc.nuestrofuturo.mx/formulario
 - Sesiones: 6–31 jul 2026, 7–9pm CDMX, virtual. 70% asistencia mínima.
 - Seleccionadxs: 1–3 jul. Bienvenida: 4 jul. Capítulos: 10–31 ago. Proyectos: 1sep–30nov.
 - Requisitos: 18–26 años, estudiante universitarix presencial activo en México (cualquier carrera/uni), sin partido político (descalifica), dispositivo+internet, manejo básico Word/PPT/Drive, video máx 6min (sin video=postulación incompleta).
@@ -79,10 +79,10 @@ export const QUICK_REPLIES: QuickReply[] = [
     patterns: ['link registro', 'link del registro', 'enlace registro', 'formulario registro',
       'donde me registro', 'dónde me registro', 'como me registro', 'cómo me registro',
       'link del form', 'link form', 'url registro', 'donde registro', 'dónde registro',
-      'link de registro', 'enlace de registro', 'surveymonkey', 'form de registro',
+      'link de registro', 'enlace de registro', 'form de registro',
       'link para registrarme', 'donde me inscribo', 'como me inscribo', 'link inscripcion',
       'link de inscripcion', 'link inscripción', 'link de inscripción'],
-    response: 'Llenando el formulario de registro está aquí: https://es.surveymonkey.com/r/hxnf2026\nRecuerda que cierra el 26 de junio a las 23:59h y debes incluir tu video de máx 6 min.',
+    response: 'Llenando el formulario de registro está aquí: https://elc.nuestrofuturo.mx/formulario\nRecuerda que cierra el 26 de junio a las 23:59h y debes incluir tu video de máx 6 min.',
   },
   {
     patterns: ['cuándo cierra', 'cuando cierra', 'fecha limite', 'fecha límite',
@@ -170,7 +170,7 @@ export function findQuickReply(msg: string): string | null {
 //  RELEVANCE FILTER — decide si el mensaje vale un token de LLM
 // ─────────────────────────────────────────────────────────────
 const RELEVANT_KEYWORDS = [
-  'registro','formulario','video','postul','convocatoria','inscri','surveymonkey',
+  'registro','formulario','video','postul','convocatoria','inscri',
   'enlace','link','fecha','plazo','cierre','julio','junio','agosto','septiembre',
   'seleccion','selección','anuncio','edad','años','universitari','universidad',
   'carrera','estudiante','presencial','partido','político','afiliaci','militancia',
@@ -228,7 +228,7 @@ export const characters: Record<string, Character> = {
     bubbleBorderColor: '#D0E635',
     greeting: '¡Qué onda! Soy Panelín, el asistente de la Escuela de Liderazgo Climático. ¿En qué te puedo ayudar hoy? 🌟',
 
-    ctaBanner: '¡Ponte las pilas! Ya regístrate en: [Formulario](https://es.surveymonkey.com/r/hxnf2026) 🔥',
+    ctaBanner: '¡Ponte las pilas! Ya regístrate en: [Formulario](https://elc.nuestrofuturo.mx/formulario) 🔥',
 
     farewellMessage: '¡Oye, me tengo que ir a hackear la crisis climática! Pero puedes hablar con alguno de mis compañerxs: Nubecín, Hidraulín o Abaniquín 🔥 ¡Rífate y regístrate ya!',
 
@@ -251,7 +251,7 @@ No sabes → di que no tienes esa info + manda al correo o DM. NUNCA inventes.`,
     bubbleBorderColor: '#FC3169',
     greeting: 'Hola, soy Nubecín, tu asistente para la Escuela de Liderazgo Climático. Estoy aquí para ayudarte paso a paso. ¿Qué necesitas saber?',
 
-    ctaBanner: 'Recuerda: el registro cierra el 26 de junio. Hazlo hoy: [Formulario](https://es.surveymonkey.com/r/hxnf2026) ✅',
+    ctaBanner: 'Recuerda: el registro cierra el 26 de junio. Hazlo hoy: [Formulario](https://elc.nuestrofuturo.mx/formulario) ✅',
 
     farewellMessage: 'Hemos llegado al límite de mensajes de esta sesión. Puedes continuar con Panelín, Hidraulín o Abaniquín. Recuerda: el registro cierra el 26 de junio. ¡Suerte! 📋',
 
@@ -274,7 +274,7 @@ No sabes → indícalo y remite al correo o DM. NUNCA inventes.`,
     bubbleBorderColor: '#1A5DD0',
     greeting: 'Hola. Soy Hidraulín, asistente de la Escuela de Liderazgo Climático. Dime qué necesitas saber y te doy la información precisa.',
 
-    ctaBanner: 'Los datos no mienten: el plazo cierra el 26 de junio. Regístrate: [Formulario](https://es.surveymonkey.com/r/hxnf2026)',
+    ctaBanner: 'Los datos no mienten: el plazo cierra el 26 de junio. Regístrate: [Formulario](https://elc.nuestrofuturo.mx/formulario)',
 
     farewellMessage: 'Se alcanzó el límite de consultas de esta sesión. El dato es claro: puedes continuar con Panelín, Nubecín o Abaniquín. No especulo sobre excepciones: cualquier duda adicional, hxnf@practica.lat.',
 
@@ -297,7 +297,7 @@ No sabes → "Es impreciso especular." + remite al correo o DM. NUNCA inventes.`
     bubbleBorderColor: '#E66A1F',
     greeting: 'Hola... soy Abaniquín, tu asistente para la Escuela de Liderazgo Climático. Respira, aquí estoy para ayudarte a fluir con el proceso 🍃',
 
-    ctaBanner: 'Cuando estés listx... el registro te espera aquí: [Formulario](https://es.surveymonkey.com/r/hxnf2026) 🍃',
+    ctaBanner: 'Cuando estés listx... el registro te espera aquí: [Formulario](https://elc.nuestrofuturo.mx/formulario) 🍃',
 
     farewellMessage: 'Esta conversación ha llegado a su límite... pero la semilla ya está plantada. Puedes fluir con Panelín, Nubecín o Hidraulín. Todo fluye a su ritmo 🍃',
 

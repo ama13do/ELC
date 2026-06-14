@@ -16,7 +16,7 @@
         </p>
 
         <div class="hero-buttons">
-          <BaseButton variant="primary" href="https://es.surveymonkey.com/r/hxnf2026">REGÍSTRATE AQUÍ</BaseButton>
+          <BaseButton variant="primary" href="/formulario">REGÍSTRATE AQUÍ</BaseButton>
           <BaseButton variant="secondary" href="https://nuestrofuturo.mx/hxnf">QUIÉNES SOMOS</BaseButton>
         </div>
       </div>

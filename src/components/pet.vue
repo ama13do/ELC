@@ -107,12 +107,12 @@ const pets = Object.values(characters).map((c) => ({
 const currentPet = ref(pets[0])
 
 const messages = [
-  '¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>!',
-  'La transición energética necesita tu voz. ¡Inscríbete hoy mismo <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>!',
-  '¿Listx para hacer historia? Revisa las bases y postúlate aquí: <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>',
+  '¿Ya te registraste en la Escuela de Liderazgo Climático? ¡Te estamos esperando <br><a href="/formulario" class="pet-link">Formulario</a>!',
+  'La transición energética necesita tu voz. ¡Inscríbete hoy mismo <br><a href="/formulario" class="pet-link">Formulario</a>!',
+  '¿Listx para hacer historia? Revisa las bases y postúlate aquí: <br><a href="/formulario" class="pet-link">Formulario</a>',
   'Cualquier duda con tu registro, escríbenos a <br><a href="mailto:hxnf@practica.lat" class="pet-link">hxnf@practica.lat</a>',
   'Conoce más de nuestro movimiento en Instagram: <br><a href="https://www.instagram.com/Hackersxnf/" target="_blank" class="pet-link">@Hackersxnf</a>',
-  '¡No lo dejes para el último día! Completa tu postulación con tiempo <br><a href="https://es.surveymonkey.com/r/hxnf2026" target="_blank" class="pet-link">Formulario</a>.',
+  '¡No lo dejes para el último día! Completa tu postulación con tiempo <br><a href="/formulario" class="pet-link">Formulario</a>.',
   '¿Tienes dudas sobre la convocatoria? ¡Mándanos un <br><a href="https://ig.me/m/hackersxnf" target="_blank" class="pet-link">DM en Instagram</a>!',
 ]
 

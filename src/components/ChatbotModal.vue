@@ -365,8 +365,8 @@ watch(() => messages.value.length, () => nextTick(() => scrollToBottom()))
 .chatbot-modal {
   display: flex;
   flex-direction: column;
-  width: min(100%, 500px);
-  height: 600px;
+  width: min(100%, 580px);
+  height: 720px;
   max-height: calc(100svh - 48px);
   background-color: var(--color-black);
   border-radius: 20px;
