@@ -154,7 +154,10 @@ const isCompleted = ref(false)
 let tempLoadedData: Partial<FormData> | null = null
 
 let saveTimeout: ReturnType<typeof setTimeout> | null = null
+let skipLocalStorage = false
+
 function saveToLocalStorage() {
+  if (skipLocalStorage) return
   if (saveTimeout) clearTimeout(saveTimeout)
   saveTimeout = setTimeout(() => {
     try {
@@ -194,8 +197,8 @@ function formDataToDbRow(data: FormData) {
   const row: Record<string, any> = {
     paso_actual: data.paso_actual,
     finalizado: data.finalizado,
-    nombres: data.nombres || null,
-    primer_apellido: data.primer_apellido || null,
+    nombres: data.nombres || '(pendiente)',
+    primer_apellido: data.primer_apellido || '(pendiente)',
     segundo_apellido: data.segundo_apellido || null,
     email_principal: data.email_principal,
     telefono_celular: `${data.telefono_codigo_pais} ${data.telefono_numero_local}`.trim() || null,
@@ -413,7 +416,7 @@ function validateSection(step: number): string[] {
 }
 
 async function saveToSupabase(): Promise<boolean> {
-  console.log("Datos enviados a Supabase:", JSON.stringify(formData, null, 2));
+  //console.log("Datos enviados a Supabase:", JSON.stringify(formData, null, 2));
   if (!formData.email_principal) return false
 
   try {
@@ -550,68 +553,90 @@ export function useFormStore() {
     validationErrors.value = errors
     if (errors.length > 0) return false
 
+    // 1. Query DB for this email
+    const fullPhoneStr = formData.telefono_codigo_pais + formData.telefono_numero_local
+    const result = await lookupByEmailAndPhone(formData.email_principal, fullPhoneStr)
+
+    // Save credentials before resetting
+    const email = formData.email_principal
+    const code = formData.telefono_codigo_pais
+    const num = formData.telefono_numero_local
+
+    // 2. If DB found a record (completed, match, or mismatch), DB is the source of truth.
+    //    Always clear localStorage to avoid ID conflicts.
+    if (result.state !== 'not_found' && result.data) {
+      // Clear localStorage unconditionally — DB wins
+      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_STEP_KEY)
+
+      // Reset local formData to defaults + credentials
+      Object.assign(formData, createDefaultFormData())
+      formData.email_principal = email
+      formData.telefono_codigo_pais = code
+      formData.telefono_numero_local = num
+
+      if (result.state === 'completed') {
+        skipLocalStorage = true
+        Object.assign(formData, { ...createDefaultFormData(), ...result.data })
+        isCompleted.value = true
+        currentStep.value = Math.min(formData.paso_actual, totalSteps - 1)
+        startAutoSave()
+        return true
+      }
+
+      if (result.state === 'in_progress_match') {
+        skipLocalStorage = true
+        // Phone matches — restore progress directly from DB
+        Object.assign(formData, { ...createDefaultFormData(), ...result.data })
+        currentStep.value = Math.min(formData.paso_actual, totalSteps - 1)
+        startAutoSave()
+        return true
+      }
+
+      if (result.state === 'in_progress_mismatch') {
+        // Email found but phone differs — ask user
+        requiresRestoreConfirm.value = true
+        tempLoadedData = result.data
+        return false
+      }
+    }
+
+    // 3. DB returned not_found — this is a brand-new registration.
+    //    Check localStorage for matching local draft.
+    skipLocalStorage = false
     let localSaved: FormData | null = null
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
+
       if (raw) {
         const parsed = JSON.parse(raw)
         const localFullPhone = (parsed.telefono_codigo_pais + parsed.telefono_numero_local).replace(/\s+/g, '')
-        const inputFullPhone = (formData.telefono_codigo_pais + formData.telefono_numero_local).replace(/\s+/g, '')
+        const inputFullPhone = (code + num).replace(/\s+/g, '')
 
-        if (parsed.email_principal.toLowerCase() === formData.email_principal.toLowerCase() && localFullPhone === inputFullPhone) {
+        if (parsed.email_principal?.toLowerCase() === email.toLowerCase() && localFullPhone === inputFullPhone) {
           localSaved = parsed
         } else {
-          // Mismatch: clear old local storage to prevent mixing data
           localStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(STORAGE_STEP_KEY)
         }
       }
     } catch { }
 
-    const fullPhoneStr = formData.telefono_codigo_pais + formData.telefono_numero_local
-    const result = await lookupByEmailAndPhone(formData.email_principal, fullPhoneStr)
-
-    const email = formData.email_principal
-    const code = formData.telefono_codigo_pais
-    const num = formData.telefono_numero_local
+    // Reset formData siempre primero
     Object.assign(formData, createDefaultFormData())
     formData.email_principal = email
     formData.telefono_codigo_pais = code
     formData.telefono_numero_local = num
 
-    if (result.state === 'completed' && result.data) {
-      Object.assign(formData, { ...createDefaultFormData(), ...result.data })
-      isCompleted.value = true
-      currentStep.value = Math.min(formData.paso_actual, totalSteps - 1)
-      startAutoSave()
-      return true
-    }
-
-    if (result.state === 'in_progress_match' && result.data) {
-      if (localSaved) {
-        Object.assign(formData, localSaved)
-        let stepFromLocal = 1
-        try {
-          const rawStep = localStorage.getItem(STORAGE_STEP_KEY)
-          if (rawStep) stepFromLocal = parseInt(rawStep, 10) || 1
-        } catch { }
-        currentStep.value = Math.min(stepFromLocal, totalSteps - 1)
-      } else {
-        Object.assign(formData, { ...createDefaultFormData(), ...result.data })
-        currentStep.value = Math.min(formData.paso_actual, totalSteps - 1)
-      }
-      startAutoSave()
-      return true
-    }
-
-    if (result.state === 'in_progress_mismatch' && result.data) {
-      requiresRestoreConfirm.value = true
-      tempLoadedData = result.data
-      return false
+    if (localSaved && localSaved.id) {
+      localSaved.id = null
     }
 
     if (localSaved) {
       Object.assign(formData, localSaved)
+      formData.email_principal = email
+      formData.telefono_codigo_pais = code
+      formData.telefono_numero_local = num
       let stepFromLocal = 1
       try {
         const rawStep = localStorage.getItem(STORAGE_STEP_KEY)
@@ -619,9 +644,17 @@ export function useFormStore() {
       } catch { }
       currentStep.value = Math.min(stepFromLocal, totalSteps - 1)
     } else {
+      // Nuevo registro — limpiar localStorage por si quedó algo y resetear todo
+      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_STEP_KEY)
+      Object.assign(formData, createDefaultFormData())
+      formData.email_principal = email
+      formData.telefono_codigo_pais = code
+      formData.telefono_numero_local = num
       currentStep.value = 1
       formData.paso_actual = 1
     }
+
     await saveToSupabase()
     startAutoSave()
     return true
@@ -629,17 +662,29 @@ export function useFormStore() {
 
   function confirmRestore(accept: boolean) {
     requiresRestoreConfirm.value = false
+    const email = formData.email_principal
+    const code = formData.telefono_codigo_pais
+    const num = formData.telefono_numero_local
+
     if (accept && tempLoadedData) {
+      // Restore from DB — use DB data entirely
       Object.assign(formData, { ...createDefaultFormData(), ...tempLoadedData })
       currentStep.value = Math.min(formData.paso_actual, totalSteps - 1)
     } else {
+      // Start fresh but keep the DB id so we UPDATE instead of INSERT (avoids unique constraint)
+      Object.assign(formData, createDefaultFormData())
+      formData.email_principal = email
+      formData.telefono_codigo_pais = code
+      formData.telefono_numero_local = num
       currentStep.value = 1
       formData.paso_actual = 1
-      formData.telefono_numero_local = formatPhone(formData.telefono_numero_local)
       if (tempLoadedData?.id) {
         formData.id = tempLoadedData.id
       }
     }
+    // Clear old localStorage to avoid stale data
+    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(STORAGE_STEP_KEY)
     tempLoadedData = null
     startAutoSave()
     saveToSupabase()
