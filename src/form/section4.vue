@@ -1,7 +1,7 @@
 <template>
   <div class="form-section">
-    <h2 class="form-section__title">Experiencia, Liderazgo y Trabajo en Equipo</h2>
-    <p class="form-section__subtitle">Cuéntanos sobre tus experiencias previas</p>
+    <h2 class="form-section__title">SECCIÓN 4 — Experiencia, Liderazgo y Trabajo en Equipo</h2>
+    <p class="form-section__subtitle">Cuéntanos sobre tus experiencias previas en activismo, liderazgo o trabajo comunitario. No importa si son pocas o muchas: queremos conocer tu trayectoria y cómo te relacionas con el trabajo colectivo.</p>
 
     <!-- P27: Experiencias de activismo -->
     <FormField
@@ -23,18 +23,19 @@
 
     <!-- P28: Detalle experiencia (opcional) -->
     <FormField
-      label="Si quisieras contarnos más sobre alguna de tus experiencias, te dejamos este espacio"
+      label="Si quisieras contarnos más sobre alguna de tus experiencias, te dejamos este espacio para que lo redactes en un párrafo"
       type="textarea"
       v-model="formData.experiencia_detalles"
       placeholder="Comparte lo que quieras..."
+      noteText="Puedes usar estas preguntas como guía: ¿Qué hiciste y en qué consistía el proyecto o actividad? ¿Cuál fue tu rol específico? ¿Qué lograste o aprendiste? ¿A qué te dedicas actualmente?"
     />
 
     <!-- P29: Experiencia relevante -->
     <FormField
-      label="Si respondiste la pregunta anterior, cuéntanos brevemente sobre la experiencia"
+      label="Si respondiste la pregunta anterior, cuéntanos brevemente sobre la experiencia que consideres más relevante"
       type="textarea"
       v-model="formData.experiencia_relevante"
-      placeholder="Describe brevemente tu experiencia..."
+      placeholder="Describe brevemente tu experiencia más relevante..."
     />
 
     <!-- P30: Pertenece a colectivo -->
@@ -153,14 +154,15 @@ const opcionesRoles = [
   font-family: var(--font-parkinsans);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: #fff;
+  color: #FC3169;
   margin: 0 0 0.35rem;
 }
 
 .form-section__subtitle {
   font-family: var(--font-myriad);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 2rem;
+  line-height: 1.6;
 }
 </style>

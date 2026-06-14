@@ -29,20 +29,22 @@
       placeholder="Escribe tu segundo apellido (opcional)"
     />
 
-    <!-- P4: Email principal (ya no es editable aquí, se llenó al inicio) -->
+    <!-- P4: Email principal -->
     <FormField
-      label="Correo electrónico principal (A este correo te contactaremos con información del proceso de selección)"
+      label="Correo electrónico principal"
       type="email"
       v-model="formData.email_principal"
       placeholder="tu.correo@ejemplo.com"
       required
-      disabled
-      helpText="Este campo se estableció al iniciar."
+      noteText="A este correo te contactaremos con información del proceso de selección y, en caso de resultar seleccionadx"
     />
 
-    <!-- P5: Teléfono celular -->
+    <!-- P5: Teléfono celular con validación real-time -->
     <div class="form-field-custom">
-      <label class="form-field__label">Teléfono celular (Incluye un número con WhatsApp activo) <span class="form-field__required">*</span></label>
+      <label class="form-field__label">
+        <span class="form-field__bullet form-field__bullet--required"></span>
+        Teléfono celular <span class="form-field__required">*</span>
+      </label>
       <p class="form-field__help">A 10 dígitos.</p>
       <div class="phone-inputs-group">
           <select v-model="formData.telefono_codigo_pais" class="phone-code-select">
@@ -56,10 +58,13 @@
           placeholder="10 dígitos"
           maxlength="10"
           class="phone-local-input"
-          @input="formData.telefono_numero_local = formData.telefono_numero_local.replace(/\D/g, '')"
+          :class="{ 'input--error': phoneError }"
+          @input="onPhoneInput"
           required
         />
       </div>
+      <p class="form-field__note">Incluye número con WhatsApp activo. Esto nos permitirá contactarte rápidamente si resultas seleccionadx</p>
+      <p v-if="phoneError" class="realtime-error">{{ phoneError }}</p>
     </div>
 
     <!-- P6: Email alternativo -->
@@ -71,12 +76,29 @@
     />
 
     <!-- P7: Teléfono fijo / alternativo -->
-    <FormField
-      label="Número de teléfono fijo o alternativo"
-      type="tel"
-      v-model="formData.telefono_fijo"
-      placeholder="A 10 dígitos"
-    />
+    <div class="form-field-custom">
+      <label class="form-field__label">
+        <span class="form-field__bullet form-field__bullet--optional"></span>
+        Número de teléfono fijo o alternativo
+      </label>
+      <p class="form-field__help">A 10 dígitos.</p>
+      <div class="phone-inputs-group">
+          <select v-model="fixedPhoneCode" class="phone-code-select">
+            <option v-for="(country, index) in opcionesCodigoPais" :key="index" :value="country.value">
+              {{ country.label }}
+            </option>
+          </select>
+        <input
+          type="tel"
+          v-model="fixedPhoneLocal"
+          placeholder="10 dígitos"
+          maxlength="10"
+          class="phone-local-input"
+          @input="onFixedPhoneInput"
+        />
+      </div>
+      <p class="form-field__note">Incluye la lada de tu estado si se trata de teléfono fijo</p>
+    </div>
 
     <!-- P8: Fecha nacimiento -->
     <FormField
@@ -84,6 +106,8 @@
       type="date"
       v-model="formData.fecha_nacimiento"
       required
+      noteText="Debes tener entre 18 y 26 años cumplidos al momento de enviar tu registro para ser elegible"
+      noteColor="#E0FA49"
     />
 
     <!-- P9: Estado residencia -->
@@ -113,13 +137,14 @@
       required
     />
 
-    <!-- P12: Género -->
+    <!-- P12: Género (ahora select) -->
     <FormField
       label="¿Con cuál género te identificas?"
-      type="radio"
+      type="select"
       v-model="formData.genero"
       :options="opcionesGenero"
       required
+      placeholder="Selecciona una opción"
     />
 
     <!-- P13: Identidades -->
@@ -170,18 +195,76 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import FormField from '@/components/FormField.vue'
 import { useFormStore } from '@/composables/useFormStore'
 import { opcionesCodigoPais } from '@/constants/countryCodes'
 
 const { formData } = useFormStore()
 
+// Fixed phone split logic
+const fixedPhoneCode = ref('+52')
+const fixedPhoneLocal = ref('')
+
+// Initialize fixed phone refs if data exists
+if (formData.telefono_fijo) {
+  // Try to find if it starts with +52 or another code
+  const codeMatch = opcionesCodigoPais.find(c => formData.telefono_fijo.startsWith(c.value))
+  if (codeMatch) {
+    fixedPhoneCode.value = codeMatch.value
+    fixedPhoneLocal.value = formData.telefono_fijo.slice(codeMatch.value.length)
+  } else {
+    fixedPhoneLocal.value = formData.telefono_fijo
+  }
+}
+
+function onFixedPhoneInput(e: Event) {
+  const input = e.target as HTMLInputElement
+  fixedPhoneLocal.value = input.value.replace(/\D/g, '')
+  updateFixedPhone()
+}
+
+watch(fixedPhoneCode, () => {
+  updateFixedPhone()
+})
+
+function updateFixedPhone() {
+  if (fixedPhoneLocal.value) {
+    formData.telefono_fijo = fixedPhoneCode.value + fixedPhoneLocal.value
+  } else {
+    formData.telefono_fijo = ''
+  }
+}
+
 // Boolean bridge
 const comunidadStr = computed({
   get: () => formData.comunidad_rural === true ? 'Sí' : formData.comunidad_rural === false ? 'No' : '',
   set: (v: string) => { formData.comunidad_rural = v === 'Sí' }
 })
+
+// Real-time phone validation
+const phoneError = ref('')
+
+function onPhoneInput(e: Event) {
+  const input = e.target as HTMLInputElement
+  formData.telefono_numero_local = input.value.replace(/\D/g, '')
+  validatePhone()
+}
+
+watch(() => formData.telefono_numero_local, () => {
+  if (phoneError.value) validatePhone()
+})
+
+function validatePhone() {
+  const digits = formData.telefono_numero_local.replace(/\D/g, '')
+  if (!digits) {
+    phoneError.value = 'El teléfono celular es obligatorio'
+  } else if (digits.length !== 10) {
+    phoneError.value = 'El teléfono debe tener exactamente 10 dígitos'
+  } else {
+    phoneError.value = ''
+  }
+}
 
 const estadosMexico = [
   'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 'Chiapas',
@@ -197,13 +280,13 @@ const opcionesGenero = [
 ]
 
 const opcionesIdentidad = [
-  { label: 'Ninguna de las anteriores', value: '7' },
   { label: 'Persona LGBTIQ+', value: '1' },
   { label: 'Persona indígena', value: '2' },
   { label: 'Persona afromexicana', value: '3' },
   { label: 'Persona con discapacidad', value: '4' },
   { label: 'Persona migrante o refugiada', value: '5' },
-  { label: 'Otro (especifique)', value: '6' }
+  { label: 'Otro (especifique)', value: '6' },
+  { label: 'Ninguna de las anteriores', value: '7' },
 ]
 
 const opcionesDifusion = [
@@ -226,15 +309,16 @@ const opcionesRedSocial = [
   font-family: var(--font-parkinsans);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: #fff;
+  color: #FC3169;
   margin: 0 0 0.35rem;
 }
 
 .form-section__subtitle {
   font-family: var(--font-myriad);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 2rem;
+  line-height: 1.6;
 }
 
 /* Custom Phone Inputs Styles */
@@ -242,7 +326,9 @@ const opcionesRedSocial = [
   margin-bottom: 1.75rem;
 }
 .form-field__label {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-family: var(--font-parkinsans);
   font-weight: 600;
   font-size: 0.95rem;
@@ -250,9 +336,20 @@ const opcionesRedSocial = [
   margin-bottom: 0.5rem;
   line-height: 1.4;
 }
+.form-field__bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 0.35rem; /* Align with first line of text */
+  flex-shrink: 0;
+}
+.form-field__bullet--required {
+  background-color: #E0FA49; /* Yellow-green for required */
+}
 .form-field__required {
   color: #E0FA49;
-  margin-left: 0.2rem;
+  margin-left: 0.1rem;
 }
 .form-field__help {
   font-family: var(--font-myriad);
@@ -260,6 +357,13 @@ const opcionesRedSocial = [
   color: rgba(255, 255, 255, 0.5);
   margin: -0.2rem 0 0.6rem;
   line-height: 1.4;
+}
+.form-field__note {
+  font-family: var(--font-myriad);
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 0.5rem;
+  line-height: 1.5;
 }
 .phone-inputs-group {
   display: flex;
@@ -292,6 +396,22 @@ const opcionesRedSocial = [
   font-size: 0.95rem;
   padding: 0.85rem 1rem;
   outline: none;
+  transition: border-color 0.2s;
+}
+.phone-local-input:focus {
+  border-color: #E0FA49;
+  background: rgba(224, 250, 73, 0.05);
+  box-shadow: 0 0 0 3px rgba(224, 250, 73, 0.1);
+}
+.input--error {
+  border-color: #FC3169 !important;
+  box-shadow: 0 0 0 3px rgba(252, 49, 105, 0.1) !important;
+}
+.realtime-error {
+  font-family: var(--font-myriad);
+  font-size: 0.8rem;
+  color: #FC3169;
+  margin: 0.35rem 0 0;
 }
 .phone-code-select:disabled,
 .phone-local-input:disabled {
@@ -304,5 +424,15 @@ const opcionesRedSocial = [
     width: 90px;
     font-size: 0.85rem;
   }
+}
+
+.form-field__bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #E0FA49;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
 }
 </style>

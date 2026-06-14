@@ -10,6 +10,8 @@
       v-model="militanciaStr"
       :options="['Sí', 'No']"
       required
+      noteText="Recuerda que este es un espacio completamente apartidista, por lo que estar afiliadx a cualquier partido político es motivo directo de descalificación"
+      noteColor="#FC3169"
     />
 
     <!-- P15: Estudiante activo -->
@@ -19,6 +21,7 @@
       v-model="estudianteStr"
       :options="['Sí', 'No']"
       required
+      noteText="En caso de no serlo, te invitamos a contactarnos por nuestras redes sociales para platicar contigo sobre vías alternativas para sumarte al movimiento (sumarte a algún capítulo estatal ya establecido)"
     />
 
     <!-- P16: Nombre universidad -->
@@ -28,6 +31,7 @@
       v-model="formData.universidad_nombre"
       placeholder="Ej: Universidad Nacional Autónoma de México"
       required
+      noteText="Escribe el nombre completo de tu universidad, no solamente siglas"
     />
 
     <!-- P17: Tipo universidad -->
@@ -37,6 +41,7 @@
       v-model="formData.universidad_tipo"
       :options="['Pública', 'Privada']"
       required
+      noteText="Esta pregunta es meramente informativa y no se utilizará con motivos de selección"
     />
 
     <!-- P18: Estado universidad -->
@@ -55,6 +60,7 @@
       v-model="formData.carrera_nombre"
       placeholder="Ej: Ingeniería Ambiental"
       required
+      noteText="Usa el nombre completo en lugar de siglas"
     />
 
     <!-- P20: Periodicidad -->
@@ -85,11 +91,13 @@
 
     <!-- P22: Acceso dispositivo -->
     <FormField
-      label="¿Cuentas con acceso a un dispositivo electrónico e internet?"
+      label="¿Cuentas con acceso a un dispositivo electrónico e internet que te permita participar en videollamadas y crear documentos de texto?"
       type="radio"
       v-model="accesoStr"
       :options="['Sí', 'No']"
       required
+      noteText="Si respondiste 'No', por favor contáctanos en <strong>hxnf@practica.lat</strong> antes del 22 de junio para explorar si es posible hacer ajustes razonables"
+      noteColor="#FC3169"
     />
 
     <!-- P23: Manejo herramientas -->
@@ -108,6 +116,8 @@
       v-model="formData.disponibilidad_horario"
       :options="opcionesDisponibilidad"
       required
+      noteText="Recuerda que se requiere al menos el 70% de las sesiones en vivo para acreditar la ELC y poder fundar o integrarte a un capítulo"
+      noteColor="#E0FA49"
     />
   </div>
 </template>
@@ -171,14 +181,15 @@ const opcionesDisponibilidad = [
   font-family: var(--font-parkinsans);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: #fff;
+  color: #FC3169;
   margin: 0 0 0.35rem;
 }
 
 .form-section__subtitle {
   font-family: var(--font-myriad);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 2rem;
+  line-height: 1.6;
 }
 </style>

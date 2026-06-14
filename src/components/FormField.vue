@@ -1,13 +1,17 @@
 <template>
   <div class="form-field" :class="{ 'form-field--error': errorMessage }">
-    <!-- Label -->
+    <!-- Label with Bullet -->
     <label v-if="label" :for="fieldId" class="form-field__label">
+      <span class="form-field__bullet" :class="required ? 'form-field__bullet--required' : 'form-field__bullet--optional'"></span>
       {{ label }}
       <span v-if="required" class="form-field__required">*</span>
     </label>
 
     <!-- Help text -->
     <p v-if="helpText" class="form-field__help">{{ helpText }}</p>
+
+    <!-- Note -->
+    <p v-if="noteText" class="form-field__note" :style="noteColor ? { color: noteColor } : {}"><span v-html="noteText"></span></p>
 
     <!-- TEXT / EMAIL / TEL / URL -->
     <input
@@ -17,6 +21,7 @@
       :value="modelValue"
       :placeholder="placeholder"
       :required="required"
+      :disabled="disabled"
       class="form-field__input"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
@@ -174,14 +179,18 @@ const props = withDefaults(
     placeholder?: string
     helpText?: string
     errorMessage?: string
+    noteText?: string
+    noteColor?: string
     scaleMax?: number
     scaleMinLabel?: string
     scaleMaxLabel?: string
     fieldId?: string
+    disabled?: boolean
   }>(),
   {
     type: 'text',
     required: false,
+    disabled: false,
     fieldId: () => `field-${Math.random().toString(36).substring(2, 9)}`,
   }
 )
@@ -237,9 +246,10 @@ function toggleMatrix(key: string) {
   margin-bottom: 1.75rem;
 }
 
-/* ── Label ── */
 .form-field__label {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-family: var(--font-parkinsans);
   font-weight: 600;
   font-size: 0.95rem;
@@ -248,9 +258,26 @@ function toggleMatrix(key: string) {
   line-height: 1.4;
 }
 
+.form-field__bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 0.35rem; /* Align with first line of text */
+  flex-shrink: 0;
+}
+
+.form-field__bullet--required {
+  background-color: #E0FA49; /* Yellow-green for required */
+}
+
+.form-field__bullet--optional {
+  background-color: #E0FA49; /* Yellow-green for optional too, user requested all same color */
+}
+
 .form-field__required {
   color: #E0FA49;
-  margin-left: 0.2rem;
+  margin-left: 0.1rem;
 }
 
 /* ── Help text ── */
@@ -541,6 +568,21 @@ function toggleMatrix(key: string) {
   font-size: 0.8rem;
   color: #FC3169;
   font-family: var(--font-myriad);
+}
+
+.form-field__note {
+  margin: -0.2rem 0 0.8rem;
+  font-family: var(--font-myriad);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+
+.form-field__input:disabled,
+.form-field__textarea:disabled,
+.form-field__select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* ── Responsive ── */

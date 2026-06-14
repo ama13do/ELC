@@ -2,28 +2,23 @@
   <div class="min-h-screen bg-black text-white overflow-x-hidden">
     <NavBar />
 
-    <main class="relative min-h-screen pt-20 pb-16 flex flex-col items-center justify-center">
+    <main class="relative min-h-screen pt-40 pb-32 lg:pt-20 lg:pb-16 flex flex-col items-center justify-center">
 
-      <!-- ── FLOR AMARILLA — arriba izquierda ── -->
       <div class="deco deco-left pointer-events-none select-none">
         <img :src="florAmarilla" alt="Somos Cambio" class="animate-breathe" />
       </div>
 
-      <!-- ── HOJAS — abajo derecha ── -->
       <div class="deco deco-right pointer-events-none select-none">
         <img :src="hojas" alt="Soluciones Colectivas" class="animate-breathe-alt" />
       </div>
 
-      <!-- ── CONTENIDO CENTRAL ── -->
       <div class="relative z-20 w-full max-w-xl px-6 md:px-8 flex flex-col items-center gap-7 text-center">
 
-        <!-- Título -->
         <h1 class="hxnf-heading">
           ¡Gracias por registrarte a la
           <span class="text-accent">Escuela de Liderazgo&nbsp;Climático&nbsp;2026</span>!
         </h1>
 
-        <!-- Mensaje -->
         <div class="msg-card">
           <p class="hxnf-body">
             Hemos recibido tu información y entraste al periodo de selección.
@@ -34,13 +29,11 @@
           </p>
         </div>
 
-        <!-- CTA texto -->
         <p class="hxnf-sub">
           Mientras tanto, síguenos en nuestras redes para no perderte ningún detalle.
           <span class="text-accent">¡Nos vemos pronto!</span>
         </p>
 
-        <!-- ── REDES — logos sin contenedor ── -->
         <div class="w-full mt-2">
           <p class="section-label">Síguenos en nuestras redes</p>
           <div class="logos-row">
@@ -58,7 +51,6 @@
           </div>
         </div>
 
-        <!-- ── BOTÓN VOLVER ── -->
         <router-link to="/" class="back-btn">
           ← Volver al inicio
         </router-link>
@@ -130,52 +122,69 @@ const orgs = [
 }
 
 /* ─────────────────────────────────────────
-   IMÁGENES DECORATIVAS
+   IMÁGENES DECORATIVAS RESPONSIVAS
 ───────────────────────────────────────── */
 .deco {
   position: absolute;
   z-index: 10;
 }
 
-/* Flor: esquina superior izquierda, ligeramente fuera */
+/* --- MÓVIL Y TABLETS PEQUEÑAS (<1024px) --- */
 .deco-left {
-  top: 5%;
-  left: -2%;
+  top: 1.5rem; /* Bien arriba, aprovechando el pt-40 del contenedor */
+  left: -2rem; /* Un poco cortada hacia afuera para no invadir */
 }
 .deco-left img {
-  width: clamp(100px, 14vw, 200px);
+  width: clamp(150px, 25vw, 380px); /* Tamaño máximo drásticamente mayor */
   height: auto;
 }
 
-/* Hojas: esquina inferior derecha */
 .deco-right {
-  bottom: 6%;
-  right: -2%;
+  bottom: 1.5rem; /* Bien abajo, aprovechando el pb-32 del contenedor */
+  right: -2rem;
 }
 .deco-right img {
-  width: clamp(110px, 15vw, 210px);
+  width: clamp(160px, 28vw, 420px); /* Las hojas siempre un poco más grandes */
   height: auto;
+}
+
+/* --- COMPUTADORAS (>= 1024px) --- */
+@media (min-width: 1024px) {
+  .deco-left {
+    top: 25%;
+    left: auto; /* Anulamos la posición en "left" */
+    /* Empujamos la flor hacia la izquierda del contenedor de texto (max-w-xl). 
+       El 50% es la mitad de la pantalla, y 300px es la mitad del ancho del texto (más un pequeño margen) */
+    right: calc(50% + 300px); 
+  }
+  
+  .deco-right {
+    bottom: 12%;
+    right: auto; /* Anulamos la posición en "right" */
+    /* Empujamos las hojas a la derecha del texto */
+    left: calc(50% + 300px); 
+  }
 }
 
 /* ─────────────────────────────────────────
    ANIMACIONES BREATHE
 ───────────────────────────────────────── */
 @keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.11); }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%       { transform: scale(1.08) rotate(-1.5deg); } /* Añadida ligera rotación para más vida */
 }
 @keyframes breathe-alt {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.09); }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%       { transform: scale(1.06) rotate(1.5deg); }
 }
 
 .animate-breathe {
-  animation: breathe 4s ease-in-out infinite;
+  animation: breathe 5s ease-in-out infinite;
   transform-origin: center;
 }
 .animate-breathe-alt {
-  animation: breathe-alt 5s ease-in-out infinite;
-  animation-delay: -2.5s;
+  animation: breathe-alt 6s ease-in-out infinite;
+  animation-delay: -3s;
   transform-origin: center;
 }
 
@@ -215,7 +224,6 @@ const orgs = [
 }
 
 .org-logo {
-  /* altura fija para todos los logos */
   height: clamp(18px, 2.4vw, 26px);
   width: auto;
   object-fit: contain;

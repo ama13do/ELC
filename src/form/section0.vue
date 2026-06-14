@@ -42,7 +42,10 @@
       />
       
       <div class="form-field-custom">
-        <label class="form-field__label">Teléfono celular <span class="form-field__required">*</span></label>
+        <label class="form-field__label">
+          <span class="form-field__bullet"></span>
+          Teléfono celular <span class="form-field__required">*</span>
+        </label>
         <p class="form-field__help">Incluye un número con WhatsApp activo a 10 dígitos</p>
         <div class="phone-inputs-group">
           <select v-model="formData.telefono_codigo_pais" class="phone-code-select">
@@ -207,10 +210,20 @@ const { formData } = useFormStore()
 .form-field__help {
   font-family: var(--font-myriad);
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin: -0.2rem 0 0.8rem;
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.45);
+  margin: -0.25rem 0 0.8rem;
 }
+
+.form-field__bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #E0FA49; /* Yellow-green for required */
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+
 .phone-inputs-group {
   display: flex;
   gap: 0.75rem;

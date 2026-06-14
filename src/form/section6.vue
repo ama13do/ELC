@@ -5,8 +5,10 @@
 
     <!-- P38: Matriz de compromisos -->
     <div class="compromisos-section">
-      <p class="compromisos-label">Compromisos fundamentales para participar en la ELC</p>
-      <p class="compromisos-help">Selecciona "Acepto" o "No acepto" para cada compromiso</p>
+      <p class="compromisos-label">
+        <span class="form-field__bullet"></span>
+        A continuación encontrarás los compromisos fundamentales para participar en la ELC. Lee con atención y elige entre las opciones "Acepto" o "No acepto" para cada punto.
+      </p>
 
       <div
         v-for="compromiso in compromisosList"
@@ -15,14 +17,14 @@
       >
         <p class="compromiso-text">{{ compromiso.label }}</p>
         <div class="compromiso-options">
-          <label class="compromiso-option" :class="{ 'compromiso-option--active': formData[compromiso.key] === true }">
+          <label class="compromiso-option compromiso-option--accept" :class="{ 'compromiso-option--active-accept': formData[compromiso.key] === true }">
             <input type="radio" :name="compromiso.key" :checked="formData[compromiso.key] === true" @change="formData[compromiso.key] = true" />
-            <span class="compromiso-dot"></span>
+            <span class="compromiso-dot compromiso-dot--accept"></span>
             Acepto
           </label>
-          <label class="compromiso-option" :class="{ 'compromiso-option--active': formData[compromiso.key] === false }">
+          <label class="compromiso-option compromiso-option--decline" :class="{ 'compromiso-option--active-decline': formData[compromiso.key] === false }">
             <input type="radio" :name="compromiso.key" :checked="formData[compromiso.key] === false" @change="formData[compromiso.key] = false" />
-            <span class="compromiso-dot"></span>
+            <span class="compromiso-dot compromiso-dot--decline"></span>
             No acepto
           </label>
         </div>
@@ -36,6 +38,7 @@
       v-model="privacidadStr"
       :options="['Sí', 'No']"
       required
+      noteText="Disponible en: <a href='https://drive.google.com/file/d/1bJ4sEeZNQkh_s4PplfGhr9GNNxxloTx7/view' target='_blank' style='color:#2E7DFC; text-decoration:underline;'>Aviso de Privacidad</a>.<br>Te recomendamos revisarlos antes de enviar tu registro."
     />
 
     <!-- P40: Términos y condiciones -->
@@ -45,18 +48,22 @@
       v-model="terminosStr"
       :options="[{label: 'Sí, acepto los Términos y Condiciones', value: 'Sí'}, {label: 'No acepto', value: 'No'}]"
       required
+      noteText="Disponibles en: <a href='https://drive.google.com/file/d/1bJ4sEeZNQkh_s4PplfGhr9GNNxxloTx7/view' target='_blank' style='color:#2E7DFC; text-decoration:underline;'>Términos y Condiciones</a> y en <a href='https://elc.nuestrofuturo.mx' target='_blank' style='color:#2E7DFC; text-decoration:underline;'>elc.nuestrofuturo.mx</a>.<br>Te recomendamos revisarlos antes de enviar tu registro."
     />
 
     <div class="final-message">
-      <h3>¡Da clic en Enviar y tu postulación estará en camino!</h3>
-      <p>Revisaremos tu postulación con atención. Los resultados de la selección se publicarán entre el 1 y el 3 de julio de 2026. Si resultas seleccionadx, nos pondremos en contacto contigo por correo electrónico y/o WhatsApp para los siguientes pasos.</p>
-      <p>Mientras tanto, te invitamos a seguir nuestras redes sociales para mantenerte al tanto de las novedades del Movimiento:</p>
-      <ul>
-        <li>Instagram: @Hackersxnf</li>
-        <li>Tiktok: @hackersxnuestrofuturo</li>
-      </ul>
-      <p>Si tienes dudas, escríbenos a hxnf@practica.lat</p>
-      <p><strong>¡Nos vemos en las sesiones virtuales!</strong></p>
+      <h3 class="final-message__title">¡Da clic en Enviar y tu postulación estará en camino!</h3>
+      <p>Revisaremos tu postulación con atención. Los resultados de la selección se publicarán entre el <strong style="color: #E0FA49;">1 y el 3 de julio de 2026</strong>.</p>
+      <p>Si resultas seleccionadx, nos pondremos en contacto contigo por <strong style="color: #0BE340;">correo electrónico y/o WhatsApp</strong> para los siguientes pasos.</p>
+      <div class="final-message__socials">
+        <p>Mientras tanto, te invitamos a seguir nuestras redes sociales para mantenerte al tanto de las novedades del Movimiento:</p>
+        <div class="social-links-container">
+          <a href="https://instagram.com/hackersxnf" target="_blank" class="social-btn instagram-btn">@Hackersxnf</a>
+          <a href="https://tiktok.com/@hackersxnuestrofuturo" target="_blank" class="social-btn tiktok-btn">@hackersxnuestrofuturo</a>
+        </div>
+      </div>
+      <p class="final-message__contact">Si tienes dudas, escríbenos a <strong style="color: #FC3169;">hxnf@practica.lat</strong></p>
+      <p class="final-salute"><strong>¡Nos vemos en las sesiones virtuales!</strong></p>
     </div>
   </div>
 </template>
@@ -112,15 +119,16 @@ const compromisosList: CompromisoItem[] = [
   font-family: var(--font-parkinsans);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: #fff;
+  color: #FC3169;
   margin: 0 0 0.35rem;
 }
 
 .form-section__subtitle {
   font-family: var(--font-myriad);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
   margin: 0 0 2rem;
+  line-height: 1.6;
 }
 
 /* ── Compromisos matrix ── */
@@ -131,53 +139,49 @@ const compromisosList: CompromisoItem[] = [
 .compromisos-label {
   font-family: var(--font-parkinsans);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #fff;
-  margin: 0 0 0.3rem;
-}
-
-.compromisos-help {
-  font-family: var(--font-myriad);
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.45);
-  margin: 0 0 1rem;
+  margin: 0 0 1.5rem;
+  line-height: 1.5;
 }
 
 .compromiso-row {
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 12px;
-  border: 1.5px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-  margin-bottom: 0.75rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 1rem;
 }
 
 .compromiso-text {
   font-family: var(--font-myriad);
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 0.75rem;
-  line-height: 1.45;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 1rem;
+  line-height: 1.5;
 }
 
 .compromiso-options {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .compromiso-option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: 0.6rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 8px;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.03);
   cursor: pointer;
-  font-family: var(--font-myriad);
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-parkinsans);
+  font-size: 0.95rem;
+  font-weight: 600;
   transition: all 0.2s;
   user-select: none;
+  flex: 1;
+  justify-content: center;
 }
 
 .compromiso-option input {
@@ -188,68 +192,172 @@ const compromisosList: CompromisoItem[] = [
 }
 
 .compromiso-dot {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   position: relative;
   flex-shrink: 0;
 }
 
-.compromiso-option--active {
-  border-color: #0BE340;
-  background: rgba(11, 227, 64, 0.08);
+/* Green for Accept */
+.compromiso-option--accept {
+  color: rgba(255, 255, 255, 0.7);
 }
-
-.compromiso-option--active .compromiso-dot {
+.compromiso-option--accept:hover {
+  border-color: rgba(11, 227, 64, 0.4);
+}
+.compromiso-option--active-accept {
+  border-color: #0BE340;
+  background: rgba(11, 227, 64, 0.1);
+  color: #0BE340;
+}
+.compromiso-option--active-accept .compromiso-dot--accept {
   border-color: #0BE340;
 }
-
-.compromiso-option--active .compromiso-dot::after {
+.compromiso-option--active-accept .compromiso-dot--accept::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #0BE340;
 }
 
-.compromiso-option:hover {
-  border-color: rgba(11, 227, 64, 0.3);
+/* Red for Decline */
+.compromiso-option--decline {
+  color: rgba(255, 255, 255, 0.7);
+}
+.compromiso-option--decline:hover {
+  border-color: rgba(252, 49, 105, 0.4);
+}
+.compromiso-option--active-decline {
+  border-color: #FC3169;
+  background: rgba(252, 49, 105, 0.1);
+  color: #FC3169;
+}
+.compromiso-option--active-decline .compromiso-dot--decline {
+  border-color: #FC3169;
+}
+.compromiso-option--active-decline .compromiso-dot--decline::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #FC3169;
 }
 
+/* Final Message Redesign */
 .final-message {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-top: 2rem;
+  background: transparent;
+  border: 1.5px solid rgba(46, 125, 252, 0.6);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 3rem;
   font-family: var(--font-myriad);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(46, 125, 252, 0.1);
 }
 
-.final-message h3 {
+.final-message__title {
   font-family: var(--font-parkinsans);
-  color: #E0FA49;
-  font-size: 1.2rem;
+  color: #2E7DFC;
+  font-size: 1.5rem;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .final-message p {
   margin-bottom: 1rem;
+  font-size: 1rem;
 }
 
-.final-message ul {
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
+.final-message__socials {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
 }
 
-.final-message strong {
-  color: #0BE340;
+.social-links-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-family: var(--font-parkinsans);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  color: #fff;
+}
+
+.instagram-btn {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.instagram-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
+}
+
+.tiktok-btn {
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 0px #FC3169, -1px -1px 0px #0BE340;
+}
+.tiktok-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+}
+
+.final-message__contact {
+  margin-bottom: 2rem !important;
+}
+
+.final-salute {
+  color: #E0FA49;
+  font-size: 1.3rem !important;
+  font-family: var(--font-parkinsans);
+  margin-bottom: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 640px) {
+  .compromiso-options {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.form-field__bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #E0FA49;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
 }
 </style>

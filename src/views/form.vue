@@ -37,13 +37,23 @@
     <div class="form-container">
 
       <!-- Alert for Completed Form -->
-      <div v-if="isCompleted" class="completed-alert">
-        <span class="completed-alert__icon">✅</span>
-        <p>Ya has enviado tu formulario. Puedes modificarlo hasta el día <strong>26 de junio</strong>.</p>
-      </div>
+      <Transition name="fade">
+        <div v-if="showCompletedAlert" class="completed-alert-floating">
+          <div class="completed-alert__content">
+            <span class="completed-alert__icon">✅</span>
+            <p>Ya has enviado tu formulario. Puedes modificarlo hasta el día <strong>26 de junio</strong>.</p>
+          </div>
+          <button class="completed-alert__close" @click="showCompletedAlert = false">✕</button>
+        </div>
+      </Transition>
 
       <!-- Progress bar (only show after section 0) -->
       <div v-if="currentStep > 0" class="progress-bar">
+        <div class="progress-bar__header">
+          <button type="button" class="progress-bar__home-btn" @click="goToStep(0)">
+            ← Inicio
+          </button>
+        </div>
         <div class="progress-bar__track">
           <div
             class="progress-bar__fill"
@@ -51,24 +61,25 @@
           ></div>
         </div>
         <div class="progress-bar__steps">
-          <button
-            v-for="(name, idx) in sectionNames"
-            :key="idx"
-            type="button"
-            class="progress-bar__step"
-            :class="{
-              'progress-bar__step--active': currentStep === idx,
-              'progress-bar__step--done': currentStep > idx,
-            }"
-            @click="goToStep(idx)"
-            :title="name"
-          >
-            <span class="progress-bar__dot">
-              <span v-if="currentStep > idx" class="progress-bar__check">✓</span>
-              <span v-else>{{ idx }}</span>
-            </span>
-            <span class="progress-bar__name">{{ name }}</span>
-          </button>
+          <template v-for="(name, idx) in sectionNames" :key="idx">
+            <button
+              v-if="idx > 0"
+              type="button"
+              class="progress-bar__step"
+              :class="{
+                'progress-bar__step--active': currentStep === idx,
+                'progress-bar__step--done': currentStep > idx,
+              }"
+              @click="goToStep(idx)"
+              :title="name"
+            >
+              <span class="progress-bar__dot">
+                <span v-if="currentStep > idx" class="progress-bar__check">✓</span>
+                <span v-else>{{ idx }}</span>
+              </span>
+              <span class="progress-bar__name">{{ name }}</span>
+            </button>
+          </template>
         </div>
       </div>
 
@@ -158,6 +169,7 @@ import Section6 from '@/form/section6.vue'
 
 const router = useRouter()
 const {
+  formData,
   currentStep,
   totalSteps,
   isSubmitting,
@@ -169,10 +181,21 @@ const {
   nextStep,
   prevStep,
   goToStep,
-  submitForm,
   startForm,
+  submitForm,
   confirmRestore,
 } = useFormStore()
+
+const showCompletedAlert = ref(false)
+
+watch(isCompleted, (newVal) => {
+  if (newVal) {
+    showCompletedAlert.value = true
+    setTimeout(() => {
+      showCompletedAlert.value = false
+    }, 6000)
+  }
+}, { immediate: true })
 
 const sections = [
   Section0, Section1, Section2, Section3,
@@ -181,9 +204,10 @@ const sections = [
 
 const currentSectionComponent = computed(() => sections[currentStep.value])
 
-const progressPercent = computed(
-  () => ((currentStep.value) / (totalSteps - 1)) * 100
-)
+const progressPercent = computed(() => {
+  if (currentStep.value === 0) return 0
+  return ((currentStep.value - 1) / (totalSteps - 2)) * 100
+})
 
 // Transition direction tracking
 const transitionName = ref('slide-left')
@@ -244,32 +268,60 @@ async function handleSubmit() {
 
 
 
-/* ── Completed Alert ── */
-.completed-alert {
-  background: rgba(11, 227, 64, 0.1);
-  border: 1px solid rgba(11, 227, 64, 0.3);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.5rem;
+/* ── Completed Alert Floating ── */
+.completed-alert-floating {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
+  background: rgba(11, 227, 64, 0.15);
+  border: 1px solid rgba(11, 227, 64, 0.4);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 400px;
+}
+
+.completed-alert__content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
 }
 
 .completed-alert__icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
-.completed-alert p {
+.completed-alert__content p {
   font-family: var(--font-myriad);
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
+  color: #fff;
   line-height: 1.4;
+  margin: 0;
 }
 
-.completed-alert strong {
+.completed-alert__content strong {
   color: #0BE340;
+}
+
+.completed-alert__close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.completed-alert__close:hover {
+  color: #fff;
 }
 
 /* ── Modals (Validation & Restore) ── */
@@ -331,6 +383,21 @@ async function handleSubmit() {
   color: #E0FA49;
   font-weight: 600;
   margin-bottom: 1.5rem;
+}
+
+.progress-bar__home-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-family: var(--font-parkinsans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 10;
 }
 
 .validation-modal__list {
@@ -698,6 +765,14 @@ async function handleSubmit() {
 
   .form-nav__btn--submit {
     font-size: 0.82rem;
+  }
+
+  /* Modals / Floating */
+  .completed-alert-floating {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
   }
 }
 </style>

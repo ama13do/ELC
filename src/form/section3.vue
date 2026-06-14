@@ -1,7 +1,7 @@
 <template>
   <div class="form-section">
     <h2 class="form-section__title">SECCIÓN 3 — Intereses y motivación</h2>
-    <p class="form-section__subtitle">Queremos saber qué te impulsa y en qué áreas te gustaría trabajar posterior a la ELC. Responde con honestidad; no hay respuestas incorrectas. ¡Tu perspectiva e interés son lo más importante!</p>
+    <p class="form-section__subtitle">Queremos saber qué te impulsa y en qué áreas te gustaría trabajar posterior a la ELC. No hay respuestas incorrectas: tu perspectiva e interés son lo más importante. Responde con honestidad y reflexión.</p>
 
     <!-- P25: Escala conocimiento -->
     <FormField
@@ -19,6 +19,7 @@
       v-model="formData.necesidad_transicion_estado"
       placeholder="Comparte tus ideas y reflexiones..."
       required
+      noteText="Desarrolla tu respuesta en un párrafo"
     />
   </div>
 </template>
@@ -49,14 +50,15 @@ const opcionesConocimiento = [
   font-family: var(--font-parkinsans);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: #fff;
+  color: #FC3169;
   margin: 0 0 0.35rem;
 }
 
 .form-section__subtitle {
   font-family: var(--font-myriad);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 2rem;
+  line-height: 1.6;
 }
 </style>

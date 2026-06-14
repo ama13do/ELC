@@ -560,6 +560,10 @@ export function useFormStore() {
 
         if (parsed.email_principal.toLowerCase() === formData.email_principal.toLowerCase() && localFullPhone === inputFullPhone) {
           localSaved = parsed
+        } else {
+          // Mismatch: clear old local storage to prevent mixing data
+          localStorage.removeItem(STORAGE_KEY)
+          localStorage.removeItem(STORAGE_STEP_KEY)
         }
       }
     } catch { }
