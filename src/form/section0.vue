@@ -1,32 +1,36 @@
 <template>
   <div class="section-welcome">
-    <h2 class="section-title">Cuestionario de Registro - Escuela de Liderazgo Climático 2026</h2>
+    <h2 class="section-title">Cuestionario de Registro</h2>
     <h3 class="section-subtitle">¡Bienvenidx, futurx Hacker!</h3>
     
     <div class="welcome-text">
-      <p>Gracias por tu interés en participar en la Escuela de Liderazgo Climático 2026. Este cuestionario es el primer paso para integrarte a un movimiento nacional de juventudes que disputa el modelo energético de México con conocimiento, organización y acción colectiva.</p>
+      <p>Gracias por tu interés en participar en la <strong>Escuela de Liderazgo Climático 2026</strong>. Este cuestionario es el primer paso para integrarte a un movimiento nacional de juventudes que disputa el modelo energético de México con conocimiento, organización y acción colectiva.</p>
       
       <p>Queremos conocerte: tu historia, tus motivaciones y lo que puedes aportar. Cada postulación será leída con atención por integrantes del equipo organizador de HxNF y sus organizaciones aliadas, así que te pedimos que respondas con sinceridad y reflexión. No hay respuestas "correctas": lo que buscamos es tu perspectiva genuina.</p>
       
       <div class="welcome-rules">
         <h4>Recuerda:</h4>
         <ul>
-          <li>El cuestionario debe llenarse por completo, incluyendo el enlace a tu video de presentación. Las postulaciones incompletas serán rechazadas automáticamente.</li>
-          <li>La plataforma guarda automáticamente tus respuestas como borrador cada 30 segundos. Puedes recuperar tu progreso desde cualquier dispositivo ingresando nuevamente tu correo electrónico y número de celular. ¡No repitas tu registro!</li>
-          <li>El video de presentación (máximo 6 minutos) tiene un peso alto en la evaluación: es la forma principal en que podemos conocerte más allá de las palabras escritas.</li>
+          <li>El cuestionario debe llenarse por completo, incluyendo el <strong>enlace a tu video de presentación</strong>. Las postulaciones incompletas serán rechazadas automáticamente.</li>
+          <li>La plataforma guarda automáticamente tus respuestas como borrador cada 30 segundos.</li>
+          <li>Puedes recuperar tu progreso desde cualquier dispositivo ingresando nuevamente tu <strong>correo electrónico y número de celular</strong>. ¡No repitas tu registro!</li>
+          <li>El video de presentación (máximo 6 minutos) tiene un peso alto en la evaluación: <strong>es la forma principal en que podemos conocerte más allá de las palabras escritas</strong>.</li>
           <li>La convocatoria cierra el <strong>viernes 26 de junio de 2026 a las 23:59 horas</strong> (hora CDMX). Pasada esa fecha no se recibirán más postulaciones.</li>
         </ul>
       </div>
 
-      <p class="welcome-contact">Si tienes dudas o necesitas ajustes de accesibilidad para postularte, escríbenos a <strong>hxnf@practica.lat</strong> antes del 22 de junio.</p>
-      
-      <p class="welcome-closing">¡Gracias por querer hackear el futuro con nosotrxs!</p>
+      <p class="welcome-contact">
+        Si tienes dudas o necesitas ajustes de accesibilidad para postularte, escríbenos a 
+        <a href="mailto:hxnf@practica.lat" class="contact-link">hxnf@practica.lat</a> 
+        antes del 22 de junio.
+      </p>
     </div>
+
+    <hr class="section-divider" />
 
     <div class="email-section">
       <p class="email-label">Ingresa tu correo electrónico y teléfono celular para comenzar o continuar tu registro:</p>
       
-      <!-- Correo Electrónico -->
       <FormField
         type="email"
         label="Correo electrónico principal"
@@ -37,7 +41,6 @@
         fieldId="email-principal"
       />
       
-      <!-- Teléfono Custom -->
       <div class="form-field-custom">
         <label class="form-field__label">Teléfono celular <span class="form-field__required">*</span></label>
         <p class="form-field__help">Incluye un número con WhatsApp activo a 10 dígitos</p>
@@ -58,7 +61,6 @@
           />
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -73,81 +75,104 @@ const { formData } = useFormStore()
 
 <style scoped>
 .section-welcome {
-  text-align: center;
-}
-
-.welcome-badge {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  /* Alineación a la izquierda para mejorar radicalmente la lectura de textos largos */
+  text-align: left;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .section-title {
   font-family: var(--font-parkinsans);
-  font-weight: 700;
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  color: #fff;
-  margin: 0 0 1rem;
+  font-weight: 800;
+  /* clamp: mínimo 1.8rem, preferido 4vw, máximo 2.4rem */
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  color: var(--color-pink-dark);
+  margin: 0 0 0.5rem;
   line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-family: var(--font-parkinsans);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  color: var(--color-foreground);
+  margin: 0 0 2rem;
 }
 
 .welcome-text {
   font-family: var(--font-myriad);
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 0 auto 2rem;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  color: var(--color-beige); /* El beige suaviza el contraste en fondo oscuro */
+  line-height: 1.65;
+}
+
+.welcome-text p {
+  margin-bottom: 1.25rem;
 }
 
 .welcome-text strong {
-  color: #E0FA49;
+  color: var(--color-yellow);
+  font-weight: 600;
 }
 
-.welcome-info {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.info-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  border-radius: 14px;
+/* Caja para resaltar las reglas y viñetas */
+.welcome-rules {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: left;
-  min-width: 200px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+  margin: 2.5rem 0;
 }
 
-.info-icon {
-  font-size: 1.5rem;
-}
-
-.info-card strong {
-  display: block;
+.welcome-rules h4 {
   font-family: var(--font-parkinsans);
-  font-size: 0.85rem;
-  color: #fff;
-  margin-bottom: 0.15rem;
+  font-size: 1.15rem;
+  color: var(--color-pink-dark);
+  margin: 0 0 1rem -1rem; /* Ajuste para compensar el padding del contenedor */
 }
 
-.info-card p {
+.welcome-rules ul {
   margin: 0;
-  font-family: var(--font-myriad);
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  list-style-position: outside;
+  color: var(--color-beige);
 }
 
+.welcome-rules li {
+  margin-bottom: 0.85rem;
+  line-height: 1.6;
+}
+
+.welcome-rules li:last-child {
+  margin-bottom: 0;
+}
+
+/* Enlace de contacto */
+.contact-link {
+  color: var(--color-blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.contact-link:hover {
+  color: var(--color-yellow);
+  text-decoration-color: var(--color-yellow);
+}
+
+/* Línea separatoria responsiva y limpia */
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+  margin: 3.5rem 0;
+}
+
+/* Sección del Formulario */
 .email-section {
   text-align: left;
   max-width: 680px;
@@ -157,12 +182,12 @@ const { formData } = useFormStore()
 .email-label {
   font-family: var(--font-parkinsans);
   font-weight: 600;
-  font-size: 0.95rem;
-  color: #fff;
-  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+  color: var(--color-foreground);
+  margin-bottom: 1.25rem;
 }
 
-/* Custom Phone Inputs Styles */
+/* Custom Phone Inputs Styles (Ajustados para heredar la limpieza visual) */
 .form-field-custom {
   margin-bottom: 1.75rem;
 }
@@ -171,24 +196,24 @@ const { formData } = useFormStore()
   font-family: var(--font-parkinsans);
   font-weight: 600;
   font-size: 0.95rem;
-  color: #fff;
+  color: var(--color-foreground);
   margin-bottom: 0.5rem;
   line-height: 1.4;
 }
 .form-field__required {
-  color: #E0FA49;
+  color: var(--color-yellow);
   margin-left: 0.2rem;
 }
 .form-field__help {
   font-family: var(--font-myriad);
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.5);
-  margin: -0.2rem 0 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: -0.2rem 0 0.8rem;
   line-height: 1.4;
 }
 .phone-inputs-group {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 .phone-code-select {
   flex-shrink: 0;
@@ -196,47 +221,49 @@ const { formData } = useFormStore()
   background: rgba(255, 255, 255, 0.06);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  color: #fff;
+  color: var(--color-foreground);
   font-family: var(--font-myriad);
-  font-size: 0.95rem;
+  font-size: 1rem;
   padding: 0.85rem 0.5rem;
   outline: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 .phone-code-select option {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--color-surface);
+  color: var(--color-foreground);
 }
 .phone-local-input {
   flex-grow: 1;
   background: rgba(255, 255, 255, 0.06);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  color: #fff;
+  color: var(--color-foreground);
   font-family: var(--font-myriad);
-  font-size: 0.95rem;
+  font-size: 1rem;
   padding: 0.85rem 1rem;
   outline: none;
+  transition: all 0.2s ease;
 }
 .phone-code-select:focus,
 .phone-local-input:focus {
-  border-color: #E0FA49;
+  border-color: var(--color-yellow);
   background: rgba(224, 250, 73, 0.05);
   box-shadow: 0 0 0 3px rgba(224, 250, 73, 0.1);
 }
 
+/* Ajustes adicionales para móviles */
 @media (max-width: 640px) {
-  .welcome-info {
+  .welcome-rules {
+    padding: 1.25rem 1rem 1.25rem 2rem;
+  }
+  
+  .phone-inputs-group {
     flex-direction: column;
-    align-items: center;
   }
-  .info-card {
-    width: 100%;
-    max-width: 320px;
-  }
+  
   .phone-code-select {
-    width: 120px;
-    font-size: 0.85rem;
+    width: 100%;
   }
 }
 </style>
