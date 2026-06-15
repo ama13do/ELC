@@ -3,22 +3,21 @@
     <NavBar />
     <main>
       <HeroSection />
-      <WhyParticipateSection />
-      <WhatIsSection />
-      <EventPhotoSection />
-      <BasesSection />
+      <LazyWrapper><WhyParticipateSection /></LazyWrapper>
+      <LazyWrapper><WhatIsSection /></LazyWrapper>
+      <LazyWrapper><EventPhotoSection /></LazyWrapper>
+      <LazyWrapper><BasesSection /></LazyWrapper>
       <div class="relative w-full h-0 z-50 pointer-events-none">
         <img 
-  :src="florAmarilla" 
-  alt="Somos Cambio" 
-  class="absolute top-5 -left-4 md:-left-6 w-42 sm:w-80 md:w-100 lg:w-112 animate-breathe"
-  style="transform: translateY(-50%);"
-/>
-        
+          :src="florAmarilla" 
+          alt="Somos Cambio" 
+          class="absolute top-5 -left-4 md:-left-6 w-42 sm:w-80 md:w-100 lg:w-112 animate-breathe"
+          style="transform: translateY(-50%);"
+          loading="lazy"
+        />
       </div>
-      <DayToDaySection />
+      <LazyWrapper><DayToDaySection /></LazyWrapper>
       <div class="relative w-full h-0 z-50 pointer-events-none">
-        
         <div 
           class="absolute top-0 -left-2 md:-left-4 w-24 md:w-32 lg:w-40"
           style="transform: translateY(-50%);"
@@ -27,63 +26,66 @@
             :src="solecito" 
             alt="Solecito" 
             class="w-full h-full animate-spin-slow"
+            loading="lazy"
           />
         </div>
-        
       </div>
-      <WhenHowSection />
-      <BenefitsSection />
-      <QuoteSection />
-      <DiversitySection />
-     <div class="relative w-full h-0 z-50 pointer-events-none">
-  
-  <img 
-    :src="juntosImg" 
-    alt="Juntos" 
-    class="absolute top-0 md:top-35 -right-4 md:-right-8 w-48 md:w-92 lg:w-150 animate-breathe"
-    style="transform: translateY(-50%);"
-  />
-  
-</div>
-      <ImportantDatesSection />
-      <accion/>
-      <ExperienceSection />
-      <ReelSection />
-      <policySection />
-      <datesSection />
-      <SelectionCriteriaSection />
-      <PartnersSection />
+      <LazyWrapper><WhenHowSection /></LazyWrapper>
+      <LazyWrapper><BenefitsSection /></LazyWrapper>
+      <LazyWrapper><QuoteSection /></LazyWrapper>
+      <LazyWrapper><DiversitySection /></LazyWrapper>
+      <div class="relative w-full h-0 z-50 pointer-events-none">
+        <img 
+          :src="juntosImg" 
+          alt="Juntos" 
+          class="absolute top-0 md:top-35 -right-4 md:-right-8 w-48 md:w-92 lg:w-150 animate-breathe"
+          style="transform: translateY(-50%);"
+          loading="lazy"
+        />
+      </div>
+      <LazyWrapper><ImportantDatesSection /></LazyWrapper>
+      <LazyWrapper><accion/></LazyWrapper>
+      <LazyWrapper><ExperienceSection /></LazyWrapper>
+      <LazyWrapper><ReelSection /></LazyWrapper>
+      <LazyWrapper><policySection /></LazyWrapper>
+      <LazyWrapper><datesSection /></LazyWrapper>
+      <LazyWrapper><SelectionCriteriaSection /></LazyWrapper>
+      <LazyWrapper><PartnersSection /></LazyWrapper>
     </main>
-    <FooterSection />
+    <LazyWrapper><FooterSection /></LazyWrapper>
     <Pet />
   </div>
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+import LazyWrapper from '@/components/LazyWrapper.vue'
+
 import juntosImg from '@/assets/images/juntos.webp'
 import solecito from '@/assets/images/Solecito.webp'
 import florAmarilla from '@/assets/images/floramarilla.webp'
 import NavBar from '@/sections/NavBar.vue'
 import HeroSection from '@/sections/HeroSection.vue'
-import WhyParticipateSection from '@/sections/WhyParticipateSection.vue'
-import WhatIsSection from '@/sections/WhatIsSection.vue'
-import EventPhotoSection from '@/sections/EventPhotoSection.vue'
-import BasesSection from '@/sections/BasesSection.vue'
-import DayToDaySection from '@/sections/DayToDaySection.vue'
-import WhenHowSection from '@/sections/WhenHowSection.vue'
-import BenefitsSection from '@/sections/BenefitsSection.vue'
-import QuoteSection from '@/sections/QuoteSection.vue'
-import DiversitySection from '@/sections/DiversitySection.vue'
-import ImportantDatesSection from '@/sections/ImportantDatesSection.vue'
-import SelectionCriteriaSection from '@/sections/SelectionCriteriaSection.vue'
-import accion from '@/sections/AccionSection.vue'
-import PartnersSection from '@/sections/PartnersSection.vue'
-import FooterSection from '@/sections/FooterSection.vue'
-import Pet from '@/components/Pet.vue'
-import ExperienceSection from '@/sections/ExperienceSection.vue'
-import ReelSection from '@/sections/ReelSection.vue'
-import policySection from '@/sections/PolicySection.vue'
-import datesSection from '@/sections/DatesSection.vue'
+// Lazy loaded components (everything except NavBar and HeroSection)
+const WhyParticipateSection = defineAsyncComponent(() => import('@/sections/WhyParticipateSection.vue'))
+const WhatIsSection = defineAsyncComponent(() => import('@/sections/WhatIsSection.vue'))
+const EventPhotoSection = defineAsyncComponent(() => import('@/sections/EventPhotoSection.vue'))
+const BasesSection = defineAsyncComponent(() => import('@/sections/BasesSection.vue'))
+const DayToDaySection = defineAsyncComponent(() => import('@/sections/DayToDaySection.vue'))
+const WhenHowSection = defineAsyncComponent(() => import('@/sections/WhenHowSection.vue'))
+const BenefitsSection = defineAsyncComponent(() => import('@/sections/BenefitsSection.vue'))
+const QuoteSection = defineAsyncComponent(() => import('@/sections/QuoteSection.vue'))
+const DiversitySection = defineAsyncComponent(() => import('@/sections/DiversitySection.vue'))
+const ImportantDatesSection = defineAsyncComponent(() => import('@/sections/ImportantDatesSection.vue'))
+const SelectionCriteriaSection = defineAsyncComponent(() => import('@/sections/SelectionCriteriaSection.vue'))
+const accion = defineAsyncComponent(() => import('@/sections/AccionSection.vue'))
+const PartnersSection = defineAsyncComponent(() => import('@/sections/PartnersSection.vue'))
+const FooterSection = defineAsyncComponent(() => import('@/sections/FooterSection.vue'))
+const Pet = defineAsyncComponent(() => import('@/components/Pet.vue'))
+const ExperienceSection = defineAsyncComponent(() => import('@/sections/ExperienceSection.vue'))
+const ReelSection = defineAsyncComponent(() => import('@/sections/ReelSection.vue'))
+const policySection = defineAsyncComponent(() => import('@/sections/PolicySection.vue'))
+const datesSection = defineAsyncComponent(() => import('@/sections/DatesSection.vue'))
 
 
 </script>

@@ -55,13 +55,7 @@
       <h3 class="final-message__title">¡Da clic en Enviar y tu postulación estará en camino!</h3>
       <p>Revisaremos tu postulación con atención. Los resultados de la selección se publicarán entre el <strong style="color: #E0FA49;">1 y el 3 de julio de 2026</strong>.</p>
       <p>Si resultas seleccionadx, nos pondremos en contacto contigo por <strong style="color: #0BE340;">correo electrónico y/o WhatsApp</strong> para los siguientes pasos.</p>
-      <div class="final-message__socials">
-        <p>Mientras tanto, te invitamos a seguir nuestras redes sociales para mantenerte al tanto de las novedades del Movimiento:</p>
-        <div class="social-links-container">
-          <a href="https://instagram.com/hackersxnf" target="_blank" class="social-btn instagram-btn">@Hackersxnf</a>
-          <a href="https://tiktok.com/@hackersxnuestrofuturo" target="_blank" class="social-btn tiktok-btn">@hackersxnuestrofuturo</a>
-        </div>
-      </div>
+      
       <p class="final-message__contact">Si tienes dudas, escríbenos a <strong style="color: #FC3169;">hxnf@practica.lat</strong></p>
       <p class="final-salute"><strong>¡Nos vemos en las sesiones virtuales!</strong></p>
     </div>
@@ -281,54 +275,6 @@ const compromisosList: CompromisoItem[] = [
 .final-message p {
   margin-bottom: 1rem;
   font-size: 1rem;
-}
-
-.final-message__socials {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.social-links-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-
-.social-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  font-family: var(--font-parkinsans);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  color: #fff;
-}
-
-.instagram-btn {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-}
-.instagram-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-}
-
-.tiktok-btn {
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-shadow: 1px 1px 0px #FC3169, -1px -1px 0px #0BE340;
-}
-.tiktok-btn:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
 }
 
 .final-message__contact {

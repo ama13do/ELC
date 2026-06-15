@@ -3,7 +3,7 @@
     
     <div class="sessions-banner">
       <h2 class="sessions-title">ESPACIO LIBRE DE<br />PARTIDOS POLÍTICOS</h2>
-      <img 
+      <img loading="lazy" 
         :src="partidosIcon" 
         alt="" 
         class="sessions-partidos-icon" 
@@ -11,9 +11,9 @@
     </div>
 
     <section class="sessions-section">
-      <img src="../assets/images/sesiones.webp" alt="" class="sessions-bg" />
+      <img loading="lazy" src="../assets/images/sesiones.webp" alt="" class="sessions-bg" />
 
-      <img 
+      <img loading="lazy" 
         :src="hojasImg" 
         alt="Hojas al viento" 
         class="hojas-viento"

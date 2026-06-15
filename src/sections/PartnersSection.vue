@@ -26,7 +26,7 @@
             rel="noopener noreferrer"
             class="logo-link"
           >
-            <img :src="org.logo" :alt="org.name" class="logo-img" />
+            <img loading="lazy" :src="org.logo" :alt="org.name" class="logo-img" />
           </a>
         </div>
       </div>

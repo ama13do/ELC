@@ -1,6 +1,6 @@
 <template>
   <section class="elc-section" ref="sectionRef">
-    <img src="../assets/images/ELC.webp" alt="" class="elc-bg" />
+    <img loading="lazy" src="../assets/images/ELC.webp" alt="" class="elc-bg" />
 
     <div class="elc-content">
       <h2 class="elc-title">¿De qué se trata<br />la ELC?</h2>

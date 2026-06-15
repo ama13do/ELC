@@ -37,11 +37,16 @@
 
     </div>
 
+    <div class="cta-container">
+      <BaseButton variant="primary" href="/formulario">REGÍSTRATE AQUÍ</BaseButton>
+    </div>
+
   </section>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import BaseButton from '../components/BaseButton.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -150,5 +155,11 @@ onMounted(() => {
   .compare-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }
 </style>

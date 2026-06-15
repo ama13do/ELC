@@ -1,7 +1,7 @@
 <template>
   <section class="fracking-section" ref="sectionRef">
 
-    <img
+    <img loading="lazy" 
       :src="frackingImg"
       alt=""
       class="fracking-bg"

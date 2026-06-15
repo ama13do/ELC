@@ -58,13 +58,13 @@ onMounted(() => {
 
     <!-- Bloque superior: imagen hero edge-to-edge con título abajo-izquierda -->
     <div class="esperar-hero">
-      <img src="../assets/images/esperar.webp" alt="" class="esperar-hero-bg" />
-      <img 
+      <img loading="lazy" src="../assets/images/esperar.webp" alt="" class="esperar-hero-bg" />
+      <img loading="lazy" 
         :src="stickerTrans" 
         alt="" 
         class="sticker-left"
       />
-      <img 
+      <img loading="lazy" 
         :src="stickerHxnf" 
         alt="" 
         class="sticker-right"
@@ -103,7 +103,7 @@ onMounted(() => {
 
       
       <div class="esperar-img-wrapper">
-        <img src="../assets/images/resultado.webp" alt="" class="esperar-img" />
+        <img loading="lazy" src="../assets/images/resultado.webp" alt="" class="esperar-img" />
       </div>
 
     </div>

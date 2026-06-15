@@ -8,14 +8,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'MyriadPro';
-  src: url('./assets/fonts/MyriadPro-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   /* Mantener existentes */
   --color-accent: #0BE340;
@@ -42,11 +34,10 @@
 
   /* Tipografías */
   --font-parkinsans: 'Parkinsans', sans-serif;
-  --font-myriad: 'MyriadPro', sans-serif;
+
 
   /* Alias opcionales */
   --font-heading: var(--font-parkinsans);
-  --font-body: var(--font-myriad);
 }
 
 *,
@@ -59,9 +50,10 @@ html {
   scroll-behavior: smooth;
 }
 
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {

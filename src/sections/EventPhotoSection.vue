@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-3xl flex flex-col items-center text-center gap-8 md:gap-16">
 
       <div class="relative px-14 py-10 md:px-20 md:py-12 oval-wrapper">
-        <img
+        <img loading="lazy" 
           :src="ovalImg"
           alt=""
           class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none oval-img"

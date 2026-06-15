@@ -3,13 +3,13 @@
 
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="who-hero">
-      <img src="../assets/images/why.webp" alt="" class="who-hero-bg" />
+      <img loading="lazy" src="../assets/images/why.webp" alt="" class="who-hero-bg" />
 
       <div class="who-hero-inner">
 
         <div class="who-hero-text">
 
-          <img :src="aguasImg" alt="Aguas" class="who-aguas-img" />
+          <img loading="lazy" :src="aguasImg" alt="Aguas" class="who-aguas-img" />
 
           <h2 class="who-title">¿Quién puede<br />participar?</h2>
         </div>

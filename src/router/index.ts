@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue";
-import Gracias from "@/views/success.vue";
-import FormView from "@/views/form.vue";
-import DashboardAdmin from "@/views/Dashboard_Admin.vue";
 import { registroCompletado } from "@/composables/useRegistro";
+
+const Home = () => import("@/views/Home.vue");
+const Gracias = () => import("@/views/success.vue");
+const FormView = () => import("@/views/form.vue");
+const DashboardAdmin = () => import("@/views/Dashboard_Admin.vue");
 
 const router = createRouter({
   history: createWebHistory(),

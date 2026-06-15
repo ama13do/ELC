@@ -3,17 +3,17 @@
 
     <!-- Hero edge-to-edge -->
     <div class="policy-hero">
-      <img src="../assets/images/POLICY.webp" alt="" class="policy-hero-bg" />
+      <img loading="lazy" src="../assets/images/POLICY.webp" alt="" class="policy-hero-bg" />
       
       <!-- 🔄 STICKER IZQUIERDO (Renovará) 🔄 -->
-      <img 
+      <img loading="lazy" 
         :src="renovaraImg" 
         alt="Renovará" 
         class="sticker-renovara" 
       />
 
       <!-- ☀️ STICKER DERECHO (Solecito) ☀️ -->
-      <img 
+      <img loading="lazy" 
         :src="solecitoImg" 
         alt="Solecito" 
         class="sticker-solecito" 

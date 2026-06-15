@@ -23,7 +23,7 @@
         :key="index" 
         class="photo-wrapper"
       >
-        <img 
+        <img loading="lazy" 
           :src="photo" 
           alt="Experiencia ELC Hackers por Nuestro Futuro" 
           class="photo-img"

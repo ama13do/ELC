@@ -18,12 +18,17 @@
           <span class="date-date">{{ date.date }}</span>
         </div>
       </div>
+
+      <div class="cta-container">
+        <BaseButton variant="primary" href="/formulario">REGÍSTRATE AQUÍ</BaseButton>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import BaseButton from '../components/BaseButton.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -175,5 +180,11 @@ function isActive(index: number): boolean {
     /* En móvil, la fecha toma un tono más suave para que el título destaque */
     color: rgba(255,255,255,0.85); 
   }
+}
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 </style>

@@ -3,11 +3,11 @@
 
     <!-- Stickers esquina superior derecha encimados -->
     <div class="stickers-wrapper">
-      <img src="../assets/images/rayoverde.webp" alt="" class="sticker sticker-rayoverde" />
+      <img loading="lazy" src="../assets/images/rayoverde.webp" alt="" class="sticker sticker-rayoverde" />
     </div>
 
     <!-- Imagen lateral izquierda -->
-    <img src="../assets/images/why1.webp" alt="" class="why-side-img" />
+    <img loading="lazy" src="../assets/images/why1.webp" alt="" class="why-side-img" />
 
     <!-- Contenido -->
     <div class="why-inner">

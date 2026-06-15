@@ -15,6 +15,10 @@
           que desarrolla propuestas concretas para enfrentar la crisis climática?
         </p>
 
+        <div class="hero-deadline-container">
+          <span class="deadline-text">Cierra el 26 de junio a las 23:59 hrs</span>
+          <span class="deadline-badge">{{ remainingText }}</span>
+        </div>
         <div class="hero-buttons">
           <BaseButton variant="primary" href="/formulario">REGÍSTRATE AQUÍ</BaseButton>
           <BaseButton variant="secondary" href="https://nuestrofuturo.mx/hxnf">QUIÉNES SOMOS</BaseButton>
@@ -32,14 +36,34 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const deadline = new Date('2026-06-26T23:59:59')
+const now = ref(new Date())
+let timer: ReturnType<typeof setInterval>
+
+const remainingText = computed(() => {
+  const diffTime = deadline.getTime() - now.value.getTime()
+  if (diffTime <= 0) return 'Convocatoria cerrada'
+  
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+  const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  
+  if (diffDays > 0) {
+    return `¡Te quedan ${diffDays} días y ${diffHours} hrs!`
+  }
+  return `¡Último día, quedan ${diffHours} hrs!`
+})
+
 gsap.registerPlugin(ScrollTrigger)
 
 onMounted(() => {
+  timer = setInterval(() => {
+    now.value = new Date()
+  }, 1000 * 60) // Update every minute
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
   tl.from('.hero-title',         { y: 60, duration: 0.9 })
     .from('.hero-body',          { y: 40, duration: 0.7 }, '-=0.5')
@@ -73,6 +97,10 @@ onMounted(() => {
       scrollTrigger: { trigger: '.hero-section', start: '30% top', end: '72% top', scrub: 1 },
     })
   })
+})
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
 })
 </script>
 
@@ -155,11 +183,62 @@ onMounted(() => {
   font-weight: 600;
 }
 
+/* ── Deadline ── */
+.hero-deadline-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  background: rgba(252, 49, 105, 0.08);
+  border: 1px dashed rgba(252, 49, 105, 0.4);
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
+.deadline-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-family: var(--font-parkinsans);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.deadline-badge {
+  background: #FC3169;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 800;
+  border: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(252, 49, 105, 0.4);
+  animation: pulse-deadline 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-deadline {
+  0% { box-shadow: 0 0 0 0 rgba(252, 49, 105, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(252, 49, 105, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(252, 49, 105, 0); }
+}
+
 /* ── Botones ── */
 .hero-buttons {
   display: flex;
   gap: 1rem;
-  flex-wrap: wrap;
+  width: 100%;
+  max-width: 500px;
+}
+
+.hero-buttons > * {
+  flex: 1;
 }
 
 /* ── Responsive: mobile ── */
@@ -208,6 +287,28 @@ onMounted(() => {
   .hero-buttons {
     flex-direction: column;
     width: 100%;
+  }
+
+  .hero-deadline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding: 1rem;
+    gap: 0.75rem;
+    box-sizing: border-box;
+  }
+
+  .deadline-text {
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .deadline-badge {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    white-space: normal;
   }
 }
 </style>

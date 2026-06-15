@@ -4,16 +4,16 @@
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <!-- Hero edge-to-edge con título abajo-izquierda -->
     <div class="experience-hero">
-      <img src="../assets/images/EXPERIENCE.webp" alt="" class="experience-hero-bg" />
+      <img loading="lazy" src="../assets/images/EXPERIENCE.webp" alt="" class="experience-hero-bg" />
       
-      <img 
+      <img loading="lazy" 
         :src="stickerMasIdeas" 
         alt="Más Ideas" 
         class="sticker-top-right" 
       />
 
       <!-- NUEVO: Movimos el sticker aquí afuera para que pueda tocar el borde libremente -->
-      <img 
+      <img loading="lazy" 
         :src="stickerHxnf" 
         alt="Sticker HXNF" 
         class="sticker-bottom-left" 
